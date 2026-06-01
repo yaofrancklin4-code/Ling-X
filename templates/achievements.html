@@ -1,0 +1,117 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Succès - LingX{%
+endblock %} {% block content %}
+<div class="container py-4">
+  <h1 class="mb-4">⭐ Vos Succès</h1>
+
+  <!-- Succès débloqués -->
+  <div class="mb-5">
+    <h2 class="h4 mb-3">✓ Succès Débloqués</h2>
+
+    {% if user_achievements %}
+    <div class="row">
+      {% for achievement in user_achievements %}
+      <div class="col-md-6 mb-3">
+        <div class="card achievement-card unlocked">
+          <div class="card-body d-flex align-items-center">
+            <div class="achievement-icon display-4 mr-3">
+              {{ achievement.achievement.icon }}
+            </div>
+            <div class="flex-grow-1">
+              <h5 class="card-title mb-1">
+                {{ achievement.achievement.name }}
+              </h5>
+              <p class="card-text small">
+                {{ achievement.achievement.description }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-muted">
+      Aucun succès pour le moment. Commencez à apprendre!
+    </p>
+    {% endif %}
+  </div>
+
+  <!-- Succès verrouillés -->
+  <div class="mb-5">
+    <h2 class="h4 mb-3"> Succès à Débloquer</h2>
+
+    {% if locked_achievements %}
+    <div class="row">
+      {% for achievement in locked_achievements %}
+      <div class="col-md-6 mb-3">
+        <div class="card achievement-card locked">
+          <div class="card-body d-flex align-items-center">
+            <div class="achievement-icon display-4 mr-3 opacity-50">
+              {{ achievement.icon }}
+            </div>
+            <div class="flex-grow-1">
+              <h5 class="card-title mb-1">{{ achievement.name }}</h5>
+              <p class="card-text small">{{ achievement.description }}</p>
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-success"> Vous avez débloqué tous les succès!</p>
+    {% endif %}
+  </div>
+
+  <div class="text-center">
+    <a href="{% url 'gamification_dashboard' %}" class="btn btn-primary">
+      ← Retour au Tableau de Bord
+    </a>
+  </div>
+</div>
+
+<style>
+  .achievement-card {
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    transition: all 0.3s;
+  }
+
+  .achievement-card.unlocked {
+    border-color: #28a745;
+    background: linear-gradient(
+      135deg,
+      rgba(40, 167, 69, 0.1),
+      rgba(40, 167, 69, 0.05)
+    );
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.2);
+  }
+
+  .achievement-card.unlocked:hover {
+    transform: translateX(5px);
+    box-shadow: 0 8px 16px rgba(40, 167, 69, 0.3);
+  }
+
+  .achievement-card.locked {
+    opacity: 0.7;
+    border-color: #ccc;
+    background: #f5f5f5;
+  }
+
+  .achievement-card.locked:hover {
+    opacity: 0.9;
+    transform: none;
+  }
+
+  .achievement-icon {
+    text-align: center;
+    min-width: 80px;
+  }
+
+  .opacity-50 {
+    opacity: 0.5;
+  }
+</style>
+{% endblock %}

@@ -1,0 +1,23 @@
+{
+  "date": "2026-05-29T15:15:09.290146",
+  "total": 3,
+  "succes": 0,
+  "erreurs": 3,
+  "images": [
+    {
+      "nom": "baoule_culture",
+      "status": "ERROR",
+      "raison": "404 Client Error: Not Found for url: https://baoule.ci/wp-content/uploads/2018/05/baoule_culture.jpg"
+    },
+    {
+      "nom": "villages_emblematiques",
+      "status": "ERROR",
+      "raison": "404 Client Error: Not Found for url: https://baoule.ci/wp-content/uploads/2024/01/villages_baoule.jp"
+    },
+    {
+      "nom": "fetes_rituels",
+      "status": "ERROR",
+      "raison": "404 Client Error: Not Found for url: https://baoule.ci/wp-content/uploads/2024/01/fetes_baoule.jpg"
+    }
+  ]
+}

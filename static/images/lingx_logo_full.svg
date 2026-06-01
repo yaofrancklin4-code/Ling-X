@@ -1,0 +1,59 @@
+<svg width="80" height="80" viewBox="0 0 80 80" fill="none"
+    xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="mouthGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#FFB6C1;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#FF69B4;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="flagGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#FF8C00;stop-opacity:1" />
+            <stop offset="33%" style="stop-color:white;stop-opacity:1" />
+            <stop offset="66%" style="stop-color:white;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#228B22;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+
+    <!-- Cercle de fond rose -->
+    <circle cx="40" cy="30" r="28" fill="#FFB6D9" stroke="none"/>
+
+    <!-- Couronne de laurier gauche -->
+    <g>
+        <path d="M 15 28 Q 12 25 10 22 Q 12 20 15 22 Q 16 25 18 28" fill="#228B22" stroke="#1a6b1a" stroke-width="0.5"/>
+        <path d="M 12 35 Q 10 32 8 30 Q 10 28 12 32 Q 13 35 15 38" fill="#228B22" stroke="#1a6b1a" stroke-width="0.5"/>
+        <path d="M 18 42 Q 16 40 15 37 Q 17 36 20 40 Q 21 43 22 46" fill="#228B22" stroke="#1a6b1a" stroke-width="0.5"/>
+    </g>
+
+    <!-- Couronne de laurier droite -->
+    <g>
+        <path d="M 65 28 Q 68 25 70 22 Q 68 20 65 22 Q 64 25 62 28" fill="#228B22" stroke="#1a6b1a" stroke-width="0.5"/>
+        <path d="M 68 35 Q 70 32 72 30 Q 70 28 68 32 Q 67 35 65 38" fill="#228B22" stroke="#1a6b1a" stroke-width="0.5"/>
+        <path d="M 62 42 Q 64 40 65 37 Q 63 36 60 40 Q 59 43 58 46" fill="#228B22" stroke="#1a6b1a" stroke-width="0.5"/>
+    </g>
+
+    <!-- Drapeau Côte d'Ivoire (cercle en haut) -->
+    <circle cx="40" cy="15" r="6" fill="url(#flagGradient)" stroke="#333" stroke-width="0.8"/>
+
+    <!-- Bouche/Langue -->
+    <path d="M 25 32 Q 25 28 30 26 Q 40 22 50 26 Q 55 28 55 32 Q 55 36 50 38 Q 40 42 30 38 Q 25 36 25 32 Z" fill="url(#mouthGradient)" stroke="#2c2c2c" stroke-width="1.5"/>
+
+    <!-- Dents supérieures -->
+    <path d="M 28 30 L 30 28 M 35 26 L 36 28 M 40 25 L 40 28 M 45 26 L 44 28 M 52 30 L 50 28" stroke="#ffffff" stroke-width="0.8" fill="none"/>
+
+    <!-- Langue -->
+    <ellipse cx="40" cy="36" rx="8" ry="5" fill="#FF1493" stroke="#c41e6b" stroke-width="0.8"/>
+
+    <!-- Contour des lèvres - haut -->
+    <path d="M 25 32 Q 40 28 55 32" stroke="#2c2c2c" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+
+    <!-- Contour des lèvres - bas -->
+    <path d="M 25 32 Q 40 40 55 32" stroke="#2c2c2c" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+
+    <!-- Rubans/Bannière pour le texte (bas) -->
+    <path d="M 10 52 Q 10 48 15 48 L 65 48 Q 70 48 70 52 L 68 58 Q 68 62 64 62 L 16 62 Q 12 62 12 58 Z" fill="white" stroke="#2c2c2c" stroke-width="1"/>
+
+    <!-- Texte "LingX" -->
+    <text x="40" y="59" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#FF4500" text-anchor="middle" letter-spacing="1" style="font-style: italic;">LingX</text>
+
+    <!-- Ombres/Détails -->
+    <ellipse cx="40" cy="35" rx="7" ry="3" fill="rgba(255,20,147,0.3)" opacity="0.5"/>
+</svg>

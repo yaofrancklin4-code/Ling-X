@@ -1,0 +1,155 @@
+{
+  "date": "2026-05-29T15:25:39.889925",
+  "batches_total": 4,
+  "images_total": 20,
+  "batches": {
+    "batch_2": {
+      "total": 5,
+      "success": 5,
+      "failed": 0,
+      "images": [
+        {
+          "filename": "Pagne_Baoule-780x500.png",
+          "status": "OK",
+          "size_kb": 939.7,
+          "dimensions": "780x500"
+        },
+        {
+          "filename": "artisanat_baoule-780x500.png",
+          "status": "OK",
+          "size_kb": 804.8,
+          "dimensions": "780x500"
+        },
+        {
+          "filename": "baoule.ci_formation_peuple_baoule-780x500.png",
+          "status": "OK",
+          "size_kb": 842.2,
+          "dimensions": "780x500"
+        },
+        {
+          "filename": "baoules-780x500.png",
+          "status": "OK",
+          "size_kb": 939.0,
+          "dimensions": "780x500"
+        },
+        {
+          "filename": "compter-en-Baoulé-780x500.png",
+          "status": "OK",
+          "size_kb": 912.2,
+          "dimensions": "780x500"
+        }
+      ]
+    },
+    "batch_3": {
+      "total": 5,
+      "success": 5,
+      "failed": 0,
+      "images": [
+        {
+          "filename": "courtoisise_us_coutumes_baoule-780x500.png",
+          "status": "OK",
+          "size_kb": 863.2,
+          "dimensions": "780x500"
+        },
+        {
+          "filename": "funerailles_baoulé-780x500.png",
+          "status": "OK",
+          "size_kb": 843.1,
+          "dimensions": "780x500"
+        },
+        {
+          "filename": "musique_baoule-780x500.png",
+          "status": "OK",
+          "size_kb": 839.9,
+          "dimensions": "780x500"
+        },
+        {
+          "filename": "relations_interethnique_baoule-780x405.png",
+          "status": "OK",
+          "size_kb": 694.4,
+          "dimensions": "780x405"
+        },
+        {
+          "filename": "rituels_baoule-780x500.png",
+          "status": "OK",
+          "size_kb": 808.4,
+          "dimensions": "780x500"
+        }
+      ]
+    },
+    "batch_4": {
+      "total": 5,
+      "success": 5,
+      "failed": 0,
+      "images": [
+        {
+          "filename": "sipiritualite_baoule.ci_-780x500.png",
+          "status": "OK",
+          "size_kb": 782.0,
+          "dimensions": "780x500"
+        },
+        {
+          "filename": "Baoulé-Souhamlin-Kôdè-de-Côte-d’Ivoire-780x500.png",
+          "status": "OK",
+          "size_kb": 830.1,
+          "dimensions": "780x500"
+        },
+        {
+          "filename": "Elomoué-sous-groupe-Baoulé-de-Côte-d’Ivoire-780x500.png",
+          "status": "OK",
+          "size_kb": 802.3,
+          "dimensions": "780x500"
+        },
+        {
+          "filename": "Fahafouè-Sous-groupe-Baoulé-de-Côte-d’Ivoire-780x500.png",
+          "status": "OK",
+          "size_kb": 738.9,
+          "dimensions": "780x500"
+        },
+        {
+          "filename": "Les-Gôly-Kôdê-Sous-groupe-du-Peuple-Baoulé-de-Côte-d’Ivoire-780x500.png",
+          "status": "OK",
+          "size_kb": 802.2,
+          "dimensions": "780x500"
+        }
+      ]
+    },
+    "batch_5": {
+      "total": 5,
+      "success": 5,
+      "failed": 0,
+      "images": [
+        {
+          "filename": "Les-Kôdè-un-sous-groupe-Baoulé-780x500.png",
+          "status": "OK",
+          "size_kb": 730.6,
+          "dimensions": "780x500"
+        },
+        {
+          "filename": "Les-N’gban-un-sous-groupe-Baoulé-de-Côte-d’Ivoire-780x500.png",
+          "status": "OK",
+          "size_kb": 857.3,
+          "dimensions": "780x500"
+        },
+        {
+          "filename": "Les-Sondo-un-Sous-groupe-du-Peuple-Baoulé-de-Côte-d’Ivoire-780x405.png",
+          "status": "OK",
+          "size_kb": 586.9,
+          "dimensions": "780x405"
+        },
+        {
+          "filename": "Les-Sondo-un-Sous-groupe-du-Peuple-Baoulé-de-Côte-d’Ivoire-780x500.png",
+          "status": "OK",
+          "size_kb": 712.1,
+          "dimensions": "780x500"
+        },
+        {
+          "filename": "Peuple-Ahaly-Baoulé-780x500.png",
+          "status": "OK",
+          "size_kb": 657.9,
+          "dimensions": "780x500"
+        }
+      ]
+    }
+  }
+}

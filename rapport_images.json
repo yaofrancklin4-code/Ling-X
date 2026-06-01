@@ -1,0 +1,300 @@
+{
+  "total": 25,
+  "ok": 7,
+  "ko": 18,
+  "images": [
+    {
+      "nom": "hero_peuple_baoule",
+      "titre": "Représentation du peuple Baoulé (baoule.ci)",
+      "section": "Histoire",
+      "usage": "hero",
+      "url": "https://baoule.ci/wp-content/uploads/2025/07/peuple_baoule-1.png",
+      "statut": "ok",
+      "fichiers": [
+        "static\\images\\baoule\\hero_peuple_baoule.jpg",
+        "media\\images\\baoule\\hero_peuple_baoule.jpg"
+      ],
+      "taille_ko": 458.4,
+      "erreur": null
+    },
+    {
+      "nom": "logo_baoule_officiel",
+      "titre": "Logo officiel Baoulé (baoule.ci)",
+      "section": "Identité",
+      "usage": "logo",
+      "url": "http://baoule.ci/wp-content/uploads/2018/05/baoule_logo3.png",
+      "statut": "ok",
+      "fichiers": [
+        "static\\images\\baoule\\logo_baoule_officiel.jpg"
+      ],
+      "taille_ko": 4.8,
+      "erreur": null
+    },
+    {
+      "nom": "logo_baoule_carre",
+      "titre": "Logo carré Baoulé (baoule.ci)",
+      "section": "Identité",
+      "usage": "logo",
+      "url": "https://baoule.ci/wp-content/uploads/2025/07/cropped-Logo_BAOULE-270x270.png",
+      "statut": "ok",
+      "fichiers": [
+        "static\\images\\baoule\\logo_baoule_carre.jpg"
+      ],
+      "taille_ko": 5.7,
+      "erreur": null
+    },
+    {
+      "nom": "masque_baoule",
+      "titre": "Masque Baoulé traditionnel (baoule.ci)",
+      "section": "Art",
+      "usage": "card",
+      "url": "https://baoule.ci/wp-content/uploads/2018/05/masque-baoule.jpg",
+      "statut": "erreur",
+      "fichiers": [],
+      "taille_ko": 0,
+      "erreur": "HTTP 404"
+    },
+    {
+      "nom": "reine_abla_pokou",
+      "titre": "La Reine Abla Pokou (baoule.ci)",
+      "section": "Histoire",
+      "usage": "card",
+      "url": "https://baoule.ci/wp-content/uploads/2018/05/reine-abla-pokou.jpg",
+      "statut": "erreur",
+      "fichiers": [],
+      "taille_ko": 0,
+      "erreur": "HTTP 404"
+    },
+    {
+      "nom": "artisanat_baoule",
+      "titre": "Artisanat Baoulé — tissage et sculpture (baoule.ci)",
+      "section": "Art",
+      "usage": "card",
+      "url": "https://baoule.ci/wp-content/uploads/2018/05/artisanat-baoule.jpg",
+      "statut": "erreur",
+      "fichiers": [],
+      "taille_ko": 0,
+      "erreur": "HTTP 404"
+    },
+    {
+      "nom": "danse_baoule",
+      "titre": "Danse traditionnelle Baoulé (baoule.ci)",
+      "section": "Culture",
+      "usage": "card",
+      "url": "https://baoule.ci/wp-content/uploads/2018/05/danse-baoule.jpg",
+      "statut": "erreur",
+      "fichiers": [],
+      "taille_ko": 0,
+      "erreur": "HTTP 404"
+    },
+    {
+      "nom": "village_baoule",
+      "titre": "Village traditionnel Baoulé (baoule.ci)",
+      "section": "Territoire",
+      "usage": "card",
+      "url": "https://baoule.ci/wp-content/uploads/2018/05/village-baoule.jpg",
+      "statut": "erreur",
+      "fichiers": [],
+      "taille_ko": 0,
+      "erreur": "HTTP 404"
+    },
+    {
+      "nom": "carte_baoule",
+      "titre": "Carte du territoire Baoulé en Côte d'Ivoire (baoule.ci)",
+      "section": "Territoire",
+      "usage": "sidebar",
+      "url": "https://baoule.ci/wp-content/uploads/2018/05/carte-baoule.jpg",
+      "statut": "erreur",
+      "fichiers": [],
+      "taille_ko": 0,
+      "erreur": "HTTP 404"
+    },
+    {
+      "nom": "femme_baoule_traditionnelle",
+      "titre": "Femme Baoulé en tenue traditionnelle (baoule.ci)",
+      "section": "Culture",
+      "usage": "card",
+      "url": "https://baoule.ci/wp-content/uploads/2018/05/femme-baoule.jpg",
+      "statut": "erreur",
+      "fichiers": [],
+      "taille_ko": 0,
+      "erreur": "HTTP 404"
+    },
+    {
+      "nom": "wiki_masque_baoule_bois",
+      "titre": "Masque Baoulé au Louvre (Wikimedia Commons)",
+      "section": "Art",
+      "usage": "gallery",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Baule_mask_Louvre.jpg/400px-Baule_mask_Louvre.jpg",
+      "statut": "erreur",
+      "fichiers": [],
+      "taille_ko": 0,
+      "erreur": "HTTP 400"
+    },
+    {
+      "nom": "wiki_statuette_baoule",
+      "titre": "Statuette Baoulé (Wikimedia Commons)",
+      "section": "Art",
+      "usage": "gallery",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Baule_figure_Louvre.jpg/300px-Baule_figure_Louvre.jpg",
+      "statut": "erreur",
+      "fichiers": [],
+      "taille_ko": 0,
+      "erreur": "HTTP 400"
+    },
+    {
+      "nom": "wiki_tissage_kente_cote_ivoire",
+      "titre": "Tissage traditionnel Côte d'Ivoire (Wikimedia Commons)",
+      "section": "Artisanat",
+      "usage": "card",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Kente-style_weaving.jpg/400px-Kente-style_weaving.jpg",
+      "statut": "erreur",
+      "fichiers": [],
+      "taille_ko": 0,
+      "erreur": "HTTP 400"
+    },
+    {
+      "nom": "wiki_carte_cote_ivoire",
+      "titre": "Carte Côte d'Ivoire (Wikimedia Commons)",
+      "section": "Territoire",
+      "usage": "sidebar",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Ivory_Coast_%28orthographic_projection%29.svg/400px-Ivory_Coast_%28orthographic_projection%29.svg.png",
+      "statut": "erreur",
+      "fichiers": [],
+      "taille_ko": 0,
+      "erreur": "HTTP 400"
+    },
+    {
+      "nom": "wiki_abidjan_vue",
+      "titre": "Abidjan — capitale économique (Wikimedia Commons)",
+      "section": "Territoire",
+      "usage": "hero",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Abidjan_Panorama.jpg/600px-Abidjan_Panorama.jpg",
+      "statut": "erreur",
+      "fichiers": [],
+      "taille_ko": 0,
+      "erreur": "HTTP 400"
+    },
+    {
+      "nom": "wiki_cote_ivoire_flag",
+      "titre": "Drapeau Côte d'Ivoire (Wikimedia Commons)",
+      "section": "Identité",
+      "usage": "sidebar",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_C%C3%B4te_d%27Ivoire.svg/300px-Flag_of_C%C3%B4te_d%27Ivoire.svg.png",
+      "statut": "erreur",
+      "fichiers": [],
+      "taille_ko": 0,
+      "erreur": "HTTP 400"
+    },
+    {
+      "nom": "wiki_yamoussoukro",
+      "titre": "Yamoussoukro — capitale politique (Wikimedia Commons)",
+      "section": "Territoire",
+      "usage": "card",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Yamoussoukro_basilica.jpg/500px-Yamoussoukro_basilica.jpg",
+      "statut": "erreur",
+      "fichiers": [],
+      "taille_ko": 0,
+      "erreur": "HTTPSConnectionPool(host='upload.wikimedia.org', port=443): Max retries exceeded with url: /wikipedia/commons/thumb/9/93/Yamoussoukro_basilica.jpg/500px-Yamoussoukro_basilica.jpg (Caused by ResponseError('too many 429 error responses'))"
+    },
+    {
+      "nom": "wiki_sculpture_baoule_nuit",
+      "titre": "Sculpture Baoulé (Wikimedia Commons)",
+      "section": "Art",
+      "usage": "gallery",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Baule_art_figure.jpg/300px-Baule_art_figure.jpg",
+      "statut": "erreur",
+      "fichiers": [],
+      "taille_ko": 0,
+      "erreur": "HTTP 400"
+    },
+    {
+      "nom": "wiki_masque_goli_baoule",
+      "titre": "Masque Goli Baoulé — cérémonie Goli (Wikimedia Commons)",
+      "section": "Rituels",
+      "usage": "gallery",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Masque_Goli_Baoule.jpg/300px-Masque_Goli_Baoule.jpg",
+      "statut": "erreur",
+      "fichiers": [],
+      "taille_ko": 0,
+      "erreur": "HTTP 400"
+    },
+    {
+      "nom": "wiki_langue_akan_afrique",
+      "titre": "Distribution de la famille Akan en Afrique (Wikimedia Commons)",
+      "section": "Linguistique",
+      "usage": "sidebar",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Akan_language_distribution.png/400px-Akan_language_distribution.png",
+      "statut": "erreur",
+      "fichiers": [],
+      "taille_ko": 0,
+      "erreur": "HTTP 400"
+    },
+    {
+      "nom": "unsplash_afrique_tissage",
+      "titre": "Tissage africain coloré (Unsplash)",
+      "section": "Artisanat",
+      "usage": "hero",
+      "url": "https://images.unsplash.com/photo-1589128777073-263566ae5e4d?w=800&q=80",
+      "statut": "ok",
+      "fichiers": [
+        "static\\images\\baoule\\unsplash_afrique_tissage.jpg",
+        "media\\images\\baoule\\unsplash_afrique_tissage.jpg"
+      ],
+      "taille_ko": 38.2,
+      "erreur": null
+    },
+    {
+      "nom": "unsplash_afrique_village",
+      "titre": "Village africain traditionnel (Unsplash)",
+      "section": "Territoire",
+      "usage": "card",
+      "url": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&q=80",
+      "statut": "ok",
+      "fichiers": [
+        "static\\images\\baoule\\unsplash_afrique_village.jpg",
+        "media\\images\\baoule\\unsplash_afrique_village.jpg"
+      ],
+      "taille_ko": 283.6,
+      "erreur": null
+    },
+    {
+      "nom": "unsplash_masque_africain",
+      "titre": "Masque africain d'art (Unsplash)",
+      "section": "Art",
+      "usage": "card",
+      "url": "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&q=80",
+      "statut": "ok",
+      "fichiers": [
+        "static\\images\\baoule\\unsplash_masque_africain.jpg",
+        "media\\images\\baoule\\unsplash_masque_africain.jpg"
+      ],
+      "taille_ko": 61.9,
+      "erreur": null
+    },
+    {
+      "nom": "unsplash_pagne_africain",
+      "titre": "Pagne africain traditionnel (Unsplash)",
+      "section": "Mode",
+      "usage": "card",
+      "url": "https://images.unsplash.com/photo-1547038577-da80abbc4f19?w=800&q=80",
+      "statut": "ok",
+      "fichiers": [
+        "media\\images\\baoule\\unsplash_pagne_africain.jpg"
+      ],
+      "taille_ko": 83.4,
+      "erreur": null
+    },
+    {
+      "nom": "unsplash_cacao_cote_ivoire",
+      "titre": "Cacao — ressource principale CI (Unsplash)",
+      "section": "Économie",
+      "usage": "card",
+      "url": "https://images.unsplash.com/photo-1623428187425-de4f3c0a78e8?w=800&q=80",
+      "statut": "erreur",
+      "fichiers": [],
+      "taille_ko": 0,
+      "erreur": "HTTP 404"
+    }
+  ]
+}

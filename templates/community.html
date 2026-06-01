@@ -1,0 +1,536 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Communauté -
+LingX{% endblock %} {% block extra_css %}
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  rel="stylesheet"
+/>
+<style>
+  .community-hero {
+    background: linear-gradient(
+      90deg,
+      rgba(2, 0, 36, 1) 0%,
+      rgba(12, 12, 207, 1) 0%,
+      rgba(0, 212, 255, 1) 100%
+    );
+    padding: 60px 0;
+    border-radius: 20px;
+    text-align: center;
+    color: white;
+    margin-bottom: 50px;
+  }
+
+  .community-hero h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+
+  .community-hero p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+  }
+
+  .member-card {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .member-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  }
+
+  .member-card.teacher {
+    border-top: 5px solid #ffc107;
+  }
+
+  .member-card.expert {
+    border-top: 5px solid #dc3545;
+  }
+
+  .member-card.student {
+    border-top: 5px solid #0d6efd;
+  }
+
+  .member-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #00d4ff;
+    margin: 0 auto 15px;
+  }
+
+  .member-role-badge {
+    display: inline-block;
+    font-weight: 600;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+  }
+
+  .member-role-badge.teacher {
+    background: linear-gradient(135deg, #ffc107, #ff9500);
+    color: white;
+  }
+
+  .member-role-badge.expert {
+    background: linear-gradient(135deg, #dc3545, #c82333);
+    color: white;
+  }
+
+  .member-role-badge.student {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+  }
+
+  .member-stats {
+    display: flex;
+    justify-content: space-around;
+    padding: 15px 0;
+    border-top: 1px solid #e5e7eb;
+    margin-top: 15px;
+  }
+
+  .member-stat {
+    text-align: center;
+  }
+
+  .member-stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #00d4ff;
+  }
+
+  .member-stat-label {
+    font-size: 0.75rem;
+    color: #999;
+    text-transform: uppercase;
+  }
+
+  .verified-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #00d4ff;
+    color: #020024;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+  }
+
+  .whatsapp-btn {
+    background: #25d366 !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 12px 20px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .whatsapp-btn:hover {
+    background: #1faa4f !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4) !important;
+  }
+
+  .filter-btn {
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-weight: 500;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-icon {
+    font-size: 1.5rem;
+    color: #00d4ff;
+  }
+
+  .floating-whatsapp {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 70px;
+    height: 70px;
+    background: #25d366;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: white;
+    box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    text-decoration: none;
+  }
+
+  .floating-whatsapp:hover {
+    transform: scale(1.1);
+    bottom: 40px;
+    box-shadow: 0 12px 30px rgba(37, 211, 102, 0.6);
+  }
+</style>
+{% endblock %} {% block content %}
+<!-- Hero Section -->
+<div class="community-hero">
+  <div class="container">
+    <h1><i class="fas fa-users"></i> Communauté LingX</h1>
+    <p>
+      Connectez-vous avec des professeurs certifiés, des experts et d'autres
+      apprenants
+    </p>
+    <p style="font-size: 0.95rem; opacity: 0.8; margin-top: 15px">
+      Échangez, apprenez ensemble et progressez sur WhatsApp
+    </p>
+  </div>
+</div>
+
+<div class="container my-5">
+  <!-- Filtres -->
+  <div class="row mb-5">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="btn-group w-100 flex-wrap gap-2" role="group">
+            <a
+              href="?role=all"
+              class="btn filter-btn {% if role_filter == 'all' %}btn-primary{% else %}btn-outline-primary{% endif %}"
+            >
+              <i class="fas fa-users"></i> Tous
+            </a>
+            <a
+              href="?role=teacher"
+              class="btn filter-btn {% if role_filter == 'teacher' %}btn-warning{% else %}btn-outline-warning{% endif %}"
+            >
+              <i class="fas fa-chalkboard-user"></i> Professeurs
+            </a>
+            <a
+              href="?role=avance"
+              class="btn filter-btn {% if role_filter == 'avance' %}btn-danger{% else %}btn-outline-danger{% endif %}"
+            >
+              <i class="fas fa-star"></i> Avancés
+            </a>
+            <a
+              href="?role=student"
+              class="btn filter-btn {% if role_filter == 'student' %}btn-info{% else %}btn-outline-info{% endif %}"
+            >
+              <i class="fas fa-book"></i> Apprenants
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Professeurs vérifiés -->
+  {% if teachers %}
+  <div class="row mb-5">
+    <div class="col-12 mb-4">
+      <div class="section-title">
+        <span class="section-icon"><i class="fas fa-chalkboard-user"></i></span>
+        Professeurs certifiés
+      </div>
+      <p class="text-white-50">
+        Nos professeurs sont là pour vous aider dans votre apprentissage du
+        Baoulé
+      </p>
+    </div>
+    {% for profile in teachers %}
+    <div class="col-lg-4 col-md-6 mb-4">
+      <div class="card member-card teacher h-100">
+        {% if profile.is_verified %}
+        <div class="verified-badge">
+          <i class="fas fa-check"></i>
+        </div>
+        {% endif %}
+
+        <div class="card-body text-center">
+          <div class="mb-3">
+            {% if profile.avatar %}
+            <img
+              src="{{ profile.avatar.url }}"
+              class="member-avatar"
+              alt="{{ profile.user.username }}"
+            />
+            {% else %}
+            <div
+              class="member-avatar"
+              style="
+                background: linear-gradient(135deg, #ffc107, #ff9500);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 2.5rem;
+                color: white;
+              "
+            >
+              {{ profile.user.username|first|upper }}
+            </div>
+            {% endif %}
+          </div>
+
+          <h5 class="text-white mb-2">
+            {{ profile.user.get_full_name|default:profile.user.username }}
+          </h5>
+          <div class="member-role-badge teacher">
+            <i class="fas fa-award"></i> Professeur certifié
+          </div>
+
+          {% if profile.speciality %}
+          <p class="text-white-50 small mb-2">{{ profile.speciality }}</p>
+          {% endif %} {% if profile.bio %}
+          <p class="text-muted small mb-3">
+            {{ profile.bio|truncatewords:15 }}
+          </p>
+          {% endif %} {% if profile.years_experience > 0 %}
+          <p class="text-white-50 small">
+            <i class="fas fa-briefcase"></i> {{ profile.years_experience }} ans
+            d'expérience
+          </p>
+          {% endif %}
+
+          <div class="member-stats">
+            <div class="member-stat">
+              <div class="member-stat-value">{{ profile.level }}</div>
+              <div class="member-stat-label">Niveau</div>
+            </div>
+            <div class="member-stat">
+              <div class="member-stat-value">{{ profile.total_points }}</div>
+              <div class="member-stat-label">Points</div>
+            </div>
+          </div>
+
+          {% if profile.phone_number %}
+          <a
+            href="{{ profile.get_whatsapp_link }}"
+            target="_blank"
+            class="btn whatsapp-btn w-100 mt-3"
+          >
+            <i class="fab fa-whatsapp"></i> Contacter
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Avancés vérifiés -->
+  {% if experts %}
+  <div class="row mb-5">
+    <div class="col-12 mb-4">
+      <div class="section-title">
+        <span class="section-icon"><i class="fas fa-star"></i></span>
+        Avancés certifiés
+      </div>
+      <p class="text-white-50">
+        Apprenants expérimentés avec plus de 1000 points
+      </p>
+    </div>
+    {% for profile in experts %}
+    <div class="col-lg-4 col-md-6 mb-4">
+      <div class="card member-card expert h-100">
+        {% if profile.is_verified %}
+        <div class="verified-badge">
+          <i class="fas fa-check"></i>
+        </div>
+        {% endif %}
+
+        <div class="card-body text-center">
+          <div class="mb-3">
+            {% if profile.avatar %}
+            <img
+              src="{{ profile.avatar.url }}"
+              class="member-avatar"
+              alt="{{ profile.user.username }}"
+            />
+            {% else %}
+            <div
+              class="member-avatar"
+              style="
+                background: linear-gradient(135deg, #dc3545, #c82333);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 2.5rem;
+                color: white;
+              "
+            >
+              {{ profile.user.username|first|upper }}
+            </div>
+            {% endif %}
+          </div>
+
+          <h5 class="text-white mb-2">
+            {{ profile.user.get_full_name|default:profile.user.username }}
+          </h5>
+          <div class="member-role-badge expert">
+            <i class="fas fa-crown"></i> Avancé
+          </div>
+
+          {% if profile.speciality %}
+          <p class="text-white-50 small mb-2">{{ profile.speciality }}</p>
+          {% endif %} {% if profile.bio %}
+          <p class="text-muted small mb-3">
+            {{ profile.bio|truncatewords:15 }}
+          </p>
+          {% endif %} {% if profile.years_experience > 0 %}
+          <p class="text-white-50 small">
+            <i class="fas fa-clock"></i> {{ profile.years_experience }} ans
+            d'apprentissage
+          </p>
+          {% endif %}
+
+          <div class="member-stats">
+            <div class="member-stat">
+              <div class="member-stat-value">{{ profile.level }}</div>
+              <div class="member-stat-label">Niveau</div>
+            </div>
+            <div class="member-stat">
+              <div class="member-stat-value">{{ profile.total_points }}</div>
+              <div class="member-stat-label">Points</div>
+            </div>
+          </div>
+
+          {% if profile.phone_number %}
+          <a
+            href="{{ profile.get_whatsapp_link }}"
+            target="_blank"
+            class="btn whatsapp-btn w-100 mt-3"
+          >
+            <i class="fab fa-whatsapp"></i> Contacter
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Apprenants -->
+  {% if students %}
+  <div class="row mb-5">
+    <div class="col-12 mb-4">
+      <div class="section-title">
+        <span class="section-icon"><i class="fas fa-book"></i></span>
+        Autres apprenants
+      </div>
+      <p class="text-white-50">
+        Connectez-vous avec la communauté d'apprenants
+      </p>
+    </div>
+    {% for profile in students %}
+    <div class="col-lg-3 col-md-6 mb-4">
+      <div class="card member-card student h-100">
+        <div class="card-body text-center">
+          {% if profile.avatar %}
+          <img
+            src="{{ profile.avatar.url }}"
+            class="member-avatar"
+            alt="{{ profile.user.username }}"
+            style="width: 100px; height: 100px"
+          />
+          {% else %}
+          <div
+            class="member-avatar"
+            style="
+              width: 100px;
+              height: 100px;
+              background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 2rem;
+              color: white;
+            "
+          >
+            {{ profile.user.username|first|upper }}
+          </div>
+          {% endif %}
+
+          <h6 class="text-white mt-3 mb-2">{{ profile.user.username }}</h6>
+          <div class="member-role-badge student mb-3">
+            <i class="fas fa-graduation-cap"></i> Apprenant
+          </div>
+
+          <div class="member-stats">
+            <div class="member-stat">
+              <div class="member-stat-value">{{ profile.level }}</div>
+              <div class="member-stat-label">Niveau</div>
+            </div>
+          </div>
+
+          {% if profile.phone_number %}
+          <a
+            href="{{ profile.get_whatsapp_link }}"
+            target="_blank"
+            class="btn whatsapp-btn w-100 mt-3"
+          >
+            <i class="fab fa-whatsapp"></i> WhatsApp
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Message si aucun résultat -->
+  {% if not teachers and not experts and not students %}
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body text-center py-5">
+          <i
+            class="fas fa-users-slash"
+            style="font-size: 3rem; color: #00d4ff; margin-bottom: 20px"
+          ></i>
+          <h4 class="text-white">Aucun membre disponible</h4>
+          <p class="text-muted">
+            Soyez le premier à partager votre numéro WhatsApp!
+          </p>
+          <a href="{% url 'profile' %}" class="btn btn-primary mt-3">
+            <i class="fas fa-user-edit"></i> Mettre à jour mon profil
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+<!-- Bouton flottant WhatsApp -->
+<a
+  href="https://chat.whatsapp.com/VOTRE_LIEN_GROUPE"
+  target="_blank"
+  class="floating-whatsapp"
+  title="Rejoindre le groupe WhatsApp"
+>
+  <i class="fab fa-whatsapp"></i>
+</a>
+{% endblock %}

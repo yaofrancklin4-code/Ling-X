@@ -1,0 +1,153 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Notifications -
+LingX{% endblock %} {% block content %}
+<div class="container py-4">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 class="mb-4"> Vos Notifications</h1>
+
+      <!-- Filtres -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="btn-group" role="group">
+            <a
+              href="{% url 'notifications' %}"
+              class="btn btn-sm {% if not unread_only %}btn-primary active{% else %}btn-outline-primary{% endif %}"
+            >
+              Toutes
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Liste des notifications -->
+      {% if notifications %}
+      <div class="list-group">
+        {% for notification in notifications %}
+        <div
+          class="list-group-item {% if not notification.is_read %}bg-light border-left border-primary border-4{% endif %}"
+        >
+          <div class="d-flex justify-content-between align-items-start">
+            <div class="flex-grow-1">
+              <!-- Type badge -->
+              {% if notification.notification_type == 'reward' %}
+              <span class="badge badge-warning"> Récompense</span>
+              {% elif notification.notification_type == 'achievement' %}
+              <span class="badge badge-success">⭐ Succès</span>
+              {% elif notification.notification_type == 'badge' %}
+              <span class="badge badge-info">️ Insigne</span>
+              {% elif notification.notification_type == 'level_up' %}
+              <span class="badge badge-primary">⬆️ Niveau</span>
+              {% elif notification.notification_type == 'milestone' %}
+              <span class="badge badge-danger"> Jalon</span>
+              {% elif notification.notification_type == 'streak' %}
+              <span class="badge badge-danger"> Série</span>
+              {% else %}
+              <span class="badge badge-secondary"> Info</span>
+              {% endif %}
+
+              <!-- Titre et message -->
+              <h5 class="mt-2">
+                {{ notification.icon }} {{ notification.title }}
+              </h5>
+              <p class="mb-2">{{ notification.message }}</p>
+
+              <!-- Métadonnées -->
+              <div class="small text-muted">
+                <span>{{ notification.created_at|timesince }} ago</span>
+                {% if notification.points_awarded > 0 %}
+                <span class="ml-3">
+                  <strong>+{{ notification.points_awarded }} points</strong>
+                </span>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="ml-3">
+              {% if not notification.is_read %}
+              <a
+                href="{% url 'mark_notification_read' notification.id %}?next=notifications"
+                class="btn btn-sm btn-primary"
+              >
+                Marquer comme lu
+              </a>
+              {% else %}
+              <span class="text-success">✓ Lu</span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Pagination -->
+      {% if notifications.has_other_pages %}
+      <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+          {% if notifications.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page=1">Première</a>
+          </li>
+          <li class="page-item">
+            <a
+              class="page-link"
+              href="?page={{ notifications.previous_page_number }}"
+              >Précédente</a
+            >
+          </li>
+          {% endif %}
+
+          <li class="page-item active">
+            <span class="page-link">{{ notifications.number }}</span>
+          </li>
+
+          {% if notifications.has_next %}
+          <li class="page-item">
+            <a
+              class="page-link"
+              href="?page={{ notifications.next_page_number }}"
+              >Suivante</a
+            >
+          </li>
+          <li class="page-item">
+            <a
+              class="page-link"
+              href="?page={{ notifications.paginator.num_pages }}"
+              >Dernière</a
+            >
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+      {% endif %} {% else %}
+      <div class="alert alert-info" role="alert">
+        <h4 class="alert-heading">Pas de notifications</h4>
+        <p>
+          Vous n'avez pas de notifications pour le moment. Continuez à apprendre
+          pour en recevoir!
+        </p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<style>
+  .list-group-item {
+    border: 1px solid #dee2e6;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+  }
+
+  .list-group-item:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .badge {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+  }
+</style>
+{% endblock %}

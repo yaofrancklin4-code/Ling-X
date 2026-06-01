@@ -1,0 +1,105 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Dictionnaire Baoulé
+- Français{% endblock %} {% block content %}
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white">
+          <h3 class="mb-0">Dictionnaire Baoulé - Français</h3>
+          <p class="mb-0 small text-white-50">
+            Recherchez un mot en français ou en baoulé.
+          </p>
+        </div>
+        <div class="card-body">
+          <form method="get" class="row g-3 mb-4">
+            <div class="col-md-8">
+              <label for="searchQuery" class="form-label"
+                >Mot ou expression</label
+              >
+              <input
+                type="text"
+                id="searchQuery"
+                name="q"
+                class="form-control"
+                value="{{ query }}"
+                placeholder="français ou baoulé"
+                autofocus
+              />
+            </div>
+            <div class="col-md-4">
+              <label for="direction" class="form-label">Direction</label>
+              <select id="direction" name="direction" class="form-select">
+                <option
+                  value="fr_to_baoule"
+                  {%
+                  if
+                  direction=""
+                  ="fr_to_baoule"
+                  %}selected{%
+                  endif
+                  %}
+                >
+                  Français → Baoulé
+                </option>
+                <option
+                  value="baule_to_fr"
+                  {%
+                  if
+                  direction=""
+                  ="baule_to_fr"
+                  %}selected{%
+                  endif
+                  %}
+                >
+                  Baoulé → Français
+                </option>
+              </select>
+            </div>
+            <div class="col-12 d-grid">
+              <button type="submit" class="btn btn-primary btn-lg">
+                Rechercher
+              </button>
+            </div>
+          </form>
+
+          {% if vocabularies.exists %}
+          <div class="table-responsive">
+            <table class="table table-striped align-middle">
+              <thead>
+                <tr>
+                  <th>Baoulé</th>
+                  <th>Français</th>
+                  <th>Prononciation</th>
+                  <th>Leçon</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for vocab in vocabularies %}
+                <tr>
+                  <td>{{ vocab.word_baule }}</td>
+                  <td>{{ vocab.word_french }}</td>
+                  <td>{{ vocab.pronunciation|default:'-' }}</td>
+                  <td>
+                    {% if vocab.lesson %}
+                    <a href="{% url 'lesson_detail' vocab.lesson.id %}"
+                      >{{ vocab.lesson.title }}</a
+                    >
+                    {% else %} - {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% else %}
+          <div class="alert alert-warning" role="alert">
+            Aucun mot trouvé pour cette recherche. Essayez avec un autre mot ou
+            une autre orthographe.
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,262 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Guide d'utilisation - LingX{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <!-- Hero Section -->
+  <div class="row mb-5">
+    <div class="col-12">
+      <div class="card" style="border: none; overflow: hidden">
+        <div
+          class="card-img-overlay d-flex align-items-center justify-content-center"
+          style="
+            background: linear-gradient(
+              135deg,
+              rgba(255, 215, 0, 0.8) 0%,
+              rgba(192, 192, 192, 0.7) 100%
+            );
+          "
+        >
+          <h1 class="text-dark text-center fw-bold">
+            Guide d'utilisation
+          </h1>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenu Principal -->
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+
+      <!-- Démarrage sur LingX -->
+      <section class="mb-5">
+        <h2
+          class="border-start border-warning border-4 ps-3 mb-4"
+          style="color: #613942"
+        >
+          Démarrer sur LingX
+        </h2>
+
+        <div class="card shadow-sm mb-3">
+          <div class="card-body">
+            <h5 style="color: #613942; font-weight: bold;">Étape 1: Créer votre compte</h5>
+            <p>Cliquez sur "Inscription" en haut à droite. Entrez un nom d'utilisateur, une adresse
+              e-mail et un mot de passe. Vous pouvez aussi vous connecter rapidement avec votre compte Google.</p>
+          </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+          <div class="card-body">
+            <h5 style="color: #613942; font-weight: bold;">Étape 2: Se connecter</h5>
+            <p>Utilisez le bouton "Connexion" avec votre e-mail et mot de passe, ou votre compte Google.
+              Une fois connecté, toutes les fonctionnalités de la plateforme sont disponibles.</p>
+          </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+          <div class="card-body">
+            <h5 style="color: #613942; font-weight: bold;">Étape 3: Découvrir le tableau de bord</h5>
+            <p>Votre tableau de bord résume votre progression, vos points, vos badges et vos activités
+              récentes. C'est votre point de départ pour chaque session d'apprentissage.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Fonctionnalités -->
+      <section class="mb-5">
+        <h2
+          class="border-start border-warning border-4 ps-3 mb-4"
+          style="color: #613942"
+        >
+          Les fonctionnalités de LingX
+        </h2>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <div class="card shadow-sm h-100">
+              <div class="card-body">
+                <h5 style="color: #613942; font-weight: bold;">Leçons</h5>
+                <p>Des cours structurés par catégories (salutations, aliments, famille...).
+                  Chaque leçon présente le vocabulaire baoulé avec sa traduction française
+                  et sa prononciation.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="card shadow-sm h-100">
+              <div class="card-body">
+                <h5 style="color: #613942; font-weight: bold;">Quiz</h5>
+                <p>À la fin de chaque leçon, un quiz teste vos connaissances.
+                  Répondez correctement pour gagner des points XP et débloquer des badges.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="card shadow-sm h-100">
+              <div class="card-body">
+                <h5 style="color: #613942; font-weight: bold;">Jeux</h5>
+                <p>Des mini-jeux interactifs pour apprendre en s'amusant : association de mots,
+                  devinettes, etc. Parfait pour réviser sans s'en rendre compte!</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="card shadow-sm h-100">
+              <div class="card-body">
+                <h5 style="color: #613942; font-weight: bold;">Dictionnaire</h5>
+                <p>Un dictionnaire Baoulé à Français consultable à tout moment.
+                  Recherchez un mot dans les deux langues grâce à la barre de recherche.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="card shadow-sm h-100">
+              <div class="card-body">
+                <h5 style="color: #613942; font-weight: bold;">Culture</h5>
+                <p>Découvrez l'histoire, les proverbes, les contes et la culture
+                  du peuple baoulé. Une façon d'apprendre la langue dans son contexte culturel.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="card shadow-sm h-100">
+              <div class="card-body">
+                <h5 style="color: #613942; font-weight: bold;">Classement</h5>
+                <p>Comparez votre score avec celui des autres apprenants.
+                  Montez dans le classement en accumulant des points et en maintenant votre streak quotidien.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="card shadow-sm h-100">
+              <div class="card-body">
+                <h5 style="color: #613942; font-weight: bold;">Badges et Récompenses</h5>
+                <p>Débloquez des badges en atteignant des objectifs :
+                  première leçon terminée, 7 jours consécutifs, score parfait... Collectionnez-les tous!</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="card shadow-sm h-100">
+              <div class="card-body">
+                <h5 style="color: #613942; font-weight: bold;">Communauté</h5>
+                <p>Rejoignez la communauté LingX, partagez votre progression
+                  et encouragez les autres apprenants dans leur voyage linguistique.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Conseils pour progresser -->
+      <section class="mb-5">
+        <h2
+          class="border-start border-warning border-4 ps-3 mb-4"
+          style="color: #613942"
+        >
+          Conseils pour progresser vite
+        </h2>
+
+        <div class="card shadow-sm mb-3" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, rgba(192, 192, 192, 0.05) 100%);">
+          <div class="card-body">
+            <h6 style="color: #613942; font-weight: bold;">Pratiquez tous les jours</h6>
+            <p>Même 10 minutes par jour suffisent. LingX récompense la régularité
+              avec un système de streak (série de jours consécutifs).
+              Plus votre streak est long, plus vous gagnez de points bonus.</p>
+          </div>
+        </div>
+
+        <div class="card shadow-sm mb-3" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, rgba(192, 192, 192, 0.05) 100%);">
+          <div class="card-body">
+            <h6 style="color: #613942; font-weight: bold;">Écoutez les prononciations</h6>
+            <p>Le baoulé est une langue tonale : la mélodie du mot est aussi
+              importante que les lettres. Utilisez les boutons audio pour entendre
+              chaque mot prononcé par un locuteur natif.</p>
+          </div>
+        </div>
+
+        <div class="card shadow-sm mb-3" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, rgba(192, 192, 192, 0.05) 100%);">
+          <div class="card-body">
+            <h6 style="color: #613942; font-weight: bold;">Commencez par les jeux</h6>
+            <p>Si vous débutez complètement, les mini-jeux sont le moyen le plus
+              naturel de mémoriser les premiers mots sans effort.</p>
+          </div>
+        </div>
+
+        <div class="card shadow-sm mb-3" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, rgba(192, 192, 192, 0.05) 100%);">
+          <div class="card-body">
+            <h6 style="color: #613942; font-weight: bold;">Consultez le dictionnaire régulièrement</h6>
+            <p>Quand vous rencontrez un mot inconnu dans la vie courante,
+              cherchez-le dans le dictionnaire LingX pour faire le lien.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="mb-5">
+        <h2
+          class="border-start border-warning border-4 ps-3 mb-4"
+          style="color: #613942"
+        >
+          Questions fréquentes
+        </h2>
+
+        <div class="card shadow-sm mb-3">
+          <div class="card-body">
+            <h6 style="color: #613942; font-weight: bold;">LingX est-il gratuit ?</h6>
+            <p>Oui, LingX est entièrement gratuit. Créez un compte et accédez
+              à toutes les fonctionnalités sans aucun abonnement.</p>
+          </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+          <div class="card-body">
+            <h6 style="color: #613942; font-weight: bold;">Faut-il parler français pour utiliser LingX ?</h6>
+            <p>Oui, l'interface est en français. LingX vous apprend le baoulé
+              à partir du français comme langue de référence.</p>
+          </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+          <div class="card-body">
+            <h6 style="color: #613942; font-weight: bold;">Puis-je utiliser LingX sans connexion internet ?</h6>
+            <p>Le mode hors-ligne est prévu dans les prochaines versions.
+              Pour l'instant, une connexion internet est nécessaire.</p>
+          </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+          <div class="card-body">
+            <h6 style="color: #613942; font-weight: bold;">Comment signaler un bug ou suggérer une amélioration ?</h6>
+            <p>Rendez-vous sur la page <a href="{% url 'contact' %}">Contact</a>
+              et écrivez directement à l'équipe. Vos retours sont précieux!</p>
+          </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+          <div class="card-body">
+            <h6 style="color: #613942; font-weight: bold;">Qui a créé LingX ?</h6>
+            <p>LingX a été créé par une équipe d'étudiants de l'ESATIC
+              en 2e année de licence TWIN, dans le cadre de leur projet APP2 2025-2026.
+              Consultez la page <a href="{% url 'about' %}">À propos</a>
+              pour en savoir plus.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="mb-5 text-center">
+        <a href="{% url 'categories' %}" class="btn btn-primary btn-lg me-2 mb-2">
+          Commencer à apprendre
+        </a>
+        <a href="{% url 'contact' %}" class="btn btn-warning btn-lg mb-2">
+          Nous contacter
+        </a>
+      </section>
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}

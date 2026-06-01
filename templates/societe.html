@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Société Baoulé{% endblock %}
+{% block content %}
+<div
+  class="hero-section"
+  style="
+    background:
+      linear-gradient(
+        135deg,
+        rgba(255, 215, 0, 0.9) 0%,
+        rgba(192, 192, 192, 0.8) 100%
+      ),
+      url('{% static "images/baoule/hero_peuple_baoule.jpg" %}')
+        center/cover no-repeat;
+    color: #000000;
+    padding: 4rem 0;
+    text-align: center;
+  "
+>
+  <div class="container">
+    <h1 class="display-4 mb-3">
+      Société <span style="color: #e8c77a">Baoulé</span>
+    </h1>
+    <p class="lead">Organisation sociale, clans et vie quotidienne</p>
+  </div>
+</div>
+
+<div class="container my-5">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <section id="organisation" class="mb-5">
+        <h2
+          class="border-start border-warning border-4 ps-3 mb-4"
+          style="color: #613942"
+        >
+          Organisation Sociale
+        </h2>
+        <p class="lead">
+          La société baoulé est organisée de manière hiérarchique avec le chef
+          de village au sommet. Le conseil des anciens joue un rôle consultatif
+          important dans les décisions communautaires.
+        </p>
+        <p>
+          Le village (blô) est l'unité de base, regroupant plusieurs familles
+          étendues autour de la case du chef.
+        </p>
+      </section>
+
+      <section id="clans" class="mb-5">
+        <h2
+          class="border-start border-warning border-4 ps-3 mb-4"
+          style="color: #613942"
+        >
+          Les Clans (Lo)
+        </h2>
+        <div class="card shadow-sm mb-3">
+          <div class="card-body">
+            <p>
+              Le système de clans matrilinéaires (lo) structure la société
+              baoulé. L'appartenance au clan se transmet par la mère. Chaque
+              clan a son totem animal et ses interdits alimentaires.
+            </p>
+            <p class="mb-0">
+              <strong>Principaux clans :</strong> Nananfouè, Aïtou, Faafouè,
+              Saafouè, Warèbo, etc.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="sous-groupes" class="mb-5">
+        <h2
+          class="border-start border-warning border-4 ps-3 mb-4"
+          style="color: #613942"
+        >
+          Les Sous-groupes Baoulés
+        </h2>
+        <p class="mb-4">
+          Le peuple baoulé comprend plusieurs sous-groupes, chacun avec ses
+          particularités culturelles et historiques :
+        </p>
+
+        <div class="row g-4">
+          <!-- Souhamlin-Kôdè -->
+          <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm h-100">
+              <img
+                src="{% static 'images/SOUS GROUPES/Baoulé-Souhamlin-Kôdè-de-Côte-d’Ivoire.png' %}"
+                alt="Souhamlin-Kôdè"
+                class="card-img-top"
+                style="height: 200px; object-fit: cover"
+              />
+              <div class="card-body">
+                <h5 class="card-title">️ Souhamlin-Kôdè</h5>
+                <p class="card-text">
+                  Sous-groupe baoulé avec une riche histoire culturelle et une
+                  forte identité traditionnelle.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Elomoué -->
+          <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm h-100">
+              <img
+                src="{% static 'images/SOUS GROUPES/BELLE_DAME_EN_TENUE_BAOULE_01.jpg' %}"
+                alt="Elomoué"
+                class="card-img-top"
+                style="height: 200px; object-fit: cover"
+              />
+              <div class="card-body">
+                <h5 class="card-title"> Elomoué</h5>
+                <p class="card-text">
+                  Peuple des traditions, gardien des coutumes ancestrales et des
+                  rituels baoulés.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fahafouè -->
+          <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm h-100">
+              <img
+                src="{% static 'images/SOUS GROUPES/wfyLSWPsxTZvnPnMf1PbtiEGeXzDwn65roh2QomxAueu1jVX4QU-98AdD8lDbZ0uHwYNx3w7uKZd20aIgscVnilnn6F0qpMalorj2DTw4ENLkXFVFLQr72-vinO45jnmM7_5pSWwzYq45Da5eldeuDqUL-3B3pB7g9JQ1mCDPOs.jpg' %}"
+                alt="Fahafouè"
+                class="card-img-top"
+                style="height: 200px; object-fit: cover"
+              />
+              <div class="card-body">
+                <h5 class="card-title">⚔️ Fahafouè</h5>
+                <p class="card-text">
+                  Porteur d'un héritage historique marqué par le courage et la
+                  sagesse ancestrale.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Gôly Kôdê -->
+          <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm h-100">
+              <img
+                src="/static/images/SOUS%20GROUPES/Les-Go%CC%82ly-Ko%CC%82de%CC%82-Sous-groupe-du-Peuple-Baoule%CC%81-de-Co%CC%82te-d%E2%80%99Ivoire.png"
+                alt="Gôly Kôdê"
+                class="card-img-top"
+                style="height: 200px; object-fit: cover"
+              />
+              <div class="card-body">
+                <h5 class="card-title">️ Gôly Kôdê</h5>
+                <p class="card-text">
+                  Gardiens de l'identité baoulé et de ses valeurs fondamentales
+                  à travers les générations.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Kôdè -->
+          <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm h-100">
+              <img
+                src="{% static 'images/baoule/Les-Kode-un-sous-groupe-Baoule-780x500.png' %}"
+                alt="Kôdè"
+                class="card-img-top"
+                style="height: 200px; object-fit: cover"
+              />
+              <div class="card-body">
+                <h5 class="card-title">✨ Kôdè</h5>
+                <p class="card-text">
+                  Symbole de la richesse culturelle et du patrimoine immatériel
+                  du peuple baoulé.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="vie" class="mb-5">
+        <h2
+          class="border-start border-warning border-4 ps-3 mb-4"
+          style="color: #613942"
+        >
+          Vie Quotidienne
+        </h2>
+        <p>
+          L'agriculture est l'activité principale : igname, manioc, plantain,
+          cacao et café. Les femmes s'occupent des cultures vivrières et du
+          commerce, les hommes des cultures de rente.
+        </p>
+        <p>
+          L'artisanat (sculpture, tissage, poterie) occupe aussi une place
+          importante dans l'économie locale.
+        </p>
+      </section>
+
+      <section id="education">
+        <h2
+          class="border-start border-warning border-4 ps-3 mb-4"
+          style="color: #613942"
+        >
+          Éducation
+        </h2>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">Éducation Traditionnelle</h5>
+                <p class="card-text">
+                  L'éducation traditionnelle se fait par transmission orale. Les
+                  enfants apprennent les valeurs, l'histoire et les savoir-faire
+                  auprès des anciens.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">Éducation Moderne</h5>
+                <p class="card-text">
+                  Aujourd'hui, l'éducation moderne coexiste avec les
+                  enseignements traditionnels, préservant ainsi le patrimoine
+                  culturel.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+{% endblock %}

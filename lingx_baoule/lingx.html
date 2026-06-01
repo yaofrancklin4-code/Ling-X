@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>LingX — Analyse Linguistique Baoulé</title>
+    <link rel="stylesheet" href="assets/style.css" />
+  </head>
+  <body>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="logo" href="index.html">
+          <span class="logo-icon">◈</span>
+          <span class="logo-text">Baoulé<span class="logo-sub"> ×
+              LingX</span></span>
+        </a>
+        <nav>
+          <ul><li><a href="index.html">Accueil</a></li>
+            <li class="has-dropdown"><a href="histoire.html">Histoire ▾</a><ul
+                class="dropdown"><li><a
+                    href="histoire.html#origines">Origines</a></li><li><a
+                    href="histoire.html#reine">Reine Abla Pokou</a></li><li><a
+                    href="histoire.html#migration">Migration</a></li><li><a
+                    href="histoire.html#chronologie">Chronologie</a></li></ul></li>
+            <li class="has-dropdown"><a href="culture.html">Culture ▾</a><ul
+                class="dropdown"><li><a href="culture.html#langue">Langue
+                    Baoulé</a></li><li><a href="culture.html#art">Art &
+                    Masques</a></li><li><a href="culture.html#musique">Musique &
+                    Danse</a></li><li><a href="culture.html#fetes">Fêtes &
+                    Rituels</a></li></ul></li>
+            <li class="has-dropdown"><a href="societe.html">Société ▾</a><ul
+                class="dropdown"><li><a
+                    href="societe.html#organisation">Organisation</a></li><li><a
+                    href="societe.html#clans">Clans</a></li><li><a
+                    href="societe.html#vie">Vie Quotidienne</a></li><li><a
+                    href="societe.html#education">Éducation</a></li></ul></li>
+            <li class="has-dropdown"><a href="territoire.html">Territoire
+                ▾</a><ul class="dropdown"><li><a
+                    href="territoire.html#geo">Géographie</a></li><li><a
+                    href="territoire.html#villages">Villages</a></li><li><a
+                    href="territoire.html#ressources">Ressources</a></li></ul></li>
+            <li><a href="dictionnaire.html">Dictionnaire</a></li>
+            <li><a href="lingx.html" class="active">LingX</a></li>
+          </ul>
+        </nav>
+        <button class="menu-toggle" aria-label="Menu">☰</button>
+      </div>
+    </header>
+
+    <section class="lingx-hero">
+      <div class="hero-eyebrow"
+        style="background:var(--secondary);color:var(--dark);display:inline-block;padding:.3rem 1rem;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem">
+        ⚡ Moteur NLP
+      </div>
+      <h1>Ling<span>X</span> — Analyse Linguistique</h1>
+      <p>Tokenisation, richesse lexicale (TTR), lisibilité Flesch-Kincaid,
+        TF-IDF et extraction de mots-clés — appliqués au patrimoine baoulé.</p>
+    </section>
+
+    <!-- STATS GLOBALES -->
+    <div class="lingx-grid">
+      <div class="stat-card">
+        <h3>Documents corpus</h3>
+        <div class="stat-val">5</div>
+        <p>Textes baoulé indexés</p>
+      </div>
+      <div class="stat-card">
+        <h3>Tokens totaux</h3>
+        <div class="stat-val">156</div>
+        <p>Mots dans le corpus</p>
+      </div>
+      <div class="stat-card">
+        <h3>Types uniques</h3>
+        <div class="stat-val">100</div>
+        <p>Vocabulaire distinct</p>
+      </div>
+      <div class="stat-card">
+        <h3>Entrées dico</h3>
+        <div class="stat-val">20</div>
+        <p>Mots Baoulé–Français</p>
+      </div>
+    </div>
+
+    <!-- ANALYSEUR -->
+    <div class="lingx-analyser">
+      <h2 class="section-title"> Analyser un Texte</h2>
+      <div class="analyser-box">
+        <p style="font-size:.88rem;color:#666;margin-bottom:.8rem">
+          Collez un texte ci-dessous <strong>ou cliquez sur un document du
+            corpus</strong> pour l'analyser automatiquement.
+        </p>
+        <textarea id="lingx-input"
+          placeholder="Entrez votre texte en français ou en baoulé ici…"></textarea>
+        <div class="analyser-actions">
+          <button id="btn-analyse" class="btn btn-primary">⚡ Analyser</button>
+          <button id="btn-clear" class="btn btn-outline"
+            style="color:var(--primary);border-color:var(--primary)">✕
+            Effacer</button>
+        </div>
+        <div id="lingx-results"></div>
+      </div>
+
+      <!-- CORPUS -->
+      <h2 class="section-title" style="margin-top:2.5rem"> Corpus Baoulé</h2>
+      <p style="font-size:.88rem;color:#666;margin-bottom:1rem">Cliquez sur un
+        document pour le charger dans l'analyseur.</p>
+
+      <div class="corpus-item"
+        data-texte="Le peuple Baoulé est un peuple Akan de Côte d'Ivoire. La reine Abla Pokou a conduit la migration depuis le royaume Ashanti. Le sacrifice au fleuve Comoé reste fondateur de l'identité baoulé.">
+        <h4>Origines Baoulé</h4>
+        <p>Le peuple Baoulé est un peuple Akan de Côte d'Ivoire. La reine Abla
+          Pokou a conduit la migration dep…</p>
+      </div>
+      <div class="corpus-item"
+        data-texte="Le baoulé est une langue tonale de la famille Akan. Les tons haut et bas modifient le sens des mots. La langue baoulé possède une riche tradition orale avec des proverbes et des contes.">
+        <h4>Langue Baoulé</h4>
+        <p>Le baoulé est une langue tonale de la famille Akan. Les tons haut et
+          bas modifient le sens des mots.…</p>
+      </div>
+      <div class="corpus-item"
+        data-texte="Les masques baoulé sont sculptés dans le bois. Ils servent lors des cérémonies rituelles et funèbres. Les figures Waka Sona représentent les époux de l'au-delà dans la cosmogonie baoulé.">
+        <h4>Art et Masques</h4>
+        <p>Les masques baoulé sont sculptés dans le bois. Ils servent lors des
+          cérémonies rituelles et funèbres…</p>
+      </div>
+      <div class="corpus-item"
+        data-texte="La société baoulé est organisée en clans matrilinéaires appelés lo. Le chef de village dirige les assemblées. Les anciens jouent un rôle central dans la transmission des traditions.">
+        <h4>Société et Clans</h4>
+        <p>La société baoulé est organisée en clans matrilinéaires appelés lo.
+          Le chef de village dirige les as…</p>
+      </div>
+      <div class="corpus-item"
+        data-texte="Nyamien est le dieu suprême dans la cosmogonie baoulé. Les génies de la nature Asie Usu habitent les forêts et les cours d'eau. Les devins Komien assurent la médiation avec le monde spirituel.">
+        <h4>Spiritualité</h4>
+        <p>Nyamien est le dieu suprême dans la cosmogonie baoulé. Les génies de
+          la nature Asie Usu habitent les…</p>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <span class="logo-icon">◈</span> Baoulé × LingX
+        </div>
+        <p class="footer-tagline">
+          Préservation du patrimoine linguistique et culturel baoulé — propulsé
+          par LingX
+        </p>
+        <nav class="footer-nav">
+          <a href="index.html">Accueil</a>
+          <a href="dictionnaire.html">Dictionnaire</a>
+          <a href="lingx.html">LingX</a>
+        </nav>
+        <p class="footer-copy">© 2026 LingX × Baoulé.ci — Inspiré du peuple
+          Baoulé de Côte d'Ivoire</p>
+      </div>
+    </footer>
+
+    <script src="assets/main.js"></script>
+    <script src="assets/lingx.js"></script>
+  </body>
+</html>

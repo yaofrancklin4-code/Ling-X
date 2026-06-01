@@ -1,0 +1,991 @@
+/* Duolingo Baoule - CSS Complet pour LingX */
+
+:root {
+  /* Nouvelle palette premium */
+  --or: #FFD700;           /* Or doré */
+  --or-clair: #FFED4E;     /* Or pâle */
+  --or-sombre: #CCB000;    /* Or profond */
+  --argent: #C0C0C0;       /* Argent */
+  --argent-clair: #E8E8E8; /* Argent clair */
+  --argent-sombre: #A9A9A9;/* Argent sombre */
+  --bleu: #007FFF;         /* Bleu azur */
+  --bleu-nuit: #003F7F;    /* Bleu nuit */
+  --bleu-clair: #4DA6FF;   /* Bleu ciel */
+  --orange-red: #FF4500;   /* Orange-rouge */
+  --blanc: #FFFFFF;
+  --noir-doux: #0A0A0A;
+  --gris-fond: #F4F6F8;    /* Background */
+  --texte: #333333;
+  
+  /* Dégradé navbar uniquement */
+  --gradient-navbar: linear-gradient(90deg, #FFD700 0%, #C0C0C0 100%);
+  
+  /* Fallback */
+  --gold: #FFD700;
+  --gold-dark: #CCB000;
+  --brun: #003F7F;
+  --vert: #4CAF50;
+  --noir: #007FFF;
+  --creme: #FFF8E7;
+  --rouge: #FF4500;
+  --bleu-old: #007FFF;
+  --orange: #FF4500;
+  --vert-clair: #E8F5E9;
+  --rouge-clair: #FFEBEE;
+  --bleu-clair-old: #E3F2FD;
+  --gris: #F4F6F8;
+}
+
+/* ===== TYPO ===== */
+body {
+  font-family: 'Nunito', sans-serif;
+  color: var(--texte);
+}
+
+h1, h2, h3, h4, h5, h6, .section-title {
+  font-family: 'Baloo 2', cursive;
+  font-weight: 700;
+}
+
+/* ===== BOUTONS ===== */
+.btn-duo {
+  border-radius: 24px;
+  font-weight: 800;
+  padding: 10px 28px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+  font-family: 'Nunito', sans-serif;
+}
+
+.btn-duo:active {
+  transform: translateY(2px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.btn-duo:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.btn-gold {
+  background-color: var(--or);
+  color: var(--noir-doux);
+  border: 2px solid var(--or-sombre);
+}
+
+.btn-gold:hover {
+  background-color: var(--or-clair);
+}
+
+.btn-vert {
+  background-color: var(--vert);
+  color: white;
+  border: 2px solid #388E3C;
+}
+
+.btn-vert:hover {
+  background-color: #388E3C;
+}
+
+.btn-brun {
+  background-color: var(--bleu);
+  color: white;
+  border: 2px solid var(--bleu-nuit);
+}
+
+.btn-brun:hover {
+  background-color: var(--bleu-clair);
+}
+
+.btn-bleu {
+  background-color: var(--orange-red);
+  color: white;
+  border: 2px solid var(--orange-red);
+}
+
+.btn-bleu:hover {
+  background-color: #E63E00;
+}
+
+.btn-outline-duo {
+  background-color: transparent;
+  color: var(--noir);
+  border: 2px solid var(--gold);
+}
+
+.btn-outline-duo:hover {
+  background-color: var(--creme);
+  border-color: var(--gold-dark);
+}
+
+/* ===== CARTES ===== */
+.card-duo {
+  background: white;
+  border: 3px solid #F5E6C8;
+  border-radius: 24px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  padding: 20px;
+}
+
+.card-duo:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.card-duo-gold {
+  border-color: var(--gold);
+  box-shadow: 0 4px 8px rgba(255, 215, 0, 0.15);
+}
+
+/* ===== STATISTIQUES ===== */
+.stat-duo {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  border-left: 4px solid transparent;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.stat-duo .stat-value {
+  font-size: 32px;
+  font-weight: 900;
+  font-family: 'Baloo 2', cursive;
+  margin: 8px 0;
+}
+
+.stat-duo .stat-label {
+  font-size: 14px;
+  color: #777;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.stat-duo.gold {
+  border-left-color: var(--gold);
+  box-shadow: 0 4px 8px rgba(255, 215, 0, 0.15);
+}
+
+.stat-duo.vert {
+  border-left-color: var(--vert);
+  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.15);
+}
+
+.stat-duo.orange {
+  border-left-color: var(--orange);
+  box-shadow: 0 4px 8px rgba(255, 152, 0, 0.15);
+}
+
+.stat-duo.bleu {
+  border-left-color: var(--bleu);
+  box-shadow: 0 4px 8px rgba(28, 176, 246, 0.15);
+}
+
+/* ===== PROGRESSION ===== */
+.progress-duo {
+  background-color: #E0E0E0;
+  border-radius: 16px;
+  height: 28px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.progress-duo-bar {
+  background-color: var(--or);
+  height: 100%;
+  border-radius: 16px;
+  position: relative;
+  transition: width 0.5s ease;
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+}
+
+.progress-duo-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+}
+
+/* ===== BADGE NIVEAU ===== */
+.level-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: var(--or);
+  color: var(--noir-doux);
+  font-family: 'Baloo 2', cursive;
+  font-size: 24px;
+  font-weight: 900;
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+  border: 3px solid var(--or-sombre);
+}
+
+/* ===== CARTES LECON ===== */
+.lesson-card {
+  background: white;
+  border: 2px solid #F0F0F0;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.lesson-card:hover {
+  border-color: var(--gold);
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.15);
+  transform: translateX(4px);
+}
+
+.lesson-card.completed {
+  border-color: var(--vert);
+  background-color: #F1F8F4;
+}
+
+.lesson-card.active {
+  border-color: var(--gold);
+  background-color: #FFF9E6;
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
+}
+
+.lesson-card .lesson-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #F0F0F0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.lesson-card.completed .lesson-icon {
+  background: var(--vert);
+  color: white;
+}
+
+.lesson-card.active .lesson-icon {
+  background: var(--gold);
+  color: var(--noir);
+}
+
+.lesson-card .lesson-info {
+  flex: 1;
+}
+
+.lesson-card .lesson-title {
+  font-family: 'Baloo 2', cursive;
+  font-weight: 700;
+  margin: 0;
+}
+
+.lesson-card .lesson-meta {
+  font-size: 12px;
+  color: #999;
+}
+
+/* ===== CARTES JEU ===== */
+.game-card {
+  background: white;
+  border: 2px solid #F0F0F0;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.game-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.game-card-banner {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  color: white;
+  font-weight: 900;
+  font-family: 'Baloo 2', cursive;
+  position: relative;
+  overflow: hidden;
+}
+
+.game-card-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.game-card-body {
+  padding: 16px;
+}
+
+.game-card-title {
+  font-family: 'Baloo 2', cursive;
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+}
+
+.game-card-desc {
+  font-size: 13px;
+  color: #666;
+  margin: 0 0 12px 0;
+  line-height: 1.4;
+}
+
+.game-card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+}
+
+/* ===== BADGES DIFFICULTE ===== */
+.difficulty-easy {
+  background-color: #E8F5E9;
+  color: #2E7D32;
+  border: 1px solid var(--vert);
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.difficulty-medium {
+  background-color: #FFF3E0;
+  color: #E65100;
+  border: 1px solid var(--orange);
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.difficulty-hard {
+  background-color: #FFEBEE;
+  color: #C62828;
+  border: 1px solid var(--rouge);
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ===== OPTIONS REPONSE QUIZ ===== */
+.answer-option {
+  background: white;
+  border: 2px solid #E0E0E0;
+  border-radius: 16px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.answer-option:hover:not(.correct):not(.wrong) {
+  border-color: var(--bleu);
+  background-color: #E3F2FD;
+}
+
+.option-letter {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--gris);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-family: 'Baloo 2', cursive;
+}
+
+.answer-option.selected .option-letter {
+  background: var(--bleu);
+  color: white;
+}
+
+.answer-option.correct {
+  border-color: var(--vert);
+  background-color: var(--vert-clair);
+}
+
+.answer-option.correct .option-letter {
+  background: var(--vert);
+  color: white;
+}
+
+.answer-option.wrong {
+  border-color: var(--rouge);
+  background-color: var(--rouge-clair);
+  animation: shake 0.5s ease;
+}
+
+.answer-option.wrong .option-letter {
+  background: var(--rouge);
+  color: white;
+}
+
+/* ===== BARRE DE FEEDBACK ===== */
+.feedback-bar {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 16px 24px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-weight: 700;
+  z-index: 1000;
+  max-width: 500px;
+  display: none;
+}
+
+.feedback-bar.correct-bar {
+  background-color: var(--vert-clair);
+  border: 2px solid var(--vert);
+  color: #2E7D32;
+}
+
+.feedback-bar.wrong-bar {
+  background-color: var(--rouge-clair);
+  border: 2px solid var(--rouge);
+  color: #C62828;
+}
+
+.feedback-bar.info-bar {
+  background-color: var(--bleu-clair);
+  border: 2px solid var(--bleu);
+  color: #1565C0;
+}
+
+.feedback-bar .btn-duo {
+  margin-left: auto;
+  padding: 8px 20px;
+  font-size: 13px;
+}
+
+/* ===== CARTES VOCABULAIRE ===== */
+.vocab-card {
+  background: white;
+  border: 2px solid #F0F0F0;
+  border-radius: 16px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.vocab-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  border-color: var(--gold);
+}
+
+.word-baoule {
+  font-family: 'Baloo 2', cursive;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--or);
+  margin: 0 0 8px 0;
+}
+
+.word-french {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.pronunciation {
+  font-size: 12px;
+  color: #999;
+  margin-top: 8px;
+  font-style: italic;
+}
+
+.example-sentence {
+  background-color: var(--argent-clair);
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #666;
+  border-left: 3px solid var(--or);
+}
+
+/* ===== JEUX - ASSOCIATION ===== */
+.match-item {
+  background: white;
+  border: 2px solid #E0E0E0;
+  border-radius: 12px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.match-item:hover {
+  border-color: var(--bleu);
+}
+
+.match-item.selected {
+  border-color: var(--bleu);
+  background-color: #E3F2FD;
+}
+
+.match-item.matched {
+  border-color: var(--vert);
+  background-color: var(--vert-clair);
+}
+
+.match-item.error {
+  animation: shake 0.5s ease;
+}
+
+/* ===== JEUX - MEMOIRE ===== */
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.mem-card {
+  aspect-ratio: 1;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  perspective: 1000px;
+  background: white;
+  border: 2px solid #E0E0E0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px;
+  text-align: center;
+  min-height: 80px;
+}
+
+.mem-card:hover:not(.matched) {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: var(--or);
+  color: var(--noir-doux);
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.mem-card.flipped .card-back {
+  display: none;
+}
+
+.mem-card.matched {
+  border-color: var(--vert);
+  background-color: var(--vert-clair);
+  cursor: default;
+}
+
+/* ===== JEUX - ANAGRAMME ===== */
+.letter-tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background-color: var(--bleu);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  margin: 4px;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.letter-tile:hover:not(.used) {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 127, 255, 0.4);
+}
+
+.letter-tile.used {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.answer-slot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  border: 2px dashed #E0E0E0;
+  background: var(--gris);
+  margin: 4px;
+  cursor: pointer;
+}
+
+.answer-slot.filled {
+  border-color: var(--bleu);
+  background: var(--argent-clair);
+  border-style: solid;
+}
+
+/* ===== BANNIERE DEFI DU JOUR ===== */
+.daily-banner {
+  background-color: var(--bleu-nuit);
+  border: 3px solid var(--or);
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 8px 16px rgba(255, 215, 0, 0.2);
+  overflow: hidden;
+  position: relative;
+}
+
+.daily-banner::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 300px;
+  height: 300px;
+  background: rgba(255, 215, 0, 0.05);
+  border-radius: 50%;
+}
+
+.daily-banner .banner-content {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+  color: white;
+}
+
+.daily-banner .banner-title {
+  font-family: 'Baloo 2', cursive;
+  font-size: 24px;
+  font-weight: 900;
+  margin: 0 0 8px 0;
+}
+
+.daily-banner .banner-desc {
+  font-size: 14px;
+  color: var(--or-clair);
+  margin: 0;
+}
+
+.daily-banner .challenge-circles {
+  display: flex;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.challenge-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: white;
+  font-weight: 700;
+}
+
+.challenge-circle.completed {
+  background: var(--vert);
+  border-color: #2E7D32;
+}
+
+/* ===== CONSEIL CULTURE ===== */
+.culture-tip {
+  background: white;
+  border-left: 4px solid var(--or);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 20px 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.culture-tip .tip-title {
+  font-family: 'Baloo 2', cursive;
+  font-weight: 700;
+  color: var(--bleu-nuit);
+  margin: 0 0 8px 0;
+}
+
+.culture-tip .tip-text {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ===== TITRE DE SECTION ===== */
+.section-title {
+  position: relative;
+  font-size: 24px;
+  margin: 0 0 20px 0;
+  color: var(--bleu-nuit);
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 60px;
+  height: 4px;
+  background-color: var(--or);
+  border-radius: 2px;
+}
+
+/* ===== ACHIEVEMENT ===== */
+.achievement-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border: 2px solid #F0F0F0;
+  border-radius: 16px;
+  padding: 16px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.achievement-item.unlocked {
+  border-color: var(--gold);
+  background: #FFF9E6;
+}
+
+.achievement-item.locked {
+  opacity: 0.6;
+}
+
+.achievement-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.achievement-title {
+  font-family: 'Baloo 2', cursive;
+  font-weight: 700;
+  font-size: 14px;
+  margin: 0;
+}
+
+.achievement-desc {
+  font-size: 11px;
+  color: #999;
+  margin: 4px 0 0 0;
+}
+
+/* ===== TOAST NOTIFICATIONS ===== */
+.toast-duo {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  background: white;
+  border-radius: 16px;
+  padding: 16px 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: none;
+  z-index: 1001;
+  max-width: 300px;
+}
+
+.toast-duo.success {
+  border-left: 4px solid var(--vert);
+  color: #2E7D32;
+}
+
+.toast-duo.error {
+  border-left: 4px solid var(--rouge);
+  color: #C62828;
+}
+
+.toast-duo.info {
+  border-left: 4px solid var(--bleu);
+  color: #1565C0;
+}
+
+/* ===== XP FLOAT ===== */
+.xp-float {
+  position: absolute;
+  font-family: 'Baloo 2', cursive;
+  font-weight: 900;
+  color: var(--or);
+  font-size: 24px;
+  pointer-events: none;
+  animation: xpPop 2s ease-out forwards;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes correctPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-10px);
+  }
+  75% {
+    transform: translateX(10px);
+  }
+}
+
+@keyframes xpPop {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-60px) scale(0.8);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes streakFlame {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.1) rotate(5deg);
+  }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .memory-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .btn-duo {
+    padding: 8px 20px;
+    font-size: 14px;
+  }
+
+  .section-title {
+    font-size: 20px;
+  }
+
+  .daily-banner {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .daily-banner .banner-content {
+    order: 1;
+  }
+
+  .daily-banner .challenge-circles {
+    order: 2;
+    justify-content: center;
+  }
+
+  .stat-duo .stat-value {
+    font-size: 24px;
+  }
+
+  .game-card-banner {
+    height: 100px;
+    font-size: 36px;
+  }
+
+  .lesson-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .lesson-card .lesson-info {
+    width: 100%;
+  }
+}
+
+/* ===== UTILITAIRES ===== */
+.text-gold {
+  color: var(--gold);
+}
+
+.text-brun {
+  color: var(--brun);
+}
+
+.text-vert {
+  color: var(--vert);
+}
+
+.bg-creme {
+  background-color: var(--creme);
+}
+
+.rounded-duo {
+  border-radius: 24px;
+}
+
+.shadow-duo {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}

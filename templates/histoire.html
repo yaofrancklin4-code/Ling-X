@@ -1,0 +1,227 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Histoire du Peuple
+Baoulé{% endblock %} {% block content %}
+<div
+  class="hero-section"
+  style="
+    background:
+      linear-gradient(
+        135deg,
+        rgba(255, 215, 0, 0.9) 0%,
+        rgba(192, 192, 192, 0.8) 100%
+      ),
+      url('{% static "images/baoule/hero_peuple_baoule.jpg" %}')
+        center/cover no-repeat;
+    color: #000000;
+    padding: 4rem 0;
+    text-align: center;
+  "
+>
+  <div class="container">
+    <h1 class="display-4 mb-3">
+      Histoire du <span style="color: #e8c77a">Peuple Baoulé</span>
+    </h1>
+    <p class="lead">De la migration légendaire aux royaumes modernes</p>
+  </div>
+</div>
+
+<div class="container my-5">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <section id="origines" class="mb-5">
+        <h2
+          class="border-start border-warning border-4 ps-3 mb-4"
+          style="color: #613942"
+        >
+          Les Origines
+        </h2>
+        <p class="lead">
+          Le peuple Baoulé est issu du grand groupe Akan d'Afrique de l'Ouest.
+          Au XVIIIe siècle, suite à des conflits de succession au sein du
+          royaume Ashanti (actuel Ghana), une partie de la population décide de
+          migrer vers l'ouest.
+        </p>
+        <p>
+          Cette migration, menée par la Reine Abla Pokou, marque la naissance du
+          peuple Baoulé en Côte d'Ivoire. Le nom "Baoulé" signifie "l'enfant est
+          mort" en référence au sacrifice légendaire.
+        </p>
+      </section>
+
+      <section id="reine" class="mb-5">
+        <h2
+          class="border-start border-warning border-4 ps-3 mb-4"
+          style="color: #613942"
+        >
+          La Reine Abla Pokou
+        </h2>
+        <div class="card shadow-sm mb-3">
+          <div class="card-body">
+            <p>
+              Abla Pokou était une princesse du royaume Ashanti. Face aux
+              persécutions, elle organise l'exode de son peuple vers l'ouest.
+              Arrivée au fleuve Comoé en crue, elle sacrifie son fils unique
+              pour permettre la traversée miraculeuse.
+            </p>
+            <p class="mb-0">
+              Ce sacrifice fonde l'identité baoulé et fait d'Abla Pokou une
+              figure mythique, symbole de courage et de dévouement maternel
+              envers son peuple.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="migration" class="mb-5">
+        <h2
+          class="border-start border-warning border-4 ps-3 mb-4"
+          style="color: #613942"
+        >
+          La Grande Migration
+        </h2>
+        <p>
+          La migration s'est déroulée vers 1730-1760. Le peuple Baoulé traverse
+          le fleuve Comoé et s'installe dans la région centrale de l'actuelle
+          Côte d'Ivoire, entre Bouaké et Yamoussoukro.
+        </p>
+        <p>
+          Ils établissent plusieurs royaumes et chefferies, maintenant leur
+          organisation sociale Akan tout en s'adaptant à leur nouvel
+          environnement.
+        </p>
+      </section>
+
+      <section id="expressions">
+        <h2
+          class="border-start border-warning border-4 ps-3 mb-4"
+          style="color: #613942"
+        >
+          Expressions Culturelles Baoulé
+        </h2>
+        <p class="mb-4">
+          La culture baoulé est riche et diverse, exprimée à travers la musique,
+          les rituels, les traditions culinaires et les pratiques spirituelles.
+        </p>
+
+        <div class="row mb-5">
+          <div class="col-md-4 mb-3">
+            <div class="card h-100 overflow-hidden">
+              <img
+                src="{% static 'images/baoule/musique_baoule-780x500.png' %}"
+                class="card-img-top"
+                alt="Musique Baoulé"
+                style="height: 220px; object-fit: cover"
+              />
+              <div class="card-body">
+                <h6 class="card-title">Musique Baoulé</h6>
+                <p class="card-text small text-muted">
+                  Rythmes et instruments traditionnels
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="card h-100 overflow-hidden">
+              <img
+                src="{% static 'images/baoule/rituels_baoule-780x500.png' %}"
+                class="card-img-top"
+                alt="Rituels"
+                style="height: 220px; object-fit: cover"
+              />
+              <div class="card-body">
+                <h6 class="card-title">Rituels Sacrés</h6>
+                <p class="card-text small text-muted">
+                  Cérémonies et traditions
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="card h-100 overflow-hidden">
+              <img
+                src="{% static 'images/FUNERAILLES/DUh-CkEP9y5MLEcYkZKqDDO0-PUMBUlE44GqN-DQxGGlgqjKnUeLNGmOLJx4CzE79yWQ5ibmgATd7DRV07r-8A1-jBbYtSaj6S1ukN3sn9Iu0p4GraCfUiuGPCIwwGs3tmovPp6hz6S6fdxUoqayI5AoEVVuhT1REMLFQr0AEJtfj3F7q41678o4qaT6yWrI.jpg' %}"
+                class="card-img-top"
+                alt="Funérailles"
+                style="height: 220px; object-fit: cover"
+              />
+              <div class="card-body">
+                <h6 class="card-title">Funérailles</h6>
+                <p class="card-text small text-muted">
+                  Respect et honneur des ancêtres
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <div class="card h-100 overflow-hidden">
+              <img
+                src="{% static 'images/baoule/courtoisise_us_coutumes_baoule-780x500.png' %}"
+                class="card-img-top"
+                alt="Courtoisie"
+                style="height: 200px; object-fit: cover"
+              />
+              <div class="card-body">
+                <h6 class="card-title">Courtoisie & Coutumes</h6>
+                <p class="card-text small text-muted">
+                  Valeurs et traditions sociales
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="card h-100 overflow-hidden">
+              <img
+                src="{% static 'images/baoule/sipiritualite_baoule.ci_-780x500.png' %}"
+                class="card-img-top"
+                alt="Spiritualité"
+                style="height: 200px; object-fit: cover"
+              />
+              <div class="card-body">
+                <h6 class="card-title">Spiritualité</h6>
+                <p class="card-text small text-muted">
+                  Croyances et sagesse millénaire
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="chronologie">
+        <h2
+          class="border-start border-warning border-4 ps-3 mb-4"
+          style="color: #613942"
+        >
+          Chronologie
+        </h2>
+        <div class="timeline">
+          <ul class="list-group">
+            <li class="list-group-item">
+              <strong>~1730-1760</strong> : Migration depuis le royaume Ashanti
+            </li>
+            <li class="list-group-item">
+              <strong>XVIIIe siècle</strong> : Installation en Côte d'Ivoire
+              centrale
+            </li>
+            <li class="list-group-item">
+              <strong>XIXe siècle</strong> : Consolidation des royaumes baoulé
+            </li>
+            <li class="list-group-item">
+              <strong>1893-1911</strong> : Résistance contre la colonisation
+              française
+            </li>
+            <li class="list-group-item">
+              <strong>1960</strong> : Indépendance de la Côte d'Ivoire
+            </li>
+            <li class="list-group-item">
+              <strong>Aujourd'hui</strong> : Plus de 4 millions de Baoulé
+            </li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+{% endblock %}

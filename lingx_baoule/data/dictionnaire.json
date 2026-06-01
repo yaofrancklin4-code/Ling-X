@@ -1,0 +1,102 @@
+[
+  {
+    "baoule": "Ago",
+    "francais": "Pardon / Excusez-moi",
+    "categorie": "Politesse"
+  },
+  {
+    "baoule": "Mô",
+    "francais": "Oui",
+    "categorie": "Base"
+  },
+  {
+    "baoule": "Aïe",
+    "francais": "Non",
+    "categorie": "Base"
+  },
+  {
+    "baoule": "Akwaba",
+    "francais": "Bienvenue",
+    "categorie": "Politesse"
+  },
+  {
+    "baoule": "N'dja",
+    "francais": "Eau",
+    "categorie": "Nature"
+  },
+  {
+    "baoule": "Tano",
+    "francais": "Fleuve / Esprit de l'eau",
+    "categorie": "Spirituel"
+  },
+  {
+    "baoule": "Blô",
+    "francais": "Village",
+    "categorie": "Lieu"
+  },
+  {
+    "baoule": "Sran",
+    "francais": "Être humain / Personne",
+    "categorie": "Société"
+  },
+  {
+    "baoule": "Lo",
+    "francais": "Clan matrilinéaire",
+    "categorie": "Société"
+  },
+  {
+    "baoule": "Kplê",
+    "francais": "Assemblée / Réunion",
+    "categorie": "Société"
+  },
+  {
+    "baoule": "Awlô",
+    "francais": "Parole / Discours",
+    "categorie": "Langue"
+  },
+  {
+    "baoule": "Gnalè",
+    "francais": "La vérité",
+    "categorie": "Valeur"
+  },
+  {
+    "baoule": "Mbra",
+    "francais": "Force / Puissance",
+    "categorie": "Valeur"
+  },
+  {
+    "baoule": "Ôkô",
+    "francais": "Homme / Mari",
+    "categorie": "Famille"
+  },
+  {
+    "baoule": "Bla",
+    "francais": "Femme / Épouse",
+    "categorie": "Famille"
+  },
+  {
+    "baoule": "Ba",
+    "francais": "Enfant",
+    "categorie": "Famille"
+  },
+  {
+    "baoule": "Nana",
+    "francais": "Grand-mère / Ancêtre",
+    "categorie": "Famille"
+  },
+  {
+    "baoule": "Dôlî",
+    "francais": "Forêt",
+    "categorie": "Nature"
+  },
+  {
+    "baoule": "Owê",
+    "francais": "Soleil",
+    "categorie": "Nature"
+  },
+  {
+    "baoule": "Nyamien",
+    "francais": "Dieu suprême / Ciel",
+    "categorie": "Spirituel"
+  }
+]

@@ -1,0 +1,121 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<div class="container mt-4">
+  <h1>Proverbes et Sagesse Baoulée</h1>
+
+  <p class="lead text-muted">
+    Découvrez la sagesse traditionnelle baoulée à travers ces proverbes
+    intemporels.
+  </p>
+
+  <!-- Filtre par catégorie -->
+  {% if categories %}
+  <div class="mb-4">
+    <div class="btn-group flex-wrap" role="group">
+      <a
+        href="{% url 'proverbs' %}"
+        class="btn btn-outline-primary {% if not selected_category %}active{% endif %}"
+      >
+        Tous les Proverbes
+      </a>
+      {% for category in categories %}
+      <a
+        href="?category={{ category }}"
+        class="btn btn-outline-primary {% if selected_category == category %}active{% endif %}"
+      >
+        {{ category }}
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Liste des proverbes -->
+  <div class="row">
+    {% for proverb in proverbs %}
+    <div class="col-md-6 mb-4">
+      <div
+        class="card proverb-card h-100 position-relative"
+        style="min-height: 240px"
+      >
+        <div
+          class="baoule-image-bg {% cycle 'baoule-img-1' 'baoule-img-2' 'baoule-img-3' 'baoule-img-4' 'baoule-img-5' 'baoule-img-6' 'baoule-img-7' 'baoule-img-8' 'baoule-img-9' 'baoule-img-10' %}"
+        ></div>
+        <div class="card-body baoule-content">
+          <!-- Proverbe en Baoulé -->
+          <blockquote class="blockquote mb-3 border-start ps-3 border-warning">
+            <p class="mb-0">
+              <strong class="proverb-baule">{{ proverb.proverb_baule }}</strong>
+            </p>
+          </blockquote>
+
+          <!-- Traduction -->
+          <p class="card-text mb-2">
+            <strong>Traduction en Français:</strong><br />
+            <em>{{ proverb.proverb_french }}</em>
+          </p>
+
+          <!-- Explication -->
+          <div class="alert alert-light border-start border-info">
+            <strong>Explication:</strong><br />
+            {{ proverb.meaning }}
+          </div>
+
+          <!-- Contexte d'usage -->
+          {% if proverb.usage_context %}
+          <p class="card-text mb-2">
+            <small class="text-muted">
+              <strong>Contexte d'usage:</strong><br />
+              {{ proverb.usage_context }}
+            </small>
+          </p>
+          {% endif %}
+
+          <!-- Audio (si disponible) -->
+          {% if proverb.audio_file %}
+          <div class="mt-3">
+            <strong>Prononciation:</strong>
+            <audio controls style="width: 100%; height: 30px">
+              <source src="{{ proverb.audio_file.url }}" type="audio/mpeg" />
+              Votre navigateur ne supporte pas l'audio.
+            </audio>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+      <div class="alert alert-warning">
+        Aucun proverbe trouvé pour cette catégorie.
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  .proverb-card {
+    border-left: 5px solid #4ecdc4;
+    transition:
+      transform 0.3s,
+      box-shadow 0.3s;
+  }
+
+  .proverb-card:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(78, 205, 196, 0.2);
+  }
+
+  .proverb-baule {
+    color: #764ba2;
+    font-style: italic;
+    font-size: 1.1em;
+  }
+
+  .btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+</style>
+{% endblock %}

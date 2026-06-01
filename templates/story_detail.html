@@ -1,0 +1,145 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<div class="container mt-4">
+  <h1>{{ story.title }}</h1>
+
+  <div class="row">
+    <div class="col-md-8 position-relative">
+      <div class="baoule-image-bg baoule-img-1"></div>
+      <div class="baoule-content">
+      <!-- Détails de l'histoire -->
+      {% if story.image %}
+      <img
+        src="{{ story.image.url }}"
+        class="img-fluid rounded mb-3"
+        style="max-height: 400px; width: 100%; object-fit: cover"
+      />
+      {% endif %}
+
+      <p>{{ story.description }}</p>
+
+      <!-- Texte de l'histoire -->
+      <div class="story-content bg-light p-4 rounded">
+        <h3>L'Histoire en Français</h3>
+        <p style="line-height: 1.8; font-size: 1.05em">
+          {{ story.full_text|linebreaks }}
+        </p>
+      </div>
+
+      <!-- Texte en Baoulé (si disponible) -->
+      {% if story.baule_text %}
+      <div class="story-baule bg-warning bg-opacity-10 p-4 rounded mt-3">
+        <h3>Texte Original en Baoulé</h3>
+        <p style="line-height: 1.8; font-size: 1.05em">
+          {{ story.baule_text|linebreaks }}
+        </p>
+      </div>
+      {% endif %}
+
+      <!-- Leçon Morale -->
+      {% if story.moral_lesson %}
+      <div class="alert alert-success mt-4">
+        <h4> Leçon Morale</h4>
+        <p style="font-size: 1.1em">{{ story.moral_lesson }}</p>
+      </div>
+      {% endif %}
+
+      <!-- Audio -->
+      {% if story.audio_file %}
+      <div class="mt-4">
+        <h4> Version Audio</h4>
+        <audio controls style="width: 100%">
+          <source src="{{ story.audio_file.url }}" type="audio/mpeg" />
+          Votre navigateur ne supporte pas l'audio.
+        </audio>
+      </div>
+      {% endif %}
+
+      <!-- Vocabulaire -->
+      {% if story.vocabularies.all %}
+      <div class="mt-4">
+        <h4> Vocabulaire Clé de l'Histoire</h4>
+        <table class="table table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>Baoulé</th>
+              <th>Français</th>
+              <th>Prononciation</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for vocab in story.vocabularies.all %}
+            <tr>
+              <td><strong>{{ vocab.word_baule }}</strong></td>
+              <td>{{ vocab.word_french }}</td>
+              <td><em>{{ vocab.pronunciation }}</em></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-md-4">
+      <!-- Personnages -->
+      {% if story.characters %}
+      <div class="card mb-3">
+        <div class="card-header">
+          <h5> Personnages</h5>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled">
+            {% for character in story.characters_list %}
+            <li class="mb-2">{{ character }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Actions -->
+      {% if user.is_authenticated %}
+      <div class="card mb-3">
+        <div class="card-header">
+          <h5> Votre Progression</h5>
+        </div>
+        <div class="card-body">
+          {% if user_story_view.is_completed %}
+          <button class="btn btn-success w-100" disabled>✓ Histoire Lue</button>
+          <small class="text-muted">
+            Complétée le {{ user_story_view.completed_at|date:"d/m/Y" }}
+          </small>
+          {% else %}
+          <form method="post" action="#" class="mb-2">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary w-100">
+              ✓ Marquer comme lue
+            </button>
+          </form>
+          <small class="text-muted">Vue {{ user_story_view.views }} fois</small>
+          {% endif %}
+        </div>
+      </div>
+      {% else %}
+      <div class="alert alert-info">
+        <strong> Astuce:</strong>
+        <a href="{% url 'login' %}">Connectez-vous</a> pour suivre votre
+        progression!
+      </div>
+      {% endif %}
+
+      <!-- Infos supplémentaires -->
+      <div class="card">
+        <div class="card-header">
+          <h5>ℹ️ Informations</h5>
+        </div>
+        <div class="card-body">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

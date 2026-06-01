@@ -1,0 +1,434 @@
+{% load static %}
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}LingX - Apprendre le Baoulé{% endblock %}</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'css/esatic-theme.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/duolingo-baoule.css' %}" />
+    <style>
+      :root {
+        --or: #ffd700;
+        --or-clair: #ffed4e;
+        --or-sombre: #ccb000;
+        --argent: #c0c0c0;
+        --argent-clair: #e8e8e8;
+        --bleu: #007fff;
+        --bleu-nuit: #003f7f;
+        --bleu-clair: #4da6ff;
+        --orange-red: #ff4500;
+      }
+      .navbar {
+        background: linear-gradient(90deg, #ffd700 0%, #c0c0c0 100%) !important;
+        border-bottom: 3px solid #ffd700;
+        padding: 12px 0 !important;
+        min-height: auto;
+      }
+      .navbar .nav-link {
+        color: #0a0a0a !important;
+        font-weight: 700 !important;
+        font-size: 16px !important;
+        padding: 12px 20px !important;
+        transition: all 0.2s;
+      }
+      .navbar .nav-link:hover,
+      .navbar .nav-link.active {
+        background: rgba(0, 0, 0, 0.1);
+        color: #0a0a0a !important;
+      }
+      .navbar .dropdown-menu {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        background: #ffffff;
+        border-top: 3px solid #ffd700;
+      }
+      .navbar .dropdown-menu .dropdown-item {
+        color: #0a0a0a;
+        font-size: 14px !important;
+        padding: 10px 15px !important;
+        font-weight: 600 !important;
+      }
+      .navbar .dropdown-menu .dropdown-item:hover {
+        background: #fff9e6;
+        color: #0a0a0a;
+      }
+      footer {
+        background: linear-gradient(
+          90deg,
+          #007fff 0%,
+          #007fff 60%,
+          #c0c0c0 100%
+        );
+        color: #0a0a0a;
+        border-top: 2px solid #ffd700;
+      }
+      footer a {
+        color: #0a0a0a;
+        font-weight: 600;
+        transition: all 0.2s;
+      }
+      footer a:hover {
+        color: #ffd700;
+        text-decoration: underline;
+      }
+      footer h5,
+      footer h6 {
+        color: #0a0a0a;
+        font-weight: 800;
+      }
+      /* Agrandissement des titres et en-têtes */
+      h1 {
+        font-size: 2.8rem !important;
+        font-weight: 900 !important;
+        margin-bottom: 25px !important;
+      }
+      h2 {
+        font-size: 2.2rem !important;
+        font-weight: 800 !important;
+        margin-bottom: 20px !important;
+      }
+      h3 {
+        font-size: 1.8rem !important;
+        font-weight: 700 !important;
+        margin-bottom: 18px !important;
+      }
+      h4 {
+        font-size: 1.5rem !important;
+        font-weight: 700 !important;
+        margin-bottom: 15px !important;
+      }
+      h5 {
+        font-size: 1.3rem !important;
+        font-weight: 600 !important;
+      }
+      h6 {
+        font-size: 1.1rem !important;
+        font-weight: 600 !important;
+      }
+    </style>
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg sticky-top">
+      <div class="container">
+        <a
+          class="navbar-brand"
+          href="{% url 'home' %}"
+          style="display: flex; align-items: center; padding: 0"
+        >
+          <img
+            src="{% static 'images/lingx_circular.png' %}"
+            alt="LingX Logo"
+            style="
+              width: 75px;
+              height: 75px;
+              object-fit: contain;
+              filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
+            "
+          />
+        </a>
+        <button
+          class="navbar-toggler border-0"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          style="color: #fff"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'home' %}"> Accueil</a>
+            </li>
+            {% endif %}
+
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                Apprendre
+              </a>
+              <ul class="dropdown-menu">
+                {% if user.is_authenticated %}
+                <li>
+                  <a class="dropdown-item" href="{% url 'categories' %}">
+                    Leçons</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'tests_list' %}">
+                    Tests</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'games' %}"> Jeux</a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'stories' %}">
+                    Histoires</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'baule_names' %}"
+                    >️ Prénoms</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'proverbs' %}">
+                    Proverbes</a
+                  >
+                </li>
+                {% else %}
+                <li>
+                  <a class="dropdown-item text-muted" href="{% url 'login' %}">
+                    Connectez-vous</a
+                  >
+                </li>
+                {% endif %}
+              </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                Culture
+              </a>
+              <ul class="dropdown-menu">
+                {% if user.is_authenticated %}
+                <li>
+                  <a class="dropdown-item" href="{% url 'culture' %}">
+                    Culture</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'dictionary' %}">
+                    Dictionnaire</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'histoire' %}"
+                    >️ Histoire</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'societe' %}">
+                    Société</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'territoire' %}"
+                    >️ Territoire</a
+                  >
+                </li>
+                {% else %}
+                <li>
+                  <a class="dropdown-item text-muted" href="{% url 'login' %}">
+                    Connectez-vous</a
+                  >
+                </li>
+                {% endif %}
+              </ul>
+            </li>
+
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'dashboard' %}">
+                Tableau de bord</a
+              >
+            </li>
+
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                Communauté
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="{% url 'leaderboard' %}">
+                    Classement</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'community' %}">
+                    Communauté</a
+                  >
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                {{ user.username }}
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" href="{% url 'profile' %}">Profil</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'stats' %}"> Stats</a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'about' %}">À propos</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'contact' %}">Contact</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'guide' %}">Guide</a>
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item text-danger"
+                    href="{% url 'logout' %}"
+                  >
+                    Déconnexion</a
+                  >
+                </li>
+              </ul>
+            </li>
+
+            {% else %}
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="{% url 'login' %}"
+                style="
+                  background: var(--bleu-principal);
+                  border-radius: 20px;
+                  color: #fff !important;
+                  padding: 7px 18px !important;
+                "
+              >
+                Connexion
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    {% if messages %}
+    <div class="container mt-3">
+      {% for message in messages %}
+      <div
+        class="alert alert-{{ message.tags }} alert-dismissible fade show rounded-3"
+        role="alert"
+      >
+        {{ message }}
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+        ></button>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <main>{% block content %}{% endblock %}</main>
+
+    <footer style="margin-top: 60px; padding: 30px 0 20px">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+              <img
+                src="{% static 'images/lingx_circular.png' %}"
+                alt="LingX Logo"
+                style="
+                  width: 50px;
+                  height: 50px;
+                  object-fit: contain;
+                  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
+                "
+              />
+              <h5
+                style="
+                  color: var(--or);
+                  font-family: &quot;Baloo 2&quot;, cursive;
+                  font-weight: 800;
+                  margin: 0;
+                "
+              >
+                LingX
+              </h5>
+            </div>
+            <p>Apprenez la langue et la culture Baoulé !</p>
+          </div>
+          <div class="col-md-4 mb-3">
+            <h6 style="color: var(--or)">Navigation</h6>
+            <ul class="list-unstyled">
+              <li>
+                <a href="{% url 'home' %}" style="color: #fff"> Accueil</a>
+              </li>
+              {% if user.is_authenticated %}
+              <li>
+                <a href="{% url 'categories' %}" style="color: #fff"> Leçons</a>
+              </li>
+              <li>
+                <a href="{% url 'games' %}" style="color: #fff"> Jeux</a>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+          <div class="col-md-4 mb-3">
+            <h6 style="color: var(--or)">Compte</h6>
+            <ul class="list-unstyled">
+              {% if user.is_authenticated %}
+              <li>
+                <a href="{% url 'profile' %}" style="color: #fff">Mon profil</a>
+              </li>
+              {% else %}
+              <li>
+                <a href="{% url 'login' %}" style="color: #fff"> Connexion</a>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+        <hr style="border-color: rgba(255, 255, 255, 0.2)" />
+        <p
+          class="text-center mb-0"
+          style="color: rgba(255, 255, 255, 0.6); font-size: 13px"
+        >
+          © 2026 LingX — Apprendre le Baoulé
+        </p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

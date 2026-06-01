@@ -1,0 +1,264 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load category_filters %}
+
+{% block title %}{{ category.name }} - LingX{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="row mb-4">
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white p-3 rounded">
+          <li class="breadcrumb-item">
+            <a href="{% url 'categories' %}">Catégories</a>
+          </li>
+          <li class="breadcrumb-item active">{{ category.name }}</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body text-center py-4">
+          <img
+            src="{% static 'images/categories/' %}{{ category.name|category_image }}.jpg"
+            style="
+              width: 100px;
+              height: 100px;
+              border-radius: 50%;
+              margin: 0 auto 1rem;
+              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            "
+            alt="{{ category.name }}"
+          />
+          <h2 class="mt-3">{{ category.name }}</h2>
+          <p class="lead text-muted">{{ category.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Galerie Culturelle par Catégorie -->
+  <div class="row mb-5">
+    <div class="col-12">
+      <h4 class="text-white mb-4">Perspectives Culturelles</h4>
+    </div>
+    {% if category.id == 1 %}
+    <!-- Catégorie Salutations -->
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 overflow-hidden">
+        <img
+          src="{% static 'images/baoule/Pagne_Baoule-780x500.png' %}"
+          class="card-img-top"
+          alt="Pagne Baoulé"
+          style="height: 200px; object-fit: cover"
+        />
+        <div class="card-body">
+          <h5 class="card-title">Les Pagnes Baoulé</h5>
+          <p class="card-text small text-muted">
+            Tissus traditionnels porteurs de sens
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 overflow-hidden">
+        <img
+          src="{% static 'images/baoule/compter-en-Baoulé-780x500.png' %}"
+          class="card-img-top"
+          alt="Compter en Baoulé"
+          style="height: 200px; object-fit: cover"
+        />
+        <div class="card-body">
+          <h5 class="card-title">Compter en Baoulé</h5>
+          <p class="card-text small text-muted">Les nombres et la culture</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 overflow-hidden">
+        <img
+          src="{% static 'images/baoule/courtoisise_us_coutumes_baoule-780x500.png' %}"
+          class="card-img-top"
+          alt="Courtoisie Baoulé"
+          style="height: 200px; object-fit: cover"
+        />
+        <div class="card-body">
+          <h5 class="card-title">Courtoisie & Coutumes</h5>
+          <p class="card-text small text-muted">Traditions et respect</p>
+        </div>
+      </div>
+    </div>
+    {% elif category.id == 2 %}
+    <!-- Catégorie Famille -->
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 overflow-hidden">
+        <img
+          src="{% static 'images/baoule/artisanat_baoule-780x500.png' %}"
+          class="card-img-top"
+          alt="Artisanat Baoulé"
+          style="height: 200px; object-fit: cover"
+        />
+        <div class="card-body">
+          <h5 class="card-title">Artisanat Baoulé</h5>
+          <p class="card-text small text-muted">Savoir-faire transmis</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 overflow-hidden">
+        <img
+          src="{% static 'images/baoule/baoule.ci_formation_peuple_baoule-780x500.png' %}"
+          class="card-img-top"
+          alt="Peuple Baoulé"
+          style="height: 200px; object-fit: cover"
+        />
+        <div class="card-body">
+          <h5 class="card-title">Peuple Baoulé</h5>
+          <p class="card-text small text-muted">L'unité familiale baoulé</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 overflow-hidden">
+        <img
+          src="{% static 'images/baoule/relations_interethnique_baoule-780x405.png' %}"
+          class="card-img-top"
+          alt="Relations Interethniques"
+          style="height: 200px; object-fit: cover"
+        />
+        <div class="card-body">
+          <h5 class="card-title">Relations</h5>
+          <p class="card-text small text-muted">Liens interethniques</p>
+        </div>
+      </div>
+    </div>
+    {% elif category.id == 3 %}
+    <!-- Catégorie Culture -->
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 overflow-hidden">
+        <img
+          src="{% static 'images/baoule/musique_baoule-780x500.png' %}"
+          class="card-img-top"
+          alt="Musique Baoulé"
+          style="height: 200px; object-fit: cover"
+        />
+        <div class="card-body">
+          <h5 class="card-title">Musique Baoulé</h5>
+          <p class="card-text small text-muted">Rythmes et traditions</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 overflow-hidden">
+        <img
+          src="{% static 'images/baoule/rituels_baoule-780x500.png' %}"
+          class="card-img-top"
+          alt="Rituels Baoulé"
+          style="height: 200px; object-fit: cover"
+        />
+        <div class="card-body">
+          <h5 class="card-title">Rituels Baoulé</h5>
+          <p class="card-text small text-muted">Traditions sacrées</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 overflow-hidden">
+        <img
+          src="{% static 'images/baoule/sipiritualite_baoule.ci_-780x500.png' %}"
+          class="card-img-top"
+          alt="Spiritualité"
+          style="height: 200px; object-fit: cover"
+        />
+        <div class="card-body">
+          <h5 class="card-title">Spiritualité</h5>
+          <p class="card-text small text-muted">Croyances et sagesse</p>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <!-- Catégories par défaut: images génériques -->
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 overflow-hidden">
+        <img
+          src="{% static 'images/baoule/baoules-780x500.png' %}"
+          class="card-img-top"
+          alt="Peuple Baoulé"
+          style="height: 200px; object-fit: cover"
+        />
+        <div class="card-body">
+          <h5 class="card-title">Peuple Baoulé</h5>
+          <p class="card-text small text-muted">L'identité baoulé</p>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="row">
+    <div class="col-12 mb-3">
+      <h4 class="text-white">Leçons disponibles</h4>
+    </div>
+    {% for lesson in lessons %}
+    <div class="col-md-6 mb-4">
+      <div class="card lesson-card h-100">
+        {% if lesson.is_completed %}
+        <span class="completed-badge"> ✓ Complété </span>
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{ lesson.title }}</h5>
+          <p class="card-text text-muted">
+            {{ lesson.description|truncatewords:20 }}
+          </p>
+
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            {% if lesson.is_premium %}
+            <span class="badge bg-warning"> Contenu Avancé </span>
+            {% endif %}
+          </div>
+
+          {% if lesson.is_completed %}
+          <div class="mb-3">
+            <div class="progress" style="height: 8px">
+              <div class="progress-bar bg-success" style="width: 100%"></div>
+            </div>
+          </div>
+          {% endif %}
+
+          <div class="d-grid">
+            {% if lesson.is_locked %}
+            <button class="btn btn-secondary" disabled title="Niveau requis: {{ lesson.required_level }}">
+              🔒 Verrouillée (Niveau {{ lesson.required_level }} requis)
+            </button>
+            <small class="text-muted mt-2">
+              Vous êtes niveau {{ user_level }}. Terminez la leçon {{ lesson.required_level|add:"-1" }} pour débloquer celle-ci.
+            </small>
+            {% else %}
+            <a
+              href="{% url 'lesson_detail' lesson.id %}"
+              class="btn btn-primary"
+            >
+              {% if lesson.is_completed %}Réviser{% else %}Commencer{% endif %}
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body text-center py-5">
+          <h4 class="mt-3">Aucune leçon disponible</h4>
+          <p class="text-muted">Les leçons seront bientôt ajoutées</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

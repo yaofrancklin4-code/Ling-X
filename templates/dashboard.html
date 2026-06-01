@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Tableau de bord - LingX{% endblock %}
+
+{% block content %}
+<div class="container" style="background-color: #F4F6F8; min-height: 100vh; padding-top: 32px;">
+    <!-- Bannière Défi du Jour -->
+    <div class="daily-banner">
+        <div class="banner-content">
+            <h2 class="banner-title">Défi du jour</h2>
+            <p class="banner-desc">Complète 3 leçons aujourd'hui pour gagner 50 XP bonus</p>
+        </div>
+        <div class="challenge-circles">
+            <div class="challenge-circle {% if total_lessons_completed >= 1 %}completed{% endif %}">1</div>
+            <div class="challenge-circle {% if total_lessons_completed >= 2 %}completed{% endif %}">2</div>
+            <div class="challenge-circle {% if total_lessons_completed >= 3 %}completed{% endif %}">3</div>
+        </div>
+        <a href="{% url 'categories' %}" class="btn-duo btn-gold">Apprendre</a>
+    </div>
+
+    <!-- Grille Profil et Stats -->
+    <div class="row" style="gap: 20px; margin-bottom: 32px;">
+        <!-- Colonne gauche - Profil -->
+        <div class="col-lg-4">
+            <div class="card-duo" style="padding: 28px;">
+                <!-- Avatar -->
+                <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+                    <div style="width: 80px; height: 80px; border-radius: 50%; background-color: #FFD700; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 900; color: #0A0A0A; font-family: 'Baloo 2', cursive; box-shadow: 0 4px 12px rgba(255,215,0,0.3);">
+                        {{ user.username|first|upper }}
+                    </div>
+                </div>
+                
+                <!-- Infos utilisateur -->
+                <h3 style="font-family: 'Baloo 2', cursive; text-align: center; margin: 0 0 4px 0;">{{ user.username }}</h3>
+                <p style="text-align: center; color: #999; margin: 0 0 20px 0;">Apprenant Baoulé</p>
+                
+                <!-- Niveau -->
+                <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 20px;">
+                    <span class="level-badge">{{ profile.level }}</span>
+                    <div>
+                        <p style="margin: 0; font-weight: 700;">Niveau {{ profile.level }}</p>
+                        <p style="margin: 0; font-size: 12px; color: #999;">{{ profile.total_points }} XP</p>
+                    </div>
+                </div>
+                
+                <!-- Barre XP -->
+                <div style="margin-bottom: 20px;">
+                    <div style="font-size: 12px; color: #999; margin-bottom: 8px;">Vers le niveau suivant</div>
+                    <div class="progress-duo">
+                        {% widthratio profile.total_points|add:"1" 100 100 as xp_percentage %}
+                        <div class="progress-duo-bar" style="width: {{ xp_percentage }}%"></div>
+                    </div>
+                </div>
+                
+                <!-- Série -->
+                <div style="background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,69,0,0.1)); border: 2px solid #FF4500; border-radius: 12px; padding: 12px; text-align: center;">
+                    <p style="margin: 0; font-size: 14px; color: #FF4500; font-weight: 700;"> {{ profile.streak_days }} jour(s) de série</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Colonne droite - 4 Statistiques -->
+        <div class="col-lg-8">
+            <div class="row" style="gap: 12px;">
+                <div class="col-md-6">
+                    <div class="stat-duo gold">
+                        <div class="stat-value" style="color: #FFD700;">{{ profile.total_points }}</div>
+                        <div class="stat-label">XP Totaux</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="stat-duo vert">
+                        <div class="stat-value" style="color: var(--vert);">{{ total_lessons_completed }}</div>
+                        <div class="stat-label">Leçons finies</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="stat-duo orange">
+                        <div class="stat-value" style="color: #FF4500;">{{ total_quizzes }}</div>
+                        <div class="stat-label">Quiz faits</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="stat-duo bleu">
+                        <div class="stat-value" style="color: #007FFF;">{{ success_rate|default:"0" }}%</div>
+                        <div class="stat-label">Réussite</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Barre de Réussite Globale -->
+            <div class="card-duo" style="padding: 20px; margin-top: 20px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                    <span style="font-weight: 700;">Réussite globale</span>
+                    <span style="font-size: 12px; color: #999;">{{ success_rate|default:"0" }}%</span>
+                </div>
+                <div class="progress-duo">
+                    <div class="progress-duo-bar" style="width: {{ success_rate|default:"0" }}%"></div>
+                </div>
+                <div style="text-align: center; margin-top: 12px; font-size: 13px; color: #666;">
+                    {% if success_rate >= 80 %}
+                         Excellent !
+                    {% elif success_rate >= 60 %}
+                         Bien joué !
+                    {% elif success_rate >= 40 %}
+                         Tu progresses !
+                    {% else %}
+                         Continue tes efforts !
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grille Leçons et Actions -->
+    <div class="row" style="gap: 20px;">
+        <!-- Gauche - Leçons récentes -->
+        <div class="col-lg-8">
+            <h3 class="section-title" style="margin-bottom: 20px;">Leçons récentes</h3>
+            {% if recent_progress %}
+                {% for progress in recent_progress %}
+                <a href="{% url 'lesson_detail' progress.lesson.id %}" class="lesson-card {% if progress.is_completed %}completed{% else %}active{% endif %}" style="text-decoration: none; color: inherit;">
+                    <div class="lesson-icon">
+                        {% if progress.is_completed %}✓{% else %}▶{% endif %}
+                    </div>
+                    <div class="lesson-info">
+                        <h4 class="lesson-title">{{ progress.lesson.title }}</h4>
+                        <p class="lesson-meta">{{ progress.lesson.category.name }}</p>
+                    </div>
+                    <div style="font-size: 12px; color: #999;">
+                        {% if progress.is_completed %}
+                            <span style="color: var(--vert);">✓ Complétée</span>
+                        {% else %}
+                            <span style="color: var(--gold);">Score: {{ progress.score|default:"0" }}%</span>
+                        {% endif %}
+                    </div>
+                </a>
+                {% endfor %}
+            {% else %}
+                <div class="card-duo" style="text-align: center; padding: 40px; background: linear-gradient(135deg, #FFF9E6, #FFFACC);">
+                    <p style="font-size: 18px; margin: 0 0 12px 0;">Commence ton apprentissage !</p>
+                    <a href="{% url 'categories' %}" class="btn-duo btn-gold">Première leçon</a>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Droite - Actions et Achievements -->
+        <div class="col-lg-4">
+            <!-- Boutons Actions -->
+            <h3 class="section-title" style="margin-bottom: 16px;">Accès rapide</h3>
+            <div style="display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 28px;">
+                <a href="{% url 'categories' %}" class="btn-duo btn-gold" style="text-align: center; text-decoration: none;"> Leçons</a>
+                <a href="{% url 'games' %}" class="btn-duo btn-vert" style="text-align: center; text-decoration: none;"> Jeux</a>
+                <a href="{% url 'leaderboard' %}" class="btn-duo btn-bleu" style="text-align: center; text-decoration: none; background-color: var(--bleu); color: white; border: 2px solid #1A8FCE;"> Classement</a>
+                <a href="#" class="btn-duo btn-brun" style="text-align: center; text-decoration: none;"> Culture</a>
+            </div>
+
+
+        </div>
+    </div>
+
+    <br><br>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Animations optionnelles au chargement
+    document.addEventListener('DOMContentLoaded', function() {
+        // Animer les statistiques
+        const statValues = document.querySelectorAll('.stat-value');
+        statValues.forEach(el => {
+            el.style.animation = 'bounce 1s ease-out';
+        });
+    });
+</script>
+{% endblock %}

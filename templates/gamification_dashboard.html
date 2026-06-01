@@ -1,0 +1,255 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Gamification
+Dashboard - LingX{% endblock %} {% block content %}
+<div class="container-fluid py-4">
+  <!-- En-tête avec profil -->
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="card bg-gradient-primary text-white">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <h1 class="mb-2"> Tableau de Bord Gamification</h1>
+              <p class="lead mb-0">
+                {{ profile.user.first_name|default:profile.user.username }},
+                Bienvenue!
+              </p>
+            </div>
+            <div class="col-md-4 text-right">
+              <p class="text-white">NIVEAU</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="row mb-4">
+    <div class="col-md-3 mb-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <p class="card-text">Points Total</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <p class="card-text">Série Actuelle</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <p class="card-text">Notifications</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Progression du niveau -->
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">⬆️ Progression du Niveau</h5>
+        </div>
+        <div class="card-body">
+          <div class="progress" style="height: 40px">
+            <div
+              class="progress-bar bg-success"
+              role="progressbar"
+              style="width: 0%;"
+              aria-valuenow="0"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Récompense quotidienne -->
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-header bg-warning text-white">
+          <h5 class="mb-0"> Récompense Quotidienne</h5>
+        </div>
+        <div class="card-body text-center">
+          {% if reward_today and reward_today.is_claimed %}
+          <p class="text-success">✓ Revendiquez demain!</p>
+          <p class="text-muted">
+            Vous avez reçu {{
+            reward_today.points|mul:reward_today.bonus_multiplier|floatformat:0
+            }} points
+          </p>
+          {% else %}
+          <form method="post" action="{% url 'daily_reward' %}">
+            {% csrf_token %}
+            <p class="lead">
+               Bonus de série: {% if streak %}{{ streak.current_streak }} {%
+              else %}0{% endif %} jours
+            </p>
+            <button type="submit" class="btn btn-warning btn-lg">
+               Revendiquer la Récompense
+            </button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Menus déroulants avec sections collapsibles -->
+  <div class="row">
+    <!-- Notifications récentes -->
+    <div class="col-md-12 mb-4">
+      <div class="card">
+        <div
+          class="card-header bg-info text-white cursor-pointer"
+          data-toggle="collapse"
+          data-target="#notifications-section"
+        >
+          <h5 class="mb-0">
+             Notifications Récentes
+            <span class="float-right">▼</span>
+          </h5>
+        </div>
+        <div id="notifications-section" class="collapse show">
+          <div class="card-body">
+            {% if recent_notifications %}
+            <div class="list-group">
+              {% for notification in recent_notifications %}
+              <div
+                class="list-group-item {% if not notification.is_read %}bg-light{% endif %}"
+              >
+                <div
+                  class="d-flex w-100 justify-content-between align-items-center"
+                >
+                  <div class="flex-grow-1">
+                    <h6 class="mb-1">
+                      {{ notification.icon }}
+                      <strong>{{ notification.title }}</strong>
+                    </h6>
+                    <p class="mb-1">{{ notification.message }}</p>
+                    <small class="text-muted">
+                      {{ notification.created_at|timesince }} ago {% if
+                      notification.points_awarded > 0 %} • +{{
+                      notification.points_awarded }} pts {% endif %}
+                    </small>
+                  </div>
+                  {% if not notification.is_read %}
+                  <a
+                    href="{% url 'mark_notification_read' notification.id %}?next=gamification_dashboard"
+                    class="btn btn-sm btn-primary"
+                  >
+                    Lire
+                  </a>
+                  {% endif %}
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+            <a
+              href="{% url 'notifications' %}"
+              class="btn btn-sm btn-info mt-3"
+            >
+              Voir toutes les notifications
+            </a>
+            {% else %}
+            <p class="text-muted">Pas de notifications pour le moment</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <div class="card">
+        <div
+          class="card-header bg-danger text-white cursor-pointer"
+          data-toggle="collapse"
+          data-target="#achievements-section"
+        >
+          <h5 class="mb-0">
+            ⭐ Succès Récents
+            <span class="float-right">▼</span>
+          </h5>
+        </div>
+        <div id="achievements-section" class="collapse show">
+          <div class="card-body">
+            {% if recent_achievements %}
+            <div class="list-group">
+              {% for achievement in recent_achievements %}
+              <div class="list-group-item">
+                <h6 class="mb-1">
+                  {{ achievement.achievement.icon }} {{
+                  achievement.achievement.name }}
+                </h6>
+                <small class="text-muted"
+                  >{{ achievement.unlocked_at|date:"d/m/Y H:i" }}</small
+                >
+              </div>
+              {% endfor %}
+            </div>
+            <a
+              href="{% url 'achievements' %}"
+              class="btn btn-sm btn-danger btn-block mt-3"
+            >
+              Voir tous les succès
+            </a>
+            {% else %}
+            <p class="text-muted">Aucun succès débloqué encore</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .card {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+
+  .cursor-pointer {
+    cursor: pointer;
+  }
+
+  .badge-item {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    transition: transform 0.2s;
+  }
+
+  .badge-item:hover {
+    transform: scale(1.05);
+  }
+
+  .progress {
+    background-color: #e9ecef;
+  }
+
+  .list-group-item {
+    border-left: 4px solid #667eea;
+  }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% endblock %}

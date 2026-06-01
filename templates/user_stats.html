@@ -1,0 +1,318 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Mes Statistiques -
+LingX{% endblock %} {% block content %}
+<div class="container-fluid py-5">
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <h1> Mes Statistiques d'Apprentissage</h1>
+      <p class="text-muted">Voici un aperçu de votre progression</p>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="row mb-5">
+    <div class="col-md-3 mb-3">
+      <div class="card text-center" style="border-top: 4px solid #007bff;">
+        <div class="card-body">
+          <h3 class="text-primary" style="font-size: 2.8rem; margin: 0">
+            {{ total_points }}
+          </h3>
+          <p class="card-text text-muted mt-3">⭐ Points Total</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <div class="card text-center" style="border-top: 4px solid #28a745;">
+        <div class="card-body">
+          <h3 class="text-success" style="font-size: 2.8rem; margin: 0">
+            {{ total_lessons_completed }}
+          </h3>
+          <p class="card-text text-muted mt-3"> Leçons Completées</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <div class="card text-center" style="border-top: 4px solid #17a2b8;">
+        <div class="card-body">
+          <h3 class="text-info" style="font-size: 2.8rem; margin: 0">
+            {{ total_quizzes_attempted }}
+          </h3>
+          <p class="card-text text-muted mt-3"> Quiz Tentés</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <div class="card text-center" style="border-top: 4px solid #ffc107;">
+        <div class="card-body">
+          <h3 class="text-warning" style="font-size: 2.8rem; margin: 0">
+            {{ success_rate }}%
+          </h3>
+          <p class="card-text text-muted mt-3">✅ Taux de Réussite</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Graphiques circulaires -->
+  <div class="row mb-5">
+    <!-- Répartition par catégorie (Doughnut) -->
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0"> Répartition par Catégorie</h5>
+        </div>
+        <div class="card-body">
+          {% if category_progress %}
+          <div style="position: relative; height: 300px; display: flex; justify-content: center; align-items: center;">
+            <canvas id="categoryChart"></canvas>
+          </div>
+          <div class="mt-4">
+            <div class="row">
+              {% for progress in category_progress %}
+              <div class="col-6 mb-2">
+                <small class="text-muted">
+                  <strong>{{ progress.category.name }}</strong><br>
+                  {{ progress.completed }}/{{ progress.total }} leçons
+                </small>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% else %}
+          <div class="alert alert-info">Pas de progression enregistrée.</div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Quiz: Réussis vs Échoués -->
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-header bg-success text-white">
+          <h5 class="mb-0"> Performance aux Quiz</h5>
+        </div>
+        <div class="card-body">
+          <div style="position: relative; height: 300px; display: flex; justify-content: center; align-items: center;">
+            <canvas id="quizPerformanceChart"></canvas>
+          </div>
+          <div class="mt-4 text-center">
+            <div class="row">
+              <div class="col-6">
+                <h6 class="text-success">✅ Réussis</h6>
+                <p class="text-muted" id="quizSuccessCount">-</p>
+              </div>
+              <div class="col-6">
+                <h6 class="text-danger">❌ Échoués</h6>
+                <p class="text-muted" id="quizFailureCount">-</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Activité (graphique ligne) -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header bg-info text-white">
+          <h5 class="mb-0"> Activité (Derniers 30 jours)</h5>
+        </div>
+        <div class="card-body">
+          {% if activity_data %}
+          <div style="position: relative; height: 300px">
+            <canvas id="activityChart"></canvas>
+          </div>
+          {% else %}
+          <div class="alert alert-info">
+            Pas d'activité enregistrée encore. Commencez à apprendre!
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Graphique 1: Répartition par catégorie (Doughnut)
+    {% if category_progress %}
+    const categoryData = {
+      labels: [
+        {% for progress in category_progress %}
+          '{{ progress.category.name }}',
+        {% endfor %}
+      ],
+      datasets: [{
+        data: [
+          {% for progress in category_progress %}
+            {{ progress.percentage }},
+          {% endfor %}
+        ],
+        backgroundColor: [
+          '#FF6384',
+          '#36A2EB',
+          '#FFCE56',
+          '#4BC0C0',
+          '#9966FF',
+          '#FF9F40',
+          '#FF6384',
+          '#C9CBCF'
+        ],
+        borderWidth: 2,
+        borderColor: '#fff'
+      }]
+    };
+
+    const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+    new Chart(categoryCtx, {
+      type: 'doughnut',
+      data: categoryData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              padding: 15,
+              font: {
+                size: 14,
+                weight: 'bold'
+              }
+            }
+          }
+        }
+      }
+    });
+    {% endif %}
+
+    // Graphique 2: Performance Quiz (Pie)
+    const quizSuccess = Math.round({{ total_quizzes_attempted }} * {{ success_rate }} / 100);
+    const quizFailure = {{ total_quizzes_attempted }} - quizSuccess;
+    
+    document.getElementById('quizSuccessCount').textContent = quizSuccess;
+    document.getElementById('quizFailureCount').textContent = quizFailure;
+
+    const quizCtx = document.getElementById('quizPerformanceChart').getContext('2d');
+    new Chart(quizCtx, {
+      type: 'pie',
+      data: {
+        labels: ['Réussis ✅', 'Échoués ❌'],
+        datasets: [{
+          data: [quizSuccess, quizFailure],
+          backgroundColor: [
+            '#28a745',
+            '#dc3545'
+          ],
+          borderWidth: 2,
+          borderColor: '#fff'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              padding: 15,
+              font: {
+                size: 14,
+                weight: 'bold'
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // Graphique 3: Activité (ligne)
+    {% if activity_data %}
+    const data = {{ activity_data|safe }};
+    const labels = data.map(d => d.date);
+    const counts = data.map(d => d.count);
+
+    const activityCtx = document.getElementById('activityChart').getContext('2d');
+    new Chart(activityCtx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Leçons par jour',
+          data: counts,
+          borderColor: '#0099ff',
+          backgroundColor: 'rgba(0, 153, 255, 0.1)',
+          tension: 0.4,
+          fill: true,
+          pointRadius: 6,
+          pointBackgroundColor: '#0099ff',
+          pointHoverRadius: 8,
+          borderWidth: 3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            labels: {
+              font: {
+                size: 14,
+                weight: 'bold'
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: Math.max(...counts) + 2,
+            ticks: {
+              font: {
+                size: 12
+              }
+            }
+          },
+          x: {
+            ticks: {
+              font: {
+                size: 12
+              }
+            }
+          }
+        }
+      }
+    });
+    {% endif %}
+  });
+</script>
+
+<style>
+  .card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 12px;
+  }
+
+  .card-header {
+    border-radius: 12px 12px 0 0 !important;
+    font-weight: 700;
+  }
+
+  .card-body {
+    padding: 25px;
+  }
+
+  .progress {
+    background-color: #e9ecef;
+  }
+</style>
+{% endblock %}

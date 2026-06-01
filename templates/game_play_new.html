@@ -1,0 +1,778 @@
+{% extends 'base.html' %} {% load static %} {% block title %}{{ game.title }} -
+Jeu - LingX{% endblock %} {% block content %}
+<div
+  style="
+    background: linear-gradient(135deg, #1cb0f6, #2c1a0e);
+    min-height: 100vh;
+    padding-top: 20px;
+  "
+>
+  <!-- Header de partie (sticky) -->
+  <div
+    style="
+      position: sticky;
+      top: 70px;
+      background: rgba(26, 10, 0, 0.95);
+      border-bottom: 2px solid #ffd700;
+      padding: 16px 0;
+      z-index: 100;
+      margin-bottom: 20px;
+    "
+  >
+    <div class="container">
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 20px;
+        "
+      >
+        <!-- Coeurs -->
+        <div style="display: flex; gap: 6px">
+          <span id="hearts-display" style="color: #ff4444; font-size: 20px"
+            >❤️ ❤️ ❤️ ❤️ ❤️</span
+          >
+        </div>
+
+        <!-- Timer -->
+        <div
+          style="
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid #ffd700;
+            border-radius: 12px;
+            padding: 8px 16px;
+            color: #ffd700;
+            font-weight: 700;
+            font-size: 18px;
+          "
+        >
+          ⏱️ <span id="timer">60</span>s
+        </div>
+
+        <!-- XP -->
+        <div
+          style="
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid #ffd700;
+            border-radius: 12px;
+            padding: 8px 16px;
+            color: #ffd700;
+            font-weight: 700;
+            font-size: 18px;
+          "
+        >
+          ✨ <span id="xp-score">0</span> XP
+        </div>
+
+        <!-- Progression -->
+        <div
+          style="
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            height: 24px;
+            position: relative;
+          "
+        >
+          <div
+            id="progress-bar"
+            style="
+              background: linear-gradient(90deg, #ffd700, #ff9800);
+              height: 100%;
+              border-radius: 12px;
+              width: 0%;
+              transition: width 0.3s;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: #1cb0f6;
+              font-size: 11px;
+              font-weight: 700;
+            "
+          >
+            <span id="progress-text"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Zone de jeu -->
+  <div class="container">
+    <div
+      style="
+        background: white;
+        border-radius: 24px;
+        padding: 40px;
+        max-width: 760px;
+        margin: 0 auto;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      "
+    >
+      <div id="game-container">
+        <!-- MEMOIRE -->
+        <div id="game-memory" style="display: none">
+          <h2
+            style="
+              font-family: &quot;Baloo 2&quot;, cursive;
+              text-align: center;
+              margin-bottom: 8px;
+            "
+          >
+            Retrouve les paires
+          </h2>
+          <p style="text-align: center; color: #666; margin-bottom: 24px">
+            Clique sur les cartes pour retrouver les paires
+          </p>
+
+          <div
+            style="
+              display: grid;
+              grid-template-columns: repeat(4, 1fr);
+              gap: 12px;
+            "
+          >
+            <!-- Les cartes seront générées par JS -->
+          </div>
+        </div>
+
+        <!-- ASSOCIATION -->
+        <div id="game-word-match" style="display: none">
+          <h2
+            style="
+              font-family: &quot;Baloo 2&quot;, cursive;
+              text-align: center;
+              margin-bottom: 8px;
+            "
+          >
+            Relie les mots
+          </h2>
+          <p style="text-align: center; color: #666; margin-bottom: 24px">
+            Clique sur un mot Baoulé puis sa traduction
+          </p>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px">
+            <div
+              id="match-baule"
+              style="display: flex; flex-direction: column; gap: 12px"
+            ></div>
+            <div
+              id="match-french"
+              style="display: flex; flex-direction: column; gap: 12px"
+            ></div>
+          </div>
+        </div>
+
+        <!-- QUIZ RAPIDE -->
+        <div id="game-speed-quiz" style="display: none">
+          <h2
+            style="
+              font-family: &quot;Baloo 2&quot;, cursive;
+              text-align: center;
+              margin-bottom: 24px;
+            "
+          >
+            Comment dit-on...
+          </h2>
+          <div
+            id="question-text"
+            style="
+              font-size: 18px;
+              text-align: center;
+              margin-bottom: 32px;
+              color: #1cb0f6;
+            "
+          ></div>
+
+          <div style="display: grid; gap: 12px">
+            <button class="answer-option" data-option="0">
+              <span class="option-letter">A</span><span id="option-0"></span>
+            </button>
+            <button class="answer-option" data-option="1">
+              <span class="option-letter">B</span><span id="option-1"></span>
+            </button>
+            <button class="answer-option" data-option="2">
+              <span class="option-letter">C</span><span id="option-2"></span>
+            </button>
+            <button class="answer-option" data-option="3">
+              <span class="option-letter">D</span><span id="option-3"></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ANAGRAMME -->
+        <div id="game-anagram" style="display: none">
+          <h2
+            style="
+              font-family: &quot;Baloo 2&quot;, cursive;
+              text-align: center;
+              margin-bottom: 8px;
+            "
+          >
+            Forme le mot
+          </h2>
+          <p
+            id="anagram-hint"
+            style="text-align: center; color: #666; margin-bottom: 24px"
+          ></p>
+
+          <div
+            id="answer-slots"
+            style="
+              display: flex;
+              gap: 8px;
+              justify-content: center;
+              flex-wrap: wrap;
+              margin-bottom: 32px;
+              min-height: 50px;
+              align-items: center;
+            "
+          ></div>
+
+          <div
+            id="spinner-container"
+            style="
+              display: flex;
+              gap: 8px;
+              justify-content: center;
+              flex-wrap: wrap;
+              margin-bottom: 24px;
+            "
+          ></div>
+
+          <button
+            class="btn-duo btn-gold"
+            onclick="verifyAnagram()"
+            style="width: 100%; text-align: center"
+          >
+            Vérifier
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Barre de Feedback -->
+    <div id="feedback-bar" class="feedback-bar" style="display: none">
+      <span id="feedback-text"></span>
+      <button
+        class="btn-duo"
+        onclick="nextQuestion()"
+        style="margin-left: auto; padding: 8px 16px; font-size: 13px"
+      >
+        Continuer
+      </button>
+    </div>
+
+    <!-- Écran de Fin -->
+    <div
+      id="game-over"
+      style="
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        border-radius: 24px;
+        padding: 40px;
+        max-width: 400px;
+        text-align: center;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        z-index: 200;
+      "
+    >
+      <h1
+        style="
+          font-family: &quot;Baloo 2&quot;, cursive;
+          font-size: 32px;
+          margin: 0 0 20px 0;
+        "
+      >
+        Partie terminée !
+      </h1>
+
+      <div
+        style="
+          background: linear-gradient(135deg, #ffd700, #ff9800);
+          border-radius: 16px;
+          padding: 20px;
+          margin-bottom: 24px;
+          color: white;
+        "
+      >
+        <p
+          style="
+            margin: 0 0 8px 0;
+            font-size: 12px;
+            text-transform: uppercase;
+            opacity: 0.8;
+          "
+        >
+          Score XP
+        </p>
+        <p
+          id="final-xp"
+          style="
+            margin: 0;
+            font-family: &quot;Baloo 2&quot;, cursive;
+            font-size: 40px;
+            font-weight: 900;
+          "
+        >
+          0
+        </p>
+      </div>
+
+      <div
+        id="stats-detail"
+        style="
+          background: #f5f5f5;
+          border-radius: 16px;
+          padding: 16px;
+          margin-bottom: 24px;
+          text-align: left;
+          font-size: 14px;
+        "
+      ></div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px">
+        <button
+          class="btn-duo btn-gold"
+          onclick="location.reload()"
+          style="text-decoration: none"
+        >
+          Rejouer
+        </button>
+        <a
+          href="{% url 'games' %}"
+          class="btn-duo btn-outline-duo"
+          style="
+            text-decoration: none;
+            text-align: center;
+            border: 2px solid #ffd700;
+            color: #1cb0f6;
+          "
+          >Autres jeux</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %} {% block extra_js %}
+<script>
+  const GAME_TYPE = "{{ game.game_type }}";
+  const VOCABULARY = {{ vocabulary_pairs|safe }};
+  const GAME_ID = {{ game.id }};
+
+  // État du jeu
+  let gameState = {
+      hearts: 5,
+      timeLeft: 60,
+      xpScore: 0,
+      currentQuestionIndex: 0,
+      totalQuestions: Math.min(10, VOCABULARY.length),
+      answered: 0,
+      correct: 0,
+      gameActive: true,
+      flippedCards: [],
+      selectedPair: null
+  };
+
+  // Initialisation
+  document.addEventListener('DOMContentLoaded', function() {
+      initGame();
+      startTimer();
+  });
+
+  function initGame() {
+      if (GAME_TYPE === 'memory') {
+          initMemory();
+      } else if (GAME_TYPE === 'word_match') {
+          initWordMatch();
+      } else if (GAME_TYPE === 'speed_quiz') {
+          initSpeedQuiz();
+      } else if (GAME_TYPE === 'anagram') {
+          initAnagram();
+      }
+  }
+
+  // ===== MEMOIRE =====
+  function initMemory() {
+      document.getElementById('game-memory').style.display = 'block';
+      const container = document.querySelector('#game-memory div:last-child');
+
+      let pairs = VOCABULARY.slice(0, 8);
+      let items = [];
+      pairs.forEach((p, i) => {
+          items.push({pairId: i, content: p.baoule, type: 'baule'});
+          items.push({pairId: i, content: p.french, type: 'french'});
+      });
+      items = shuffle(items);
+
+      items.forEach((item, idx) => {
+          const card = document.createElement('div');
+          card.className = 'mem-card';
+          card.innerHTML = '<div class="card-back">?</div>';
+          card.style.cursor = 'pointer';
+          card.dataset.pairId = item.pairId;
+          card.dataset.content = item.content;
+          card.dataset.index = idx;
+
+          card.onclick = () => flipMemoryCard(card);
+          container.appendChild(card);
+      });
+  }
+
+  function flipMemoryCard(card) {
+      if (!gameState.gameActive || card.classList.contains('matched') || card.classList.contains('flipped')) return;
+
+      card.classList.add('flipped');
+      card.innerHTML = `<div style="padding: 8px; text-align: center; font-size: 14px; font-weight: 600;">${card.dataset.content}</div>`;
+      gameState.flippedCards.push(card);
+
+      if (gameState.flippedCards.length === 2) {
+          setTimeout(checkMemoryPair, 600);
+      }
+  }
+
+  function checkMemoryPair() {
+      const [card1, card2] = gameState.flippedCards;
+      const match = card1.dataset.pairId === card2.dataset.pairId;
+
+      if (match) {
+          card1.classList.add('matched');
+          card2.classList.add('matched');
+          addXP(10);
+          showFeedback('correct-bar', 'Correct ! +10 XP');
+      } else {
+          card1.classList.remove('flipped');
+          card2.classList.remove('flipped');
+          card1.innerHTML = '<div class="card-back">?</div>';
+          card2.innerHTML = '<div class="card-back">?</div>';
+          loseHeart();
+          showFeedback('wrong-bar', 'Essaie encore !');
+      }
+
+      gameState.flippedCards = [];
+
+      if (document.querySelectorAll('.mem-card.matched').length === 16) {
+          endGame();
+      }
+  }
+
+  // ===== ASSOCIATION =====
+  function initWordMatch() {
+      document.getElementById('game-word-match').style.display = 'block';
+      const bauleContainer = document.getElementById('match-baule');
+      const frenchContainer = document.getElementById('match-french');
+
+      let pairs = VOCABULARY.slice(0, 6);
+      let frenchShuffled = shuffle(pairs.map(p => p.french));
+
+      pairs.forEach((p, i) => {
+          const bauleBtn = document.createElement('button');
+          bauleBtn.className = 'match-item';
+          bauleBtn.textContent = p.baoule;
+          bauleBtn.dataset.pairId = i;
+          bauleBtn.dataset.column = 'baoule';
+          bauleBtn.onclick = () => selectMatchItem(bauleBtn);
+          bauleContainer.appendChild(bauleBtn);
+      });
+
+      frenchShuffled.forEach((f, i) => {
+          const frenchBtn = document.createElement('button');
+          frenchBtn.className = 'match-item';
+          frenchBtn.textContent = f;
+          frenchBtn.dataset.pairId = pairs.findIndex(p => p.french === f);
+          frenchBtn.dataset.column = 'french';
+          frenchBtn.onclick = () => selectMatchItem(frenchBtn);
+          frenchContainer.appendChild(frenchBtn);
+      });
+  }
+
+  function selectMatchItem(btn) {
+      if (btn.classList.contains('matched')) return;
+
+      if (!gameState.selectedPair) {
+          gameState.selectedPair = btn;
+          btn.classList.add('selected');
+      } else {
+          if (gameState.selectedPair === btn) return;
+
+          if (gameState.selectedPair.dataset.pairId === btn.dataset.pairId) {
+              gameState.selectedPair.classList.add('matched');
+              btn.classList.add('matched');
+              addXP(5);
+              showFeedback('correct-bar', 'Correct ! +5 XP');
+          } else {
+              btn.classList.add('error');
+              gameState.selectedPair.classList.add('error');
+              loseHeart();
+              showFeedback('wrong-bar', 'Mauvaise paire !');
+              setTimeout(() => {
+                  gameState.selectedPair.classList.remove('selected', 'error');
+                  btn.classList.remove('error');
+              }, 600);
+          }
+          gameState.selectedPair = null;
+
+          if (document.querySelectorAll('.match-item.matched').length === 12) {
+              endGame();
+          }
+      }
+  }
+
+  // ===== SPEED QUIZ =====
+  function initSpeedQuiz() {
+      document.getElementById('game-speed-quiz').style.display = 'block';
+      nextSpeedQuestion();
+  }
+
+  function nextSpeedQuestion() {
+      if (gameState.currentQuestionIndex >= gameState.totalQuestions) {
+          endGame();
+          return;
+      }
+
+      const vocab = VOCABULARY[gameState.currentQuestionIndex];
+      document.getElementById('question-text').innerHTML = `Comment dit-on "<strong>${vocab.french}</strong>" en Baoulé ?`;
+
+      let options = [vocab.baoule];
+      while (options.length < 4) {
+          const random = VOCABULARY[Math.floor(Math.random() * VOCABULARY.length)];
+          if (!options.includes(random.baoule)) options.push(random.baoule);
+      }
+      options = shuffle(options);
+
+      options.forEach((opt, i) => {
+          document.getElementById(`option-${i}`).textContent = opt;
+          document.querySelectorAll('.answer-option')[i].dataset.correct = opt === vocab.baoule ? 'true' : 'false';
+          document.querySelectorAll('.answer-option')[i].onclick = () => selectAnswer(document.querySelectorAll('.answer-option')[i], vocab.baoule);
+      });
+  }
+
+  function selectAnswer(btn, correct) {
+      if (btn.dataset.correct === 'true') {
+          btn.classList.add('correct');
+          addXP(5);
+          showFeedback('correct-bar', 'Correct ! +5 XP');
+          gameState.correct++;
+      } else {
+          btn.classList.add('wrong');
+          document.querySelectorAll('.answer-option').forEach(b => {
+              if (b.dataset.correct === 'true') b.classList.add('correct');
+          });
+          loseHeart();
+          showFeedback('wrong-bar', `Bonne réponse: <strong>${correct}</strong>`);
+      }
+
+      gameState.answered++;
+      gameState.currentQuestionIndex++;
+      updateProgress();
+      setTimeout(nextSpeedQuestion, 2000);
+  }
+
+  // ===== ANAGRAMME =====
+  function initAnagram() {
+      document.getElementById('game-anagram').style.display = 'block';
+      nextAnagramQuestion();
+  }
+
+  function nextAnagramQuestion() {
+      if (gameState.currentQuestionIndex >= gameState.totalQuestions) {
+          endGame();
+          return;
+      }
+
+      const vocab = VOCABULARY[gameState.currentQuestionIndex];
+      document.getElementById('anagram-hint').textContent = `Former le mot pour : ${vocab.french}`;
+
+      const letters = vocab.baoule.split('');
+      const shuffled = shuffle(letters);
+
+      const spinnerContainer = document.getElementById('spinner-container');
+      spinnerContainer.innerHTML = '';
+      shuffled.forEach(letter => {
+          const tile = document.createElement('div');
+          tile.className = 'letter-tile';
+          tile.textContent = letter;
+          tile.dataset.letter = letter;
+          tile.onclick = () => moveToAnswerSlot(tile);
+          spinnerContainer.appendChild(tile);
+      });
+
+      document.getElementById('answer-slots').innerHTML = '';
+  }
+
+  function moveToAnswerSlot(tile) {
+      if (tile.classList.contains('used')) {
+          tile.classList.remove('used');
+          document.getElementById('spinner-container').appendChild(tile);
+          tile.onclick = () => moveToAnswerSlot(tile);
+      } else {
+          tile.classList.add('used');
+          const slot = document.createElement('div');
+          slot.className = 'answer-slot filled';
+          slot.textContent = tile.dataset.letter;
+          slot.onclick = () => {
+              tile.classList.remove('used');
+              document.getElementById('spinner-container').appendChild(tile);
+              tile.onclick = () => moveToAnswerSlot(tile);
+              slot.remove();
+          };
+          document.getElementById('answer-slots').appendChild(slot);
+      }
+  }
+
+  function verifyAnagram() {
+      const slots = document.getElementById('answer-slots').children;
+      const answer = Array.from(slots).map(s => s.textContent).join('');
+      const correct = VOCABULARY[gameState.currentQuestionIndex].baoule;
+
+      if (answer === correct) {
+          addXP(15);
+          showFeedback('correct-bar', 'Correct ! +15 XP');
+          gameState.correct++;
+      } else {
+          loseHeart();
+          showFeedback('wrong-bar', `Bonne réponse: <strong>${correct}</strong>`);
+      }
+
+      gameState.answered++;
+      gameState.currentQuestionIndex++;
+      updateProgress();
+      setTimeout(initAnagram, 2000);
+  }
+
+  // ===== UTILITAIRES =====
+  function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+  }
+
+  function startTimer() {
+      const timer = setInterval(() => {
+          if (!gameState.gameActive) {
+              clearInterval(timer);
+              return;
+          }
+
+          gameState.timeLeft--;
+          document.getElementById('timer').textContent = gameState.timeLeft;
+
+          if (gameState.timeLeft <= 10) {
+              document.getElementById('timer').parentElement.style.color = '#FF4444';
+          }
+
+          if (gameState.timeLeft <= 0) {
+              clearInterval(timer);
+              endGame();
+          }
+      }, 1000);
+  }
+
+  function addXP(amount) {
+      gameState.xpScore += amount;
+      document.getElementById('xp-score').textContent = gameState.xpScore;
+
+      const xpFloat = document.createElement('div');
+      xpFloat.className = 'xp-float';
+      xpFloat.textContent = `+${amount}`;
+      xpFloat.style.left = Math.random() * 100 + '%';
+      xpFloat.style.bottom = '20px';
+      document.querySelector('[id="game-container"]').parentElement.appendChild(xpFloat);
+      setTimeout(() => xpFloat.remove(), 2000);
+
+      // Envoyer les points immédiatement au serveur (progressive points)
+      try {
+          const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]')?.value || '';
+          fetch('{% url "submit_game_points" %}', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': csrftoken
+              },
+              body: JSON.stringify({ points: amount })
+          }).then(r => r.json()).then(data => {
+              if (data && data.new_total_points) {
+                  const profilePointsEl = document.getElementById('profile-total-points');
+                  if (profilePointsEl) profilePointsEl.textContent = data.new_total_points;
+              }
+          }).catch(e => console.warn('submit_game_points error', e));
+      } catch (e) { console.warn(e); }
+  }
+
+  function loseHeart() {
+      gameState.hearts--;
+      updateHeartsDisplay();
+      if (gameState.hearts <= 0) {
+          gameState.gameActive = false;
+          endGame();
+      }
+  }
+
+  function updateHeartsDisplay() {
+      let hearts = '';
+      for (let i = 0; i < 5; i++) {
+          hearts += i < gameState.hearts ? '❤️ ' : ' ';
+      }
+      document.getElementById('hearts-display').textContent = hearts;
+  }
+
+  function updateProgress() {
+      const percent = (gameState.answered / gameState.totalQuestions) * 100;
+      document.getElementById('progress-bar').style.width = percent + '%';
+      document.getElementById('progress-text').textContent = gameState.answered + '/' + gameState.totalQuestions;
+  }
+
+  function showFeedback(type, text) {
+      const bar = document.getElementById('feedback-bar');
+      bar.className = 'feedback-bar ' + type;
+      document.getElementById('feedback-text').innerHTML = text;
+      bar.style.display = 'flex';
+      setTimeout(() => bar.style.display = 'none', 2000);
+  }
+
+  function endGame() {
+      gameState.gameActive = false;
+      document.getElementById('game-container').style.display = 'none';
+      document.getElementById('game-over').style.display = 'block';
+      document.getElementById('final-xp').textContent = gameState.xpScore;
+
+      let statsHtml = `
+          <div style="margin-bottom: 8px;"><strong>Réponses correctes:</strong> ${gameState.correct}/${gameState.answered}</div>
+          <div><strong>Cœurs restants:</strong> ${gameState.hearts}/5</div>
+      `;
+      document.getElementById('stats-detail').innerHTML = statsHtml;
+
+      saveScore();
+  }
+
+  function saveScore() {
+      fetch('{% url "save_game_score" %}', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || ''
+          },
+          body: JSON.stringify({
+              game_id: GAME_ID,
+              score: gameState.answered,
+              xp_earned: gameState.xpScore
+          })
+      })
+      .then(r => r.json())
+      .catch(e => console.error('Score save error:', e));
+  }
+
+  function nextQuestion() {
+      // Appelé par le bouton Continuer
+      location.reload();
+  }
+</script>
+{% endblock %}

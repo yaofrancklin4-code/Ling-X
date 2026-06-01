@@ -1,0 +1,167 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Révision Spaced
+Repetition - LingX{% endblock %} {% block content %}
+<div class="container py-5">
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <h1> Révision - Spaced Repetition System</h1>
+      <p class="lead">
+        Révisez les mots que vous avez appris avec le système SRS optimal
+      </p>
+    </div>
+  </div>
+
+  {% if vocabularies %}
+  <div class="row">
+    <div class="col-md-12">
+      <div id="review-container">
+        {% for vocabulary in vocabularies %}
+        <div
+          class="card mb-4 review-card"
+          data-vocab-id="{{ vocabulary.id }}"
+          style="{% if forloop.counter != 1 %}display: none;{% endif %}"
+        >
+          <div class="card-header bg-primary text-white">
+          </div>
+          <div class="card-body">
+            <div class="text-center mb-4">
+              <h2>{{ vocabulary.word_baule }}</h2>
+              <p class="lead">
+                Prononciation: <em>{{ vocabulary.pronunciation }}</em>
+              </p>
+            </div>
+
+            <div class="mb-4">
+              <h5>Traduction française:</h5>
+              <p class="display-6">{{ vocabulary.word_french }}</p>
+            </div>
+
+            {% if vocabulary.example_sentence %}
+            <div class="bg-light p-3 rounded mb-4">
+              <strong> Exemple:</strong><br />
+              {{ vocabulary.example_sentence }}
+            </div>
+            {% endif %}
+
+            <!-- Options de difficulté -->
+            <form method="post" class="row g-2">
+              {% csrf_token %}
+              <input
+                type="hidden"
+                name="vocab_id"
+                value="{{ vocabulary.id }}"
+              />
+
+              <div class="col-md-4">
+                <button
+                  type="submit"
+                  name="difficulty"
+                  value="easy"
+                  class="btn btn-success btn-lg w-100"
+                >
+                  ✓ Facile<br /><small>Je maîtrise</small>
+                </button>
+              </div>
+              <div class="col-md-4">
+                <button
+                  type="submit"
+                  name="difficulty"
+                  value="medium"
+                  class="btn btn-warning btn-lg w-100"
+                >
+                  ≈ Normal<br /><small>À revoir bientôt</small>
+                </button>
+              </div>
+              <div class="col-md-4">
+                <button
+                  type="submit"
+                  name="difficulty"
+                  value="hard"
+                  class="btn btn-danger btn-lg w-100"
+                >
+                  ✗ Difficile<br /><small>À revoir demain</small>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Barre de progression -->
+      <div class="mt-4">
+        <div class="progress" style="height: 25px">
+          <div
+            class="progress-bar"
+            role="progressbar"
+            style="width: 0%"
+            aria-valuenow="0"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            id="progress-bar"
+          >
+            0%
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="row">
+    <div class="col-md-12">
+      <div class="alert alert-info">
+        <h5>✨ Pas de mots à réviser pour le moment</h5>
+        <p>Complétez d'abord quelques leçons pour pouvoir réviser!</p>
+        <a href="{% url 'categories' %}" class="btn btn-primary"
+          >Voir les leçons</a
+        >
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const forms = document.querySelectorAll("form");
+    let currentIndex = 0;
+    const cards = document.querySelectorAll(".review-card");
+
+    forms.forEach((form, index) => {
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        // Cacher la carte actuelle
+        cards[currentIndex].style.display = "none";
+
+        // Avancer
+        currentIndex++;
+
+        // Mettre à jour la barre de progression
+        const progress = Math.round((currentIndex / cards.length) * 100);
+        document.getElementById("progress-bar").style.width = progress + "%";
+        document.getElementById("progress-bar").textContent = progress + "%";
+
+        // Afficher la prochaine carte
+        if (currentIndex < cards.length) {
+          cards[currentIndex].style.display = "block";
+        } else {
+          // Session terminée
+          document.getElementById("review-container").innerHTML = `
+                        <div class="alert alert-success">
+                            <h5> Session de révision terminée!</h5>
+                            <p>Excellent travail. Vous avez révisé ${currentIndex} mots.</p>
+                            <a href="{% url 'categories' %}" class="btn btn-primary">Retour aux catégories</a>
+                        </div>
+                    `;
+        }
+
+        // Soumettre le formulaire en arrière-plan
+        fetch(form.action || "", {
+          method: "POST",
+          body: new FormData(form),
+        }).catch(console.error);
+      });
+    });
+  });
+</script>
+{% endblock %}

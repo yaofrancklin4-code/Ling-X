@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Territoire Baoulé{% endblock %}
+
+{% block content %}
+<div
+  class="hero-section"
+  style="
+    background:
+      linear-gradient(
+        135deg,
+        rgba(255, 215, 0, 0.9) 0%,
+        rgba(192, 192, 192, 0.8) 100%
+      ),
+      url({% static 'images/baoule/site_peuple_baoule_hero.jpg' %})
+        center/cover no-repeat;
+    color: #000000;
+    padding: 4rem 0;
+    text-align: center;
+  "
+>
+  <div class="container">
+    <h1 class="display-4 mb-3">
+      Territoire <span style="color: #e8c77a">Baoulé</span>
+    </h1>
+    <p class="lead">Géographie, villages et ressources naturelles</p>
+  </div>
+</div>
+
+<div class="container my-5">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <section id="geo" class="mb-5">
+        <h2
+          class="border-start border-warning border-4 ps-3 mb-4"
+          style="color: #613942"
+        >
+          Géographie
+        </h2>
+        <p class="lead">
+          Le pays Baoulé occupe le centre de la Côte d'Ivoire, dans une zone de
+          forêt dense et de savane. Il s'étend principalement dans les régions
+          du Bélier, du Gbêkê, de l'Iffou et du N'Zi.
+        </p>
+        <div class="alert alert-info">
+          <strong>Villes principales :</strong> Bouaké, Yamoussoukro (capitale
+          politique), Dimbokro, Toumodi, Béoumi.
+        </div>
+      </section>
+
+      <section id="villages" class="mb-5">
+        <h2
+          class="border-start border-warning border-4 ps-3 mb-4"
+          style="color: #613942"
+        >
+          Villages
+        </h2>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <div class="card shadow-sm mb-3 h-100">
+              <div class="card-body">
+                <p>
+                  Les villages baoulé sont organisés autour de la case du chef.
+                  Les habitations traditionnelles sont en terre battue avec des
+                  toits de chaume ou de tôle.
+                </p>
+                <p class="mb-0">
+                  Chaque village possède une place centrale pour les assemblées
+                  et les cérémonies, ainsi qu'un bois sacré où se déroulent les
+                  rituels.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section id="ressources">
+        <h2
+          class="border-start border-warning border-4 ps-3 mb-4"
+          style="color: #613942"
+        >
+          Ressources
+        </h2>
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <div class="card text-center h-100">
+              <div class="card-body">
+                <h3 class="mb-3"></h3>
+                <h5 class="card-title">Agriculture</h5>
+                <p class="card-text small">
+                  Igname, manioc, plantain, maïs, cacao, café, anacarde
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="card text-center h-100">
+              <div class="card-body">
+                <h3 class="mb-3"></h3>
+                <h5 class="card-title">Forêt</h5>
+                <p class="card-text small">
+                  Bois précieux, plantes médicinales, gibier
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="card text-center h-100">
+              <div class="card-body">
+                <h3 class="mb-3"></h3>
+                <h5 class="card-title">Artisanat</h5>
+                <p class="card-text small">
+                  Sculpture sur bois, tissage, poterie, vannerie
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="mt-3">
+          Le territoire baoulé est riche en ressources naturelles qui
+          soutiennent l'économie locale et nationale.
+        </p>
+      </section>
+    </div>
+  </div>
+</div>
+{% endblock %}

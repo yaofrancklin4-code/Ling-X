@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load category_filters %}
+
+{% block title %}Catégories - LingX{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="row mb-5">
+    <div class="col-12 text-center">
+      <h1 class="text-white mb-3">Catégories de Cours</h1>
+      <p class="text-white-50 lead">
+        Choisissez une catégorie pour commencer votre apprentissage du Baoulé
+      </p>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    {% for category in categories %}
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 hover-lift shine-effect">
+        <div class="card-body text-center p-4">
+          <!-- Nom de la catégorie -->
+          <h4 class="card-title fw-bold mb-3">{{ category.name }}</h4>
+
+          <!-- Description -->
+          <p class="card-text text-muted mb-4">
+            {{ category.description|truncatewords:20 }}
+          </p>
+
+          <!-- Bouton d'action -->
+          <div class="d-grid">
+            <a
+              href="{% url 'category_detail' category.id %}"
+              class="btn btn-primary btn-lg"
+            >
+              <i class="fas fa-arrow-right"></i> Explorer
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+      <div class="card text-center py-5">
+        <div class="card-body">
+          <i class="fas fa-folder-open fa-4x text-muted mb-4"></i>
+          <h3>Aucune catégorie disponible</h3>
+          <p class="text-muted">
+            Veuillez revenir bientôt. Des leçons seront bientôt disponibles.
+          </p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  .hover-lift {
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    border-color: #ff8c00;
+  }
+
+  .shine-effect {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shine-effect::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
+    transition: left 0.5s;
+  }
+
+  .shine-effect:hover::before {
+    left: 100%;
+  }
+</style>
+{% endblock %}

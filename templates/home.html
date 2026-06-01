@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load category_filters %}
+
+{% block title %}LingX - Apprendre le Baoulé{% endblock %}
+
+{% block content %}
+<!-- Hero Section avec image culturelle -->
+<div class="hero-section" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{% static "images/baoule/hero_peuple_baoule.jpg" %}') center/cover; padding: 100px 0; color: white; text-align: center;">
+  <div class="container">
+    <h1 class="display-3 fw-bold mb-3" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Akwaaba ! Bienvenue</h1>
+    <p class="lead mb-4" style="font-size: 1.5rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+      Découvrez la langue et la culture du peuple Baoulé de Côte d'Ivoire
+    </p>
+    <p class="mb-4" style="font-size: 1.1rem;">
+      Une plateforme interactive pour apprendre le Baoulé, préserver notre patrimoine culturel<br>
+      et transmettre nos traditions aux générations futures
+    </p>
+    {% if not user.is_authenticated %}
+    <div class="mt-4">
+      <a href="{% url 'register' %}" class="btn btn-primary" style="font-size: 1.3rem; padding: 15px 50px;">
+        Commencer gratuitement
+      </a>
+    </div>
+    {% else %}
+    <div class="mt-4">
+      <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg">
+        Mon tableau de bord
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="container my-5">
+  <!-- Statistiques -->
+
+
+  <!-- Section À propos du Baoulé -->
+  <div class="row mb-5">
+    <div class="col-12 text-center mb-4">
+      <h2 class="text-white">Le Peuple Baoulé</h2>
+      <p class="text-white-50">Une culture riche et millénaire au cœur de la Côte d'Ivoire</p>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 overflow-hidden">
+        <img src="{% static 'images/baoule/rituels_baoule-780x500.png' %}" class="card-img-top" alt="Histoire" style="height: 200px; object-fit: cover;">
+        <div class="card-body text-center">
+          <h5 class="card-title">Histoire Royale</h5>
+          <p class="card-text">Descendants de la Reine Abla Pokou, les Baoulé ont une histoire fascinante de migration et de courage.</p>
+          {% if user.is_authenticated %}
+          <a href="{% url 'histoire' %}" class="btn btn-outline-primary btn-sm">En savoir plus</a>
+          {% else %}
+          <span class="btn btn-outline-primary btn-sm" style="cursor: not-allowed; opacity: 0.7; display: inline-block;">En savoir plus</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 overflow-hidden">
+        <img src="{% static 'images/baoule/courtoisise_us_coutumes_baoule-780x500.png' %}" class="card-img-top" alt="Culture" style="height: 200px; object-fit: cover;">
+        <div class="card-body text-center">
+          <h5 class="card-title">Culture Vivante</h5>
+          <p class="card-text">Art, musique, danse et traditions qui font la richesse du patrimoine baoulé.</p>
+          {% if user.is_authenticated %}
+          <a href="{% url 'culture' %}" class="btn btn-outline-primary btn-sm">Découvrir</a>
+          {% else %}
+          <span class="btn btn-outline-primary btn-sm" style="cursor: not-allowed; opacity: 0.7; display: inline-block;">Découvrir</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 overflow-hidden">
+        <img src="{% static 'images/baoule/baoules-780x500.png' %}" class="card-img-top" alt="Langue" style="height: 200px; object-fit: cover;">
+        <div class="card-body text-center">
+          <h5 class="card-title">Langue Akan</h5>
+          <p class="card-text">Le Baoulé fait partie de la famille des langues Akan, parlé par plus de 4 millions de personnes.</p>
+          {% if user.is_authenticated %}
+          <a href="{% url 'categories' %}" class="btn btn-outline-primary btn-sm">Apprendre</a>
+          {% else %}
+          <span class="btn btn-outline-primary btn-sm" style="cursor: not-allowed; opacity: 0.7; display: inline-block;">Apprendre</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Galerie Culturelle -->
+  <div class="row mb-5">
+    <div class="col-12 text-center mb-4">
+      <h2 class="text-white">Galerie Culturelle Baoulé</h2>
+      <p class="text-white-50">Découvrez l'art, les traditions et la vie quotidienne baoulé</p>
+    </div>
+    <!-- Card 1: Tissus traditionnels -->
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <img src="https://th.bing.com/th/id/R.dd41e16277f38ea023978e35db4f5825?rik=SbkdrFpETZnbtA&pid=ImgRaw&r=0" class="card-img-top" alt="Tissus" style="height: 200px; object-fit: cover;">
+        <div class="card-body">
+          <h5 class="card-title">Tissus Traditionnels</h5>
+          <p class="card-text">Des tissus aux motifs symboliques qui racontent l'histoire du peuple baoulé.</p>
+        </div>
+      </div>
+    </div>
+    <!-- Card 2: Artisanat -->
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <img src="https://static.wixstatic.com/media/a74c47_0424951724d14057a48d7298d410a52d~mv2.jpg/v1/fill/w_450,h_270,fp_0.50_0.50,q_90/a74c47_0424951724d14057a48d7298d410a52d~mv2.webp" class="card-img-top" alt="Artisanat" style="height: 200px; object-fit: cover;">
+        <div class="card-body">
+          <h5 class="card-title">Artisanat Baoulé</h5>
+          <p class="card-text">L'art et l'artisanat traditionnel qui font la richesse du patrimoine baoulé.</p>
+        </div>
+      </div>
+    </div>
+    <!-- Card 3: Femmes Baoulé -->
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <img src="{% static 'images/culture/traditions/traditions_01.jpg' %}" class="card-img-top" alt="Femmes" style="height: 200px; object-fit: cover;">
+        <div class="card-body">
+          <h5 class="card-title">Femmes Baoulé</h5>
+          <p class="card-text">Le rôle important des femmes dans la société baoulé et la transmission des traditions.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Catégories de cours -->
+  <div class="row mb-5">
+    <div class="col-12 text-center mb-4">
+      <h2 class="text-white">Commencez Votre Apprentissage</h2>
+      <p class="text-white-50">
+        Choisissez une catégorie et progressez à votre rythme
+      </p>
+    </div>
+    {% for category in categories %}
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 hover-card">
+        <div class="card-body text-center">
+          <h5 class="card-title fw-bold">{{ category.name }}</h5>
+          <p class="card-text text-muted">{{ category.description|truncatewords:15 }}</p>
+          {% if user.is_authenticated %}
+          <a href="{% url 'category_detail' category.id %}" class="btn btn-primary mt-3 w-100">
+            <i class="fas fa-arrow-right"></i> Explorer
+          </a>
+          {% else %}
+          <span class="btn btn-primary mt-3 w-100" style="cursor: not-allowed; opacity: 0.7; display: inline-block;">
+            <i class="fas fa-lock"></i> Commencer
+          </span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Call to Action -->
+
+  {% if not user.is_authenticated %}
+  <div class="row">
+    <div class="col-12">
+      <div
+        class="card text-center"
+        style="
+          background: linear-gradient(90deg, #007FFF 0%, #0055CC 100%);
+          color: white;
+          border: none;
+        "
+      >
+        <div class="card-body py-5">
+          <h2>Prêt à commencer votre voyage linguistique?</h2>
+          <p class="lead">
+            Rejoignez des milliers d'apprenants et maîtrisez le Baoulé
+          </p>
+          <a href="{% url 'register' %}" class="btn btn-light btn-lg mt-3" style="font-weight: 600; padding: 15px 40px;">
+            Commencer maintenant
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

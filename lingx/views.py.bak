@@ -1,0 +1,1384 @@
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.db.models import Count, Sum, Q
+from django.utils import timezone
+from django.http import JsonResponse
+from datetime import datetime, timedelta
+from rest_framework import viewsets, status
+from rest_framework.decorators import action, api_view, permission_classes
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated, AllowAny, BasePermission
+from .models import *
+from .serializers import *
+
+
+# ============= PERMISSIONS PERSONNALISÉES =============
+class IsLessonUnlockedPermission(BasePermission):
+    """Vérifie que l'utilisateur a accès à la leçon basée sur son niveau"""
+    
+    def has_object_permission(self, request, view, obj):
+        # obj est la leçon
+        if not isinstance(obj, Lesson):
+            return True
+        return is_lesson_unlocked_for_user(request.user, obj)
+
+
+class IsQuizUnlockedPermission(BasePermission):
+    """Vérifie que l'utilisateur a accès au quiz basée sur son niveau"""
+    
+    def has_object_permission(self, request, view, obj):
+        # obj est le quiz
+        if not isinstance(obj, Quiz):
+            return True
+        return is_test_unlocked_for_user(request.user, obj)
+
+
+def is_lesson_unlocked(user_level, lesson_number):
+    """Vérifie si une leçon est débloquée selon le niveau utilisateur.
+    
+    Une leçon est débloquée si son numéro <= niveau utilisateur.
+    """
+    if lesson_number is None or lesson_number <= 0:
+        return False
+    return lesson_number <= max(1, user_level)
+
+
+def is_test_unlocked(user_level, test_number):
+    """Vérifie si un test est débloqué selon le niveau utilisateur.
+    
+    Un test est débloqué si son numéro <= niveau utilisateur.
+    """
+    if test_number is None or test_number <= 0:
+        return False
+    return test_number <= max(1, user_level)
+
+
+def is_lesson_unlocked_for_user(user, lesson):
+    """Vérifie si une leçon est accessible pour l'utilisateur actuel.
+    
+    Utilise lesson.number directement. Si non défini, retourne False (verrouillé).
+    """
+    try:
+        user_level = int(user.profile.level)
+    except Exception:
+        user_level = 1
+
+    lesson_number = lesson.number if hasattr(lesson, 'number') and lesson.number else None
+    return is_lesson_unlocked(user_level, lesson_number)
+
+
+def is_test_unlocked_for_user(user, quiz):
+    """Vérifie si un test est accessible pour l'utilisateur actuel.
+    
+    Utilise quiz.number directement. Si non défini, retourne False (verrouillé).
+    """
+    try:
+        user_level = int(user.profile.level)
+    except Exception:
+        user_level = 1
+
+    quiz_number = quiz.number if hasattr(quiz, 'number') and quiz.number else None
+    return is_test_unlocked(user_level, quiz_number)
+
+
+def is_game_unlocked_for_user(user, game):
+    """Vérifie si un jeu est accessible pour l'utilisateur actuel.
+    
+    Un jeu est débloqué si sa leçon associée est débloquée.
+    """
+    if not game.lesson:
+        return True  # Jeu sans leçon = toujours accessible
+    return is_lesson_unlocked_for_user(user, game.lesson)
+
+# ============= VUES TEMPLATES =============
+
+def home(request):
+    categories = Category.objects.all()[:6]
+    total_users = User.objects.count()
+    total_lessons = Lesson.objects.count()
+    total_words = Vocabulary.objects.count()
+    context = {
+        'categories': categories,
+        'total_users': total_users,
+        'total_lessons': total_lessons,
+        'total_words': total_words,
+    }
+    return render(request, 'home.html', context)
+
+def register_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        password2 = request.POST.get('password2')
+        
+        if password != password2:
+            messages.error(request, 'Les mots de passe ne correspondent pas')
+            return redirect('register')
+        
+        if User.objects.filter(username=username).exists():
+            messages.error(request, 'Ce nom d\'utilisateur existe déjà')
+            return redirect('register')
+        
+        if User.objects.filter(email=email).exists():
+            messages.error(request, 'Cet email est déjà utilisé')
+            return redirect('register')
+        
+        user = User.objects.create_user(username=username, email=email, password=password)
+        # Le UserProfile est créé automatiquement par le signal post_save dans signals.py
+        # Spécifier le backend d'authentification (plusieurs backends sont configurés)
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        login(request, user)
+        messages.success(request, 'Compte créé avec succès!')
+        return redirect('dashboard')
+    
+    return render(request, 'register.html')
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            # Le backend est automatiquement défini par authenticate(), mais on l'ajoute explicitement
+            user.backend = 'django.contrib.auth.backends.ModelBackend'
+            login(request, user)
+            messages.success(request, f'Bienvenue {username}!')
+            return redirect('dashboard')
+        else:
+            messages.error(request, 'Identifiants incorrects')
+    
+    return render(request, 'login.html')
+
+def logout_view(request):
+    logout(request)
+    messages.success(request, 'Déconnexion réussie')
+    return redirect('home')
+
+@login_required
+def dashboard(request):
+    profile = request.user.profile
+    recent_progress = LessonProgress.objects.filter(user=request.user).order_by('-updated_at')[:5]
+    
+    # Statistiques
+    total_lessons_completed = LessonProgress.objects.filter(user=request.user, is_completed=True).count()
+    total_quizzes = QuizAttempt.objects.filter(user=request.user).count()
+    success_rate = 0
+    if total_quizzes > 0:
+        correct_quizzes = QuizAttempt.objects.filter(user=request.user, is_correct=True).count()
+        success_rate = int((correct_quizzes / total_quizzes) * 100)
+    
+    context = {
+        'profile': profile,
+        'recent_progress': recent_progress,
+        'total_lessons_completed': total_lessons_completed,
+        'total_quizzes': total_quizzes,
+        'success_rate': success_rate,
+    }
+    return render(request, 'dashboard.html', context)
+
+@login_required
+def categories_view(request):
+    categories = Category.objects.annotate(lesson_count=Count('lessons'))
+    context = {'categories': categories}
+    return render(request, 'categories.html', context)
+
+@login_required
+def category_detail(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    lessons = category.lessons.all().order_by('order')
+    
+    # Récupérer le niveau de l'utilisateur
+    user_level = int(request.user.profile.level) if hasattr(request.user, 'profile') else 1
+    
+    # Marquer les leçons complétées et calculer l'état de verrouillage
+    for lesson in lessons:
+        progress = LessonProgress.objects.filter(user=request.user, lesson=lesson).first()
+        lesson.is_completed = progress.is_completed if progress else False
+        lesson.user_score = progress.score if progress else 0
+        
+        # Verrouillage selon le niveau de l'utilisateur
+        try:
+            lesson.is_locked = not is_lesson_unlocked_for_user(request.user, lesson)
+            # Ajouter des infos de déblocage
+            lesson.required_level = lesson.number
+            lesson.next_unlock_level = lesson.number + 1 if lesson.is_locked else None
+        except Exception:
+            lesson.is_locked = False
+            lesson.required_level = lesson.number
+            lesson.next_unlock_level = None
+    
+    context = {
+        'category': category,
+        'lessons': lessons,
+        'user_level': user_level,
+    }
+    return render(request, 'category_detail.html', context)
+
+@login_required
+def lesson_detail(request, lesson_id):
+    lesson = get_object_or_404(Lesson, id=lesson_id)
+    
+    # Récupérer le niveau de l'utilisateur
+    try:
+        user_level = int(request.user.profile.level)
+    except (AttributeError, ValueError):
+        user_level = 1
+    
+    # Vérifier accès selon niveau - PROTECTION STRICTE
+    unlocked = is_lesson_unlocked_for_user(request.user, lesson)
+    
+    if not unlocked:
+        # Accès refusé - afficher la page verrouillée
+        progress, created = LessonProgress.objects.get_or_create(
+            user=request.user,
+            lesson=lesson
+        )
+        
+        # Calculer le numéro de la leçon précédente à débloquer
+        previous_lesson_number = lesson.number - 1 if lesson.number > 1 else 0
+        
+        context = {
+            'lesson': lesson,
+            'vocabularies': [],
+            'quizzes': [],
+            'progress': progress,
+            'locked': True,
+            'user_level': user_level,
+            'required_level': lesson.number,
+            'previous_lesson_number': previous_lesson_number,
+        }
+        return render(request, 'lesson_detail.html', context)
+
+    # Accès autorisé
+    vocabularies = lesson.vocabularies.all()
+    quizzes = lesson.quizzes.all()
+    
+    progress, created = LessonProgress.objects.get_or_create(
+        user=request.user,
+        lesson=lesson
+    )
+    
+    context = {
+        'lesson': lesson,
+        'vocabularies': vocabularies,
+        'quizzes': quizzes,
+        'progress': progress,
+        'locked': False,
+        'user_level': user_level,
+        'required_level': lesson.number,
+    }
+    return render(request, 'lesson_detail.html', context)
+
+@login_required
+def quiz_view(request, lesson_id):
+    lesson = get_object_or_404(Lesson, id=lesson_id)
+    # Bloquer l'accès si la leçon n'est pas déverrouillée pour l'utilisateur
+    if not is_lesson_unlocked_for_user(request.user, lesson):
+        messages.error(request, 'Cette leçon est verrouillée pour votre niveau. Terminez les leçons précédentes pour y accéder.')
+        return redirect('lesson_detail', lesson_id=lesson.id)
+
+    quizzes = lesson.quizzes.all()
+    
+    if request.method == 'POST':
+        score = 0
+        total_points = 0
+        
+        for quiz in quizzes:
+            # Vérifier que le test est déverrouillé avant de traiter
+            if not is_test_unlocked_for_user(request.user, quiz):
+                messages.error(request, f'Le test "{quiz.question[:50]}" n\'est pas déverrouillé.')
+                return redirect('lesson_detail', lesson_id=lesson.id)
+            
+            choice_id = request.POST.get(f'quiz_{quiz.id}')
+            if choice_id:
+                choice = QuizChoice.objects.get(id=choice_id)
+                is_correct = choice.is_correct
+                points = quiz.points if is_correct else 0
+                
+                QuizAttempt.objects.create(
+                    user=request.user,
+                    quiz=quiz,
+                    selected_choice=choice,
+                    is_correct=is_correct,
+                    points_earned=points
+                )
+                
+                if is_correct:
+                    score += points
+                    total_points += points
+        
+        # Mettre à jour la progression
+        progress, created = LessonProgress.objects.get_or_create(
+            user=request.user,
+            lesson=lesson
+        )
+        progress.score = max(progress.score, score)
+        progress.attempts += 1
+        
+        was_completed = progress.is_completed
+        
+        if score >= (lesson.points * 0.7):  # 70% pour réussir
+            progress.is_completed = True
+            progress.completed_at = timezone.now()
+        
+        progress.save()
+        
+        # Ajouter des points au profil
+        profile = request.user.profile
+        profile.add_points(total_points)
+        
+        # Si la leçon vient d'être validée pour la première fois et a un numéro
+        # augmenter le niveau pour débloquer la leçon suivante
+        if progress.is_completed and not was_completed and lesson.number:
+            # Le niveau doit être au minimum lesson.number + 1 pour débloquer la leçon suivante
+            next_level = lesson.number + 1
+            if profile.level < next_level:
+                profile.level = next_level
+                profile.save()
+                messages.success(request, f'🎉 Bravo! Vous êtes passé au Niveau {next_level}!')
+        
+        
+        messages.success(request, f'Quiz terminé! Score: {score} points')
+        return redirect('lesson_detail', lesson_id=lesson.id)
+    
+    context = {
+        'lesson': lesson,
+        'quizzes': quizzes,
+    }
+    return render(request, 'quiz.html', context)
+
+@login_required
+def tests_list(request):
+    """Affiche la liste de tous les tests (quizzes) avec état de déblocage"""
+    # Afficher TOUTES les leçons avec leurs tests (déverrouillés ou non)
+    lessons = Lesson.objects.all().order_by('number')
+    lessons_with_quizzes = []
+    
+    # Récupérer le niveau de l'utilisateur
+    try:
+        user_level = int(request.user.profile.level)
+    except (AttributeError, ValueError):
+        user_level = 1
+    
+    for lesson in lessons:
+        quizzes = lesson.quizzes.all()
+        if quizzes.exists():
+            # Récupérer le meilleur score de l'utilisateur pour cette leçon
+            best_attempt = QuizAttempt.objects.filter(
+                user=request.user,
+                quiz__lesson=lesson
+            ).order_by('-points_earned').first()
+
+            # Préparer la liste des quizzes avec état de déblocage
+            quiz_list = []
+            for quiz in quizzes.order_by('number'):
+                quiz_list.append({
+                    'quiz': quiz,
+                    'unlocked': is_test_unlocked_for_user(request.user, quiz)
+                })
+            
+            lessons_with_quizzes.append({
+                'lesson': lesson,
+                'quiz_count': quizzes.count(),
+                'best_score': best_attempt.points_earned if best_attempt else 0,
+                'attempts': QuizAttempt.objects.filter(
+                    user=request.user,
+                    quiz__lesson=lesson
+                ).count(),
+                'quizzes': quiz_list,
+                'lesson_unlocked': is_lesson_unlocked_for_user(request.user, lesson),
+                'required_level': lesson.number,
+            })
+    
+    context = {
+        'lessons_with_quizzes': lessons_with_quizzes,
+        'user_level': user_level,
+    }
+    return render(request, 'tests_list.html', context)
+
+@login_required
+def games_view(request):
+    games = MiniGame.objects.filter(is_active=True)
+    user_scores = GameScore.objects.filter(user=request.user).order_by('-created_at')[:10]
+    
+    # Ajouter les informations de déblocage pour chaque jeu
+    games_with_unlock = []
+    for game in games:
+        games_with_unlock.append({
+            'game': game,
+            'unlocked': is_game_unlocked_for_user(request.user, game)
+        })
+    
+    context = {
+        'games': games_with_unlock,
+        'user_scores': user_scores,
+    }
+    return render(request, 'games.html', context)
+
+@login_required
+def save_game_score(request):
+    """Enregistre le score d'un jeu et met à jour le profil utilisateur"""
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
+    
+    try:
+        import json
+        data = json.loads(request.body)
+        game_id = data.get('game_id')
+        score = data.get('score')
+        xp_earned = data.get('xp_earned')
+        
+        # Valider les données
+        if not all([game_id, score is not None, xp_earned is not None]):
+            return JsonResponse({'error': 'Missing required fields'}, status=400)
+        
+        # Récupérer le jeu
+        game = get_object_or_404(MiniGame, id=game_id)
+        
+        # Créer le GameScore
+        game_score = GameScore.objects.create(
+            user=request.user,
+            game=game,
+            score=score,
+            points_earned=xp_earned
+        )
+        
+        # Mettre à jour le profil utilisateur
+        profile = request.user.profile
+        profile.total_points += xp_earned
+        
+        # Calculer le nouveau niveau (1 niveau tous les 100 XP)
+        profile.level = (profile.total_points // 100) + 1
+        profile.save()
+        
+        return JsonResponse({
+            'success': True,
+            'message': f'Score enregistré! +{xp_earned} XP',
+            'new_total_points': profile.total_points,
+            'new_level': profile.level,
+            'game_score_id': game_score.id
+        })
+    
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+@login_required
+def game_play(request, game_id):
+    """Affiche l'interface de jeu avec les vocabulaires appropriés"""
+    game = get_object_or_404(MiniGame, id=game_id)
+    
+    # Récupérer les vocabulaires pour le jeu
+    # Si le jeu est lié à une leçon, utiliser son vocabulaire
+    if game.lesson:
+        vocabularies = Vocabulary.objects.filter(
+            lesson=game.lesson
+        ).order_by('?')[:20]
+    else:
+        # Sinon, prendre du vocabulaire au hasard
+        vocabularies = Vocabulary.objects.order_by('?')[:20]
+    
+    # Préparer les paires pour JavaScript {baoule, french}
+    vocabulary_pairs = [
+        {
+            'baoule': v.word_baule,
+            'french': v.word_french,
+            'pronunciation': v.pronunciation or ''
+        }
+        for v in vocabularies
+    ]
+    
+    # Convertir en JSON sécurisé pour le template
+    import json
+    vocabulary_pairs_json = json.dumps(vocabulary_pairs)
+    
+    context = {
+        'game': game,
+        'vocabulary_pairs': vocabulary_pairs_json,
+    }
+    return render(request, 'game_play.html', context)
+
+@login_required
+def leaderboard_view(request):
+    period = request.GET.get('period', 'all_time')
+    
+    if period == 'daily':
+        start_date = timezone.now().date()
+        end_date = start_date
+    elif period == 'weekly':
+        start_date = timezone.now().date() - timedelta(days=7)
+        end_date = timezone.now().date()
+    elif period == 'monthly':
+        start_date = timezone.now().date() - timedelta(days=30)
+        end_date = timezone.now().date()
+    else:
+        start_date = None
+        end_date = None
+    
+    if start_date:
+        top_users = UserProfile.objects.filter(
+            user__lesson_progress__updated_at__date__range=[start_date, end_date]
+        ).annotate(
+            period_points=Sum('user__lesson_progress__score')
+        ).order_by('-period_points')[:50]
+    else:
+        top_users = UserProfile.objects.order_by('-total_points')[:50]
+    
+    context = {
+        'top_users': top_users,
+        'period': period,
+    }
+    return render(request, 'leaderboard.html', context)
+
+@login_required
+def profile_view(request):
+    profile = request.user.profile
+    progress = LessonProgress.objects.filter(user=request.user).order_by('-updated_at')
+    
+    context = {
+        'profile': profile,
+        'progress': progress,
+    }
+    return render(request, 'profile.html', context)
+
+@login_required
+def community_view(request):
+    # Filtrer par rôle
+    role_filter = request.GET.get('role', 'all')
+    
+    if role_filter == 'teacher':
+        profiles = UserProfile.objects.filter(role='teacher', is_verified=True, is_available=True)
+    elif role_filter == 'avance':
+        profiles = UserProfile.objects.filter(role='avance', is_verified=True, is_available=True)
+    elif role_filter == 'student':
+        profiles = UserProfile.objects.filter(role='student', is_available=True)
+    else:
+        profiles = UserProfile.objects.filter(is_available=True)
+    
+    # Exclure l'utilisateur actuel
+    profiles = profiles.exclude(user=request.user).order_by('-total_points')
+    
+    # Séparer par catégories
+    teachers = UserProfile.objects.filter(role='teacher', is_verified=True, is_available=True).exclude(user=request.user)[:6]
+    experts = UserProfile.objects.filter(role='avance', is_verified=True, is_available=True).exclude(user=request.user)[:6]
+    students = UserProfile.objects.filter(role='student', is_available=True).exclude(user=request.user).order_by('-total_points')[:12]
+    
+    context = {
+        'profiles': profiles,
+        'teachers': teachers,
+        'experts': experts,
+        'students': students,
+        'role_filter': role_filter,
+    }
+    return render(request, 'community.html', context)
+
+# ============= DICTIONNAIRE COMPLET =============
+# (Fonction supprimée - dictionnaire retiré du projet)
+
+@login_required
+def dictionary_stats(request):
+    """Affiche les statistiques du dictionnaire"""
+    total_words = Vocabulary.objects.count()
+    total_lessons = Lesson.objects.count()
+    total_categories = Category.objects.count()
+    total_quizzes = Quiz.objects.count()
+    
+    # Mots par catégorie
+    words_by_category = Category.objects.annotate(
+        word_count=Count('lessons__vocabularies')
+    ).order_by('-word_count')
+    
+    # Leçons avec le plus de mots
+    lessons_with_words = Lesson.objects.annotate(
+        vocab_count=Count('vocabularies'),
+        quiz_count=Count('quizzes')
+    ).order_by('-vocab_count')[:10]
+    
+    context = {
+        'total_words': total_words,
+        'total_lessons': total_lessons,
+        'total_categories': total_categories,
+        'total_quizzes': total_quizzes,
+        'words_by_category': words_by_category,
+        'lessons_with_words': lessons_with_words,
+    }
+    return render(request, 'dictionary_stats.html', context)
+
+@login_required
+def dictionary_view(request):
+    """Affiche le dictionnaire Baoulé-Français (16 mots officiels uniquement)."""
+    from .models import DictionaryEntry
+    query     = request.GET.get('q', '').strip()
+    direction = request.GET.get('direction', 'fr_to_baoule')
+
+    entries = DictionaryEntry.objects.all()
+
+    if query:
+        if direction == 'baule_to_fr':
+            entries = entries.filter(
+                Q(word_baule__icontains=query) | Q(word_french__icontains=query)
+            )
+        else:
+            entries = entries.filter(
+                Q(word_french__icontains=query) | Q(word_baule__icontains=query)
+            )
+
+    entries = entries.order_by('word_baule')
+
+    context = {
+        'query':        query,
+        'direction':    direction,
+        'vocabularies': entries,           # nom conservé pour compatibilité template
+        'total_words':  DictionaryEntry.objects.count(),
+    }
+    return render(request, 'dictionnaire.html', context)
+@login_required
+@api_view(['POST'])
+def submit_quiz_answer(request):
+    """Endpoint AJAX pour soumettre une réponse à une question et attribuer les points immédiatement."""
+    try:
+        data = request.data if hasattr(request, 'data') else request.POST
+        quiz_id = int(data.get('quiz_id'))
+        choice_id = int(data.get('choice_id'))
+    except Exception:
+        return Response({'error': 'Données invalides'}, status=400)
+
+    quiz = get_object_or_404(Quiz, id=quiz_id)
+    try:
+        choice = QuizChoice.objects.get(id=choice_id, quiz=quiz)
+    except QuizChoice.DoesNotExist:
+        return Response({'error': 'Choix introuvable'}, status=404)
+
+    is_correct = choice.is_correct
+    points = quiz.points if is_correct else 0
+
+    attempt = QuizAttempt.objects.create(
+        user=request.user,
+        quiz=quiz,
+        selected_choice=choice,
+        is_correct=is_correct,
+        points_earned=points
+    )
+
+    # Mettre à jour progression/score utilisateur
+    profile = request.user.profile
+    profile.add_points(points)
+
+    return Response({
+        'success': True,
+        'is_correct': is_correct,
+        'points_awarded': points,
+        'new_total_points': profile.total_points,
+    })
+
+
+@login_required
+@api_view(['POST'])
+def submit_game_points(request):
+    """Endpoint AJAX pour attribuer des points progressifs pendant une partie (appel JS)."""
+    try:
+        data = request.data if hasattr(request, 'data') else request.POST
+        points = int(data.get('points', 0))
+    except Exception:
+        return Response({'error': 'Données invalides'}, status=400)
+
+    if points <= 0:
+        return Response({'success': False, 'message': 'Aucun point à attribuer'})
+
+    profile = request.user.profile
+    profile.add_points(points)
+
+    return Response({'success': True, 'points_awarded': points, 'new_total_points': profile.total_points})
+
+@login_required
+def vocabulary_detail(request, vocab_id):
+    """Détail d'un mot de vocabulaire"""
+    vocabulary = get_object_or_404(Vocabulary, id=vocab_id)
+    
+    # Trouver des mots similaires
+    similar_words = Vocabulary.objects.filter(
+        lesson=vocabulary.lesson
+    ).exclude(id=vocab_id)[:5]
+    
+    context = {
+        'vocabulary': vocabulary,
+        'similar_words': similar_words,
+    }
+    return render(request, 'vocabulary_detail.html', context)
+
+# ============= RÉVISION SPACED REPETITION =============
+
+@login_required
+def review_vocabulary(request):
+    """Système de révision SRS (Spaced Repetition System)"""
+    user = request.user
+    
+    # Récupérer les mots à réviser
+    today = timezone.now().date()
+    vocabularies_to_review = Vocabulary.objects.filter(
+        lesson__in=LessonProgress.objects.filter(
+            user=user, is_completed=True
+        ).values_list('lesson', flat=True)
+    ).order_by('?')[:10]
+    
+    if request.method == 'POST':
+        vocab_id = request.POST.get('vocab_id')
+        difficulty = request.POST.get('difficulty')  # easy, medium, hard
+        
+        vocab = get_object_or_404(Vocabulary, id=vocab_id)
+        
+        # Enregistrer la révision
+        review = VocabularyReview.objects.create(
+            user=user,
+            vocabulary=vocab,
+            difficulty_rating=difficulty,
+            reviewed_at=timezone.now()
+        )
+        
+        messages.success(request, 'Mot révisé!')
+        return redirect('review_vocabulary')
+    
+    context = {
+        'vocabularies': vocabularies_to_review,
+    }
+    return render(request, 'review_vocabulary.html', context)
+
+# ============= STATS UTILISATEUR =============
+
+@login_required  
+def user_stats(request):
+    """Statistiques d'apprentissage de l'utilisateur"""
+    user = request.user
+    
+    # Statistiques globales
+    total_lessons_started = LessonProgress.objects.filter(user=user).count()
+    total_lessons_completed = LessonProgress.objects.filter(user=user, is_completed=True).count()
+    total_quizzes_attempted = QuizAttempt.objects.filter(user=user).count()
+    total_points = user.profile.total_points
+    
+    # Taux de réussite
+    correct_quizzes = QuizAttempt.objects.filter(user=user, is_correct=True).count()
+    success_rate = (correct_quizzes / total_quizzes_attempted * 100) if total_quizzes_attempted > 0 else 0
+    
+    # Progrès par catégorie
+    category_progress = []
+    for category in Category.objects.all():
+        completed = LessonProgress.objects.filter(
+            user=user,
+            lesson__category=category,
+            is_completed=True
+        ).count()
+        total = Lesson.objects.filter(category=category).count()
+        if total > 0:
+            category_progress.append({
+                'category': category,
+                'completed': completed,
+                'total': total,
+                'percentage': int((completed / total) * 100)
+            })
+    
+    # Graphique d'activité (derniers 30 jours)
+    from django.db.models import Count
+    last_30_days = timezone.now() - timedelta(days=30)
+    activity_data = LessonProgress.objects.filter(
+        user=user,
+        updated_at__gte=last_30_days
+    ).extra(
+        select={'date': 'DATE(updated_at)'}
+    ).values('date').annotate(
+        count=Count('id')
+    ).order_by('date')
+    
+    context = {
+        'total_lessons_started': total_lessons_started,
+        'total_lessons_completed': total_lessons_completed,
+        'total_quizzes_attempted': total_quizzes_attempted,
+        'total_points': total_points,
+        'success_rate': int(success_rate),
+        'category_progress': category_progress,
+        'activity_data': list(activity_data),
+    }
+    return render(request, 'user_stats.html', context)
+
+
+# ============= GAMIFICATION & NOTIFICATIONS =============
+
+@login_required
+def notifications_view(request):
+    """Affiche toutes les notifications de l'utilisateur"""
+    from lingx.services import GamificationService
+    
+    page = request.GET.get('page', 1)
+    unread_only = request.GET.get('filter') == 'unread'
+    
+    notifications_query = UserNotification.objects.filter(user=request.user)
+    if unread_only:
+        notifications_query = notifications_query.filter(is_read=False)
+    
+    from django.core.paginator import Paginator
+    paginator = Paginator(notifications_query.order_by('-created_at'), 15)
+    page_obj = paginator.get_page(page)
+    
+    unread_count = UserNotification.objects.filter(user=request.user, is_read=False).count()
+    
+    context = {
+        'notifications': page_obj,
+        'unread_count': unread_count,
+        'unread_only': unread_only,
+    }
+    return render(request, 'notifications.html', context)
+
+@login_required
+def mark_notification_read(request, notification_id):
+    """Marque une notification comme lue"""
+    notification = get_object_or_404(UserNotification, id=notification_id, user=request.user)
+    notification.is_read = True
+    notification.read_at = timezone.now()
+    notification.save()
+    
+    next_url = request.GET.get('next', 'notifications')
+    return redirect(next_url)
+
+@login_required
+def daily_reward_view(request):
+    """Revendique la récompense quotidienne"""
+    from lingx.services import GamificationService
+    
+    if request.method == 'POST':
+        reward, message = GamificationService.claim_daily_reward(request.user)
+        if reward:
+            messages.success(request, message)
+        else:
+            messages.info(request, message)
+        return redirect('dashboard')
+    
+    # Vérifier si une récompense est disponible
+    from datetime import date
+    today = date.today()
+    reward_today = DailyReward.objects.filter(user=request.user, reward_date=today).first()
+    
+    streak = UserStreak.objects.filter(user=request.user).first()
+    
+    context = {
+        'reward_today': reward_today,
+        'streak': streak,
+    }
+    return render(request, 'daily_reward.html', context)
+
+@login_required
+def achievements_view(request):
+    """Affiche les achievements de l'utilisateur"""
+    user_achievements = UserAchievement.objects.filter(user=request.user).select_related('achievement').order_by('-unlocked_at')
+    
+    # Tous les achievements
+    all_achievements = Achievement.objects.all().order_by('category')
+    
+    # Achievements non débloqués
+    unlocked_ids = UserAchievement.objects.filter(user=request.user).values_list('achievement_id', flat=True)
+    locked_achievements = Achievement.objects.exclude(id__in=unlocked_ids).order_by('category')
+    
+    context = {
+        'user_achievements': user_achievements,
+        'locked_achievements': locked_achievements,
+    }
+    return render(request, 'achievements.html', context)
+
+@login_required
+def gamification_dashboard(request):
+    """Dashboard de gamification complet"""
+    from lingx.services import GamificationService
+    
+    user = request.user
+    profile = user.profile
+    
+    # Notifications récentes
+    recent_notifications = UserNotification.objects.filter(user=user).order_by('-created_at')[:5]
+    unread_count = UserNotification.objects.filter(user=user, is_read=False).count()
+    
+    # Streak
+    streak = UserStreak.objects.filter(user=user).first()
+    
+    # Récompense quotidienne
+    from datetime import date
+    today = date.today()
+    reward_today = DailyReward.objects.filter(user=user, reward_date=today).first()
+    
+    # Achievements récents
+    recent_achievements = UserAchievement.objects.filter(user=user).order_by('-unlocked_at')[:4]
+    
+    # Progression vers le prochain niveau
+    next_level_points = (profile.level) * 100
+    current_level_points = (profile.level - 1) * 100
+    points_in_level = profile.total_points - current_level_points
+    points_for_level = next_level_points - current_level_points
+    level_progress = int((points_in_level / points_for_level) * 100) if points_for_level > 0 else 0
+    
+    context = {
+        'profile': profile,
+        'recent_notifications': recent_notifications,
+        'unread_count': unread_count,
+        'streak': streak,
+        'reward_today': reward_today,
+        'recent_achievements': recent_achievements,
+        'level_progress': level_progress,
+        'next_level_points': next_level_points,
+    }
+    return render(request, 'gamification_dashboard.html', context)
+
+# ============= API REST VIEWSETS =============
+
+class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [AllowAny]
+
+class LessonViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Lesson.objects.all()
+    serializer_class = LessonSerializer
+    permission_classes = [IsAuthenticated, IsLessonUnlockedPermission]
+    
+    @action(detail=True, methods=['get'])
+    def vocabularies(self, request, pk=None):
+        lesson = self.get_object()
+        # Vérifier l'accès à la leçon avant de retourner le vocabulaire
+        if not is_lesson_unlocked_for_user(request.user, lesson):
+            return Response(
+                {'detail': 'Vous n\'avez pas accès au vocabulaire de cette leçon.'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        vocabularies = lesson.vocabularies.all()
+        serializer = VocabularySerializer(vocabularies, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=True, methods=['get'])
+    def quizzes(self, request, pk=None):
+        lesson = self.get_object()
+        # Vérifier l'accès à la leçon avant de retourner les quizzes
+        if not is_lesson_unlocked_for_user(request.user, lesson):
+            return Response(
+                {'detail': 'Vous n\'avez pas accès aux quiz de cette leçon.'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        quizzes = lesson.quizzes.all()
+        serializer = QuizSerializer(quizzes, many=True)
+        return Response(serializer.data)
+
+class QuizViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Quiz.objects.all()
+    serializer_class = QuizSerializer
+    permission_classes = [IsAuthenticated, IsQuizUnlockedPermission]
+    
+    @action(detail=True, methods=['post'])
+    def submit_answer(self, request, pk=None):
+        quiz = self.get_object()
+        choice_id = request.data.get('choice_id')
+        
+        try:
+            choice = QuizChoice.objects.get(id=choice_id, quiz=quiz)
+            is_correct = choice.is_correct
+            points = quiz.points if is_correct else 0
+            
+            attempt = QuizAttempt.objects.create(
+                user=request.user,
+                quiz=quiz,
+                selected_choice=choice,
+                is_correct=is_correct,
+                points_earned=points
+            )
+            
+            if is_correct:
+                profile = request.user.profile
+                profile.add_points(points)
+            
+            return Response({
+                'is_correct': is_correct,
+                'points_earned': points,
+                'correct_answer': quiz.choices.filter(is_correct=True).first().choice_text if not is_correct else None
+            })
+        except QuizChoice.DoesNotExist:
+            return Response({'error': 'Choix invalide'}, status=status.HTTP_400_BAD_REQUEST)
+
+class UserProfileViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+    permission_classes = [IsAuthenticated]
+    
+    @action(detail=False, methods=['get'])
+    def me(self, request):
+        profile = request.user.profile
+        serializer = self.get_serializer(profile)
+        return Response(serializer.data)
+
+class GameScoreViewSet(viewsets.ModelViewSet):
+    queryset = GameScore.objects.all()
+    serializer_class = GameScoreSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def perform_create(self, serializer):
+        game_score = serializer.save(user=self.request.user)
+        if game_score.points_earned > 0:
+            profile = self.request.user.profile
+            profile.add_points(game_score.points_earned)
+
+
+# ============= NOUVEAUX VIEWSETS POUR CONTENU CULTUREL =============
+
+class ProverbViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Proverb.objects.all()
+    serializer_class = ProverbSerializer
+    permission_classes = [AllowAny]
+    
+    @action(detail=False, methods=['get'])
+    def by_category(self, request):
+        category = request.query_params.get('category', None)
+        if category:
+            proverbs = Proverb.objects.filter(category=category)
+        else:
+            proverbs = Proverb.objects.all()
+        serializer = self.get_serializer(proverbs, many=True)
+        return Response(serializer.data)
+
+
+class CultureContentViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = CultureContent.objects.all()
+    serializer_class = CultureContentSerializer
+    permission_classes = [AllowAny]
+    
+    @action(detail=False, methods=['get'])
+    def featured(self, request):
+        cultures = CultureContent.objects.filter(is_featured=True)
+        serializer = self.get_serializer(cultures, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'])
+    def by_type(self, request):
+        content_type = request.query_params.get('type', None)
+        if content_type:
+            cultures = CultureContent.objects.filter(content_type=content_type)
+        else:
+            cultures = CultureContent.objects.all()
+        serializer = self.get_serializer(cultures, many=True)
+        return Response(serializer.data)
+
+
+class BaouléNameViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = BaouleName.objects.all()
+    serializer_class = BaouléNameSerializer
+    permission_classes = [AllowAny]
+    
+    @action(detail=False, methods=['get'])
+    def by_gender(self, request):
+        gender = request.query_params.get('gender', None)
+        if gender in ['M', 'F', 'U']:
+            names = BaouleName.objects.filter(gender=gender)
+        else:
+            names = BaouleName.objects.all()
+        serializer = self.get_serializer(names, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'])
+    def search(self, request):
+        query = request.query_params.get('q', '')
+        if query:
+            names = BaouleName.objects.filter(
+                Q(name_baule__icontains=query) | 
+                Q(meaning_french__icontains=query)
+            )
+        else:
+            names = BaouleName.objects.all()
+        serializer = self.get_serializer(names, many=True)
+        return Response(serializer.data)
+
+
+class StoryViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Story.objects.all()
+    serializer_class = StorySerializer
+    permission_classes = [AllowAny]
+    
+    @action(detail=False, methods=['get'])
+    def featured(self, request):
+        stories = Story.objects.filter(is_featured=True)
+        serializer = self.get_serializer(stories, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'])
+    def by_type(self, request):
+        story_type = request.query_params.get('type', None)
+        if story_type:
+            stories = Story.objects.filter(story_type=story_type)
+        else:
+            stories = Story.objects.all()
+        serializer = self.get_serializer(stories, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'])
+    def by_difficulty(self, request):
+        difficulty = request.query_params.get('difficulty', None)
+        if difficulty:
+            stories = Story.objects.filter(difficulty=difficulty)
+        else:
+            stories = Story.objects.all()
+        serializer = self.get_serializer(stories, many=True)
+        return Response(serializer.data)
+
+
+# ============= VUES DE TEMPLATES POUR NOUVEAUX CONTENUS =============
+
+def culture_view(request):
+    """Affiche tous les contenus culturels"""
+    cultures = CultureContent.objects.all()
+    featured_cultures = CultureContent.objects.filter(is_featured=True)[:3]
+    context = {
+        'cultures': cultures,
+        'featured_cultures': featured_cultures,
+    }
+    return render(request, 'culture.html', context)
+
+def histoire_view(request):
+    """Page Histoire du peuple Baoulé"""
+    return render(request, 'histoire.html')
+
+def societe_view(request):
+    """Page Société Baoulé"""
+    return render(request, 'societe.html')
+
+def territoire_view(request):
+    """Page Territoire Baoulé"""
+    return render(request, 'territoire.html')
+
+
+def stories_view(request):
+    """Liste toutes les histoires et contes"""
+    stories = Story.objects.all()
+    featured_stories = Story.objects.filter(is_featured=True)
+    context = {
+        'stories': stories,
+        'featured_stories': featured_stories,
+    }
+    return render(request, 'stories.html', context)
+
+
+@login_required
+def story_detail(request, story_id):
+    """Affiche le détail d'une histoire"""
+    story = get_object_or_404(Story, id=story_id)
+    
+    # Enregistrer la consultation
+    user_story_view, created = UserStoryView.objects.get_or_create(
+        user=request.user,
+        story=story
+    )
+    
+    context = {
+        'story': story,
+        'user_story_view': user_story_view,
+    }
+    return render(request, 'story_detail.html', context)
+
+
+@login_required
+def baule_names_view(request):
+    """Affiche les prénoms baoulés"""
+    gender = request.GET.get('gender', '')
+    
+    if gender in ['M', 'F', 'U']:
+        names = BaouleName.objects.filter(gender=gender)
+    else:
+        names = BaouleName.objects.all()
+    
+    context = {
+        'names': names,
+        'selected_gender': gender,
+    }
+    return render(request, 'baule_names.html', context)
+
+
+def proverbs_view(request):
+    """Affiche les proverbes baoulés"""
+    category = request.GET.get('category', '')
+    
+    if category:
+        proverbs = Proverb.objects.filter(category=category)
+        categories = Proverb.objects.values_list('category', flat=True).distinct()
+    else:
+        proverbs = Proverb.objects.all()
+        categories = Proverb.objects.values_list('category', flat=True).distinct()
+    
+    context = {
+        'proverbs': proverbs,
+        'categories': categories,
+        'selected_category': category,
+    }
+    return render(request, 'proverbs.html', context)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_stats_api(request):
+    profile = request.user.profile
+    total_lessons = LessonProgress.objects.filter(user=request.user, is_completed=True).count()
+    total_quizzes = QuizAttempt.objects.filter(user=request.user).count()
+    correct_quizzes = QuizAttempt.objects.filter(user=request.user, is_correct=True).count()
+    total_badges = UserBadge.objects.filter(user=request.user).count()
+    
+    return Response({
+        'total_points': profile.total_points,
+        'level': profile.level,
+        'streak_days': profile.streak_days,
+        'total_lessons_completed': total_lessons,
+        'total_quizzes': total_quizzes,
+        'correct_quizzes': correct_quizzes,
+        'success_rate': (correct_quizzes / total_quizzes * 100) if total_quizzes > 0 else 0,
+        'total_badges': total_badges,
+    })
+
+
+# ============= GOOGLE OAUTH CUSTOM VIEWS =============
+
+def google_login_direct(request):
+    """
+    Custom Google OAuth login - redirects directly to Google without confirmation page
+    """
+    from django.conf import settings
+    
+    try:
+        # Get Google OAuth credentials from settings
+        google_client_id = settings.SOCIALACCOUNT_PROVIDERS.get('google', {}).get('APP', {}).get('client_id')
+        
+        if not google_client_id:
+            # Try to get from database if not in settings
+            from allauth.socialaccount.models import SocialApp
+            google_app = SocialApp.objects.get(provider='google')
+            google_client_id = google_app.client_id
+        
+        # Google OAuth parameters
+        redirect_uri = request.build_absolute_uri('/auth/google/callback/')
+        scope = 'openid email profile'
+        state = request.session.session_key or 'state'
+        
+        # Redirect directly to Google OAuth consent
+        google_oauth_url = f"https://accounts.google.com/o/oauth2/v2/auth?client_id={google_client_id}&redirect_uri={redirect_uri}&response_type=code&scope={scope}&state={state}"
+        
+        return redirect(google_oauth_url)
+    except Exception as e:
+        messages.error(request, f'Google OAuth not configured: {str(e)}')
+        return redirect('login')
+
+
+def google_login_callback(request):
+    """
+    Handle Google OAuth callback - create/login user automatically
+    """
+    from allauth.socialaccount.models import SocialAccount
+    from django.conf import settings
+    import requests
+    import json
+    
+    code = request.GET.get('code')
+    state = request.GET.get('state')
+    error = request.GET.get('error')
+    
+    if error:
+        messages.error(request, f'Google auth failed: {error}')
+        return redirect('login')
+    
+    if not code:
+        messages.error(request, 'No authorization code received')
+        return redirect('login')
+    
+    try:
+        # Get Google OAuth credentials from settings or database
+        google_config = settings.SOCIALACCOUNT_PROVIDERS.get('google', {})
+        app_config = google_config.get('APP', {})
+        
+        if not app_config:
+            # Try to get from database
+            from allauth.socialaccount.models import SocialApp
+            google_app = SocialApp.objects.get(provider='google')
+            client_id = google_app.client_id
+            client_secret = google_app.secret
+        else:
+            client_id = app_config.get('client_id')
+            client_secret = app_config.get('secret')
+        
+        # Exchange code for access token
+        token_url = 'https://oauth2.googleapis.com/token'
+        redirect_uri = request.build_absolute_uri('/auth/google/callback/')
+        
+        token_data = {
+            'code': code,
+            'client_id': client_id,
+            'client_secret': client_secret,
+            'redirect_uri': redirect_uri,
+            'grant_type': 'authorization_code',
+        }
+        
+        response = requests.post(token_url, data=token_data)
+        response.raise_for_status()
+        tokens = response.json()
+        access_token = tokens.get('access_token')
+        
+        # Get user info from Google
+        userinfo_url = 'https://www.googleapis.com/oauth2/v2/userinfo'
+        headers = {'Authorization': f'Bearer {access_token}'}
+        userinfo_response = requests.get(userinfo_url, headers=headers)
+        userinfo_response.raise_for_status()
+        userinfo = userinfo_response.json()
+        
+        # Get or create user
+        email = userinfo.get('email', '')
+        first_name = userinfo.get('given_name', '')
+        last_name = userinfo.get('family_name', '')
+        
+        # Find or create user
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            # Create new user
+            username = email.split('@')[0]
+            counter = 1
+            while User.objects.filter(username=username).exists():
+                username = f"{email.split('@')[0]}{counter}"
+                counter += 1
+            
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                first_name=first_name,
+                last_name=last_name
+            )
+        
+        # Update profile if needed
+        if user.first_name != first_name:
+            user.first_name = first_name
+            user.last_name = last_name
+            user.save()
+        
+        # Create or update social account
+        social_account, created = SocialAccount.objects.get_or_create(
+            user=user,
+            provider='google',
+            defaults={
+                'uid': userinfo.get('id', ''),
+                'extra_data': userinfo,
+            }
+        )
+        
+        if not created:
+            social_account.extra_data = userinfo
+            social_account.save()
+        
+        # Auto-login user
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        messages.success(request, 'Connecté avec succès!')
+        return redirect('dashboard')
+        
+    except Exception as e:
+        messages.error(request, f'Authentication failed: {str(e)}')
+        return redirect('login')

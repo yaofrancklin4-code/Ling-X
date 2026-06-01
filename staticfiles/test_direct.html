@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Test Images Baoule</title>
+        <style>
+        body { font-family: Arial; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        img { width: 100%; height: 200px; object-fit: cover; border-radius: 4px; }
+        h1 { color: #333; }
+        .status { padding: 10px; margin: 20px 0; border-radius: 4px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Test des Images Baoule</h1>
+            <div class="status success">
+                <strong>Chemin:</strong> /static/images/baoule/
+            </div>
+
+            <div class="grid">
+                <div class="card">
+                    <img src="/static/images/baoule/hero_peuple_baoule.jpg"
+                        alt="Image 1"
+                        onerror="this.parentElement.innerHTML='<p class=error>ERREUR: Image non trouvee</p>'">
+                    <h3>OIP-12.webp</h3>
+                </div>
+
+                <div class="card">
+                    <img src="/static/images/baoule/hero_peuple_baoule.jpg"
+                        alt="Image 2"
+                        onerror="this.parentElement.innerHTML='<p class=error>ERREUR</p>'">
+                    <h3>Art traditionnel</h3>
+                </div>
+
+                <div class="card">
+                    <img src="/static/images/baoule/hero_peuple_baoule.jpg"
+                        alt="Image 3"
+                        onerror="this.parentElement.innerHTML='<p class=error>ERREUR</p>'">
+                    <h3>Peuple Baoule</h3>
+                </div>
+
+                <div class="card">
+                    <img src="/static/images/baoule/hero_peuple_baoule.jpg"
+                        alt="Image 4"
+                        onerror="this.parentElement.innerHTML='<p class=error>ERREUR</p>'">
+                    <h3>Village</h3>
+                </div>
+
+                <div class="card">
+                    <img src="/static/images/baoule/hero_peuple_baoule.jpg"
+                        alt="Image 5"
+                        onerror="this.parentElement.innerHTML='<p class=error>ERREUR</p>'">
+                    <h3>Vetements</h3>
+                </div>
+
+                <div class="card">
+                    <img src="/static/images/baoule/hero_peuple_baoule.jpg"
+                        alt="Image 6"
+                        onerror="this.parentElement.innerHTML='<p class=error>ERREUR</p>'">
+                    <h3>Masques</h3>
+                </div>
+
+                <div class="card">
+                    <img src="/static/images/baoule/hero_peuple_baoule.jpg"
+                        alt="Image 7"
+                        onerror="this.parentElement.innerHTML='<p class=error>ERREUR</p>'">
+                    <h3>Ceremonies</h3>
+                </div>
+
+                <div class="card">
+                    <img src="/static/images/baoule/hero_peuple_baoule.jpg"
+                        alt="Image 8"
+                        onerror="this.parentElement.innerHTML='<p class=error>ERREUR</p>'">
+                    <h3>Artisanat</h3>
+                </div>
+
+                <div class="card">
+                    <img src="/static/images/baoule/hero_peuple_baoule.jpg"
+                        alt="Image 9"
+                        onerror="this.parentElement.innerHTML='<p class=error>ERREUR</p>'">
+                    <h3>Musique</h3>
+                </div>
+
+                <div class="card">
+                    <img src="/static/images/baoule/hero_peuple_baoule.jpg"
+                        alt="Image 10"
+                        onerror="this.parentElement.innerHTML='<p class=error>ERREUR</p>'">
+                    <h3>Danse</h3>
+                </div>
+
+                <div class="card">
+                    <img src="/static/images/baoule/hero_peuple_baoule.jpg"
+                        alt="Image 11"
+                        onerror="this.parentElement.innerHTML='<p class=error>ERREUR</p>'">
+                    <h3>Patrimoine</h3>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

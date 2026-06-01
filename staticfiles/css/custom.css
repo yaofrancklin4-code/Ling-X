@@ -1,0 +1,430 @@
+/* Animations personnalisées */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
+.animate-pulse {
+    animation: pulse 2s infinite;
+}
+
+/* Effets de survol personnalisés */
+.hover-lift {
+    transition: all 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Boutons personnalisés */
+.btn-gradient {
+    background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(12, 12, 207, 1) 0%, rgba(0, 212, 255, 1) 100%);
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 212, 255, 0.4);
+    color: white;
+}
+
+/* Cartes de vocabulaire */
+.vocab-card {
+    position: relative;
+    perspective: 1000px;
+}
+
+.vocab-card-inner {
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.vocab-card:hover .vocab-card-inner {
+    transform: rotateY(180deg);
+}
+
+.vocab-card-front,
+.vocab-card-back {
+    backface-visibility: hidden;
+}
+
+.vocab-card-back {
+    transform: rotateY(180deg);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Barre de progression personnalisée */
+.progress-custom {
+    height: 12px;
+    border-radius: 10px;
+    background: #e5e7eb;
+    overflow: hidden;
+}
+
+.progress-bar-custom {
+    background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(12, 12, 207, 1) 0%, rgba(0, 212, 255, 1) 100%);
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+/* Badges animés */
+.badge-animated {
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.badge-animated:hover {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Effet de brillance */
+.shine-effect {
+    position: relative;
+    overflow: hidden;
+}
+
+.shine-effect::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.shine-effect:hover::before {
+    left: 100%;
+}
+
+/* Loader personnalisé */
+.loader {
+    border: 4px solid #f3f4f6;
+    border-top: 4px solid #00d4ff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Tooltip personnalisé */
+.tooltip-custom {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-custom .tooltip-text {
+    visibility: hidden;
+    background-color: #1f2937;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 10px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip-custom:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* ===== STYLES POUR LES NOUVEAUX TEMPLATES ===== */
+
+/* Histoires et Contes */
+.story-content {
+    border-left: 5px solid #ff6b6b;
+    font-size: 1.1em;
+    line-height: 1.8;
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.story-baule {
+    border-left: 5px solid #ffa500;
+    background: #fffbf0;
+    padding: 20px;
+    border-radius: 5px;
+    font-style: italic;
+}
+
+/* Dictionnaire */
+.dictionary-letter {
+    font-size: 2em;
+    font-weight: bold;
+    color: #ff6b6b;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+    border-bottom: 3px solid #ff6b6b;
+}
+
+.dictionary-entry {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.dictionary-entry:hover {
+    background-color: #f8f9fa;
+    padding-left: 10px;
+}
+
+.dictionary-entry h5 {
+    color: #667eea;
+    font-weight: bold;
+}
+
+/* Contenus Culturels */
+.culture-card {
+    transition: all 0.3s ease;
+    border: 2px solid #ddd;
+    background: white;
+}
+
+.culture-card:hover {
+    transform: translateY(-8px);
+    border-color: #ff6b6b;
+    box-shadow: 0 8px 20px rgba(255, 107, 107, 0.2);
+}
+
+/* Proverbes */
+.proverb-card {
+    border-left: 5px solid #4ecdc4;
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.proverb-card:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 15px rgba(78, 205, 196, 0.2);
+}
+
+.proverb-baule {
+    font-style: italic;
+    font-weight: bold;
+    color: #764ba2;
+    font-size: 1.1em;
+}
+
+/* Prénoms - Cartes */
+.name-card {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border: 2px solid #667eea !important;
+    transition: all 0.3s ease;
+}
+
+.name-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(102, 126, 234, 0.3);
+}
+
+.name-card .card-title {
+    color: #667eea;
+    font-weight: bold;
+}
+
+/* Index sticky */
+.sticky-top {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Badges */
+.badge {
+    transition: all 0.3s ease;
+}
+
+.badge:hover {
+    transform: scale(1.1);
+}
+
+/* Boutons de filtre */
+.btn-outline-primary {
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary.active {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(13, 110, 253, 0.2);
+}
+
+/* Audio controls */
+audio {
+    border-radius: 5px;
+    background: linear-gradient(90deg, #f3f4f6, #e5e7eb);
+}
+
+audio::-webkit-media-controls-panel {
+    background-color: #f3f4f6;
+}
+
+/* Barre de recherche */
+.input-group-lg .form-control {
+    border-radius: 50px 0 0 50px;
+    padding: 15px 20px;
+    border: 2px solid #e5e7eb;
+    transition: all 0.3s ease;
+}
+
+.input-group-lg .form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.input-group-lg .btn {
+    border-radius: 0 50px 50px 0;
+    padding: 15px 30px;
+}
+
+/* Alertes */
+.alert {
+    border-left: 4px solid #0d6efd;
+    border-radius: 5px;
+}
+
+.alert-success {
+    border-left-color: #198754;
+}
+
+.alert-warning {
+    border-left-color: #ffc107;
+}
+
+.alert-info {
+    border-left-color: #0dcaf0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 2rem !important;
+    }
+    
+    .stat-card {
+        margin-bottom: 15px;
+    }
+    
+    .dictionary-letter {
+        font-size: 1.5em;
+    }
+    
+    .sticky-top {
+        position: static !important;
+        margin-bottom: 20px;
+    }
+    
+    .btn-group {
+        flex-wrap: wrap;
+    }
+    
+    .btn-group .btn {
+        margin-bottom: 5px;
+    }
+}
+
+/* ===== IMAGES DU DOSSIER BAOULE ===== */
+.baoule-image-bg {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.35;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    border-radius: 8px;
+}
+
+.baoule-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* Images spécifiques */
+.baoule-img-1 {
+    background-image: url('/static/images/baoule/hero_peuple_baoule.jpg');
+}
+
+.baoule-img-2 {
+    background-image: url('/static/images/baoule/hero_peuple_baoule.jpg');
+}
+
+.baoule-img-3 {
+    background-image: url('/static/images/baoule/hero_peuple_baoule.jpg');
+}
+
+.baoule-img-4 {
+    background-image: url('/static/images/baoule/hero_peuple_baoule.jpg');
+}
+
+.baoule-img-5 {
+    background-image: url('/static/images/baoule/hero_peuple_baoule.jpg');
+}
+
+.baoule-img-6 {
+    background-image: url('/static/images/baoule/hero_peuple_baoule.jpg');
+}
+
+.baoule-img-7 {
+    background-image: url('/static/images/baoule/hero_peuple_baoule.jpg');
+}
+
+.baoule-img-8 {
+    background-image: url('/static/images/baoule/hero_peuple_baoule.jpg');
+}
+
+.baoule-img-9 {
+    background-image: url('/static/images/baoule/hero_peuple_baoule.jpg');
+}
+
+.baoule-img-10 {
+    background-image: url('/static/images/baoule/hero_peuple_baoule.jpg');
+}
+
+.baoule-img-11 {
+    background-image: url('/static/images/baoule/hero_peuple_baoule.jpg');
+}

@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}À propos - LingX{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <!-- Hero Section -->
+  <div class="row mb-5">
+    <div class="col-12">
+      <div class="card" style="border: none; overflow: hidden">
+        <div
+          class="card-img-overlay d-flex align-items-center justify-content-center"
+          style="
+            background: linear-gradient(
+              135deg,
+              rgba(255, 215, 0, 0.8) 0%,
+              rgba(192, 192, 192, 0.7) 100%
+            );
+          "
+        >
+          <h1 class="text-dark text-center fw-bold">
+            À propos de LingX
+          </h1>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenu Principal -->
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      
+      <!-- D'où vient LingX -->
+      <section class="mb-5">
+        <h2
+          class="border-start border-warning border-4 ps-3 mb-4"
+          style="color: #613942"
+        >
+          D'où vient LingX
+        </h2>
+        <p class="lead">
+          LingX est né d'un constat simple et alarmant : la langue baoulé, parlée par
+          plus de 30% de la population ivoirienne, n'avait pratiquement aucune application
+          numérique dédiée à son apprentissage.
+        </p>
+        <p>
+          C'est dans ce contexte que des étudiants en 2e année de licence TWIN
+          (Technologies du Web et de l'Internet) à l'ESATIC (École Supérieure Africaine des TIC)
+          ont décidé de relever le défi, dans le cadre de leur projet d'Application (APP2) pour
+          l'année académique 2025-2026.
+        </p>
+      </section>
+
+      <!-- Othniel Yao -->
+      <section class="mb-5">
+        <div class="card shadow-sm mb-3">
+          <div class="card-body" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, rgba(192, 192, 192, 0.05) 100%);">
+            <h3 style="color: #613942; font-weight: bold;">Othniel Yao Kouadio Francklin</h3>
+            <h6 class="text-muted mb-3">Chef de Projet - Développeur Back-End - 2e année TWIN</h6>
+            <p>
+              Concepteur et développeur principal de LingX. Othniel a conçu et mis en œuvre
+              l'architecture complète de LingX : les modèles Django, l'ORM SQLite, les API REST
+              et l'ensemble du back-end de l'application.
+            </p>
+            <p>
+              C'est lui qui a transformé une idée de classe en un produit fonctionnel, en coordonnant
+              l'équipe, en gérant les délais et en assurant la cohérence technique du projet de bout
+              en bout. Sa maîtrise de Python et Django, sa rigueur dans l'organisation du travail et
+              son engagement personnel pour la valorisation de la culture baoulé ont été les pierres
+              angulaires de la réussite de ce projet.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Nos Objectifs -->
+      <section class="mb-5">
+        <h2
+          class="border-start border-warning border-4 ps-3 mb-4"
+          style="color: #613942"
+        >
+          Nos Objectifs
+        </h2>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <div class="card shadow-sm h-100">
+              <div class="card-body">
+                <h5 style="color: #613942; font-weight: bold;">Préserver</h5>
+                <p>Numériser et sauvegarder le vocabulaire baoulé pour les générations futures.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="card shadow-sm h-100">
+              <div class="card-body">
+                <h5 style="color: #613942; font-weight: bold;">Apprendre par le Jeu</h5>
+                <p>Rendre l'apprentissage ludique grâce à des quiz, jeux et défis interactifs.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="card shadow-sm h-100">
+              <div class="card-body">
+                <h5 style="color: #613942; font-weight: bold;">Audio Natif</h5>
+                <p>Prononciations enregistrées par de vrais locuteurs baoulé.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="card shadow-sm h-100">
+              <div class="card-body">
+                <h5 style="color: #613942; font-weight: bold;">Accessibilité</h5>
+                <p>Gratuit, accessible et sans prérequis technique.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Histoire du Projet -->
+      <section class="mb-5">
+        <h2
+          class="border-start border-warning border-4 ps-3 mb-4"
+          style="color: #613942"
+        >
+          Histoire du Projet
+        </h2>
+        <div class="card shadow-sm mb-3">
+          <div class="card-body">
+            <h6 style="color: #613942; font-weight: bold;">Septembre 2025</h6>
+            <p>Identification du problème : absence d'outils numériques pour la langue baoulé.
+               Formation de l'équipe et lancement du projet APP2 à l'ESATIC.</p>
+          </div>
+        </div>
+        <div class="card shadow-sm mb-3">
+          <div class="card-body">
+            <h6 style="color: #613942; font-weight: bold;">Octobre - Novembre 2025</h6>
+            <p>Conception de l'architecture Django, création des modèles de données,
+               premières maquettes UI/UX par Nando Nya.</p>
+          </div>
+        </div>
+        <div class="card shadow-sm mb-3">
+          <div class="card-body">
+            <h6 style="color: #613942; font-weight: bold;">Décembre 2025 - Janvier 2026</h6>
+            <p>Développement du back-end (Othniel Yao), intégration du front-end (Auriol),
+               collecte du contenu pédagogique (Elly) et enregistrements audio.</p>
+          </div>
+        </div>
+        <div class="card shadow-sm mb-3">
+          <div class="card-body">
+            <h6 style="color: #613942; font-weight: bold;">Février - Avril 2026</h6>
+            <p>Tests, corrections, déploiement et finalisation de la plateforme LingX.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ESATIC -->
+      <section class="mb-5">
+        <h2
+          class="border-start border-warning border-4 ps-3 mb-4"
+          style="color: #613942"
+        >
+          L'ESATIC
+        </h2>
+        <div class="card shadow-sm" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(192, 192, 192, 0.1) 100%);">
+          <div class="card-body">
+            <p>
+              L'ESATIC (École Supérieure Africaine des TIC) est une grande école ivoirienne
+              spécialisée dans les technologies de l'information et de la communication.
+              Véritable vivier de talents numériques en Afrique de l'Ouest, elle forme des
+              ingénieurs et techniciens capables de répondre aux défis de la transformation
+              numérique du continent.
+            </p>
+            <p>
+              LingX est le fruit direct de cette formation d'excellence : c'est dans le cadre
+              du module Projet d'Application (APP2) que l'équipe a conçu, développé et déployé
+              cette plateforme.
+            </p>
+            <a href="https://www.esatic.ci" target="_blank" class="btn btn-primary">
+              Visiter le site de l'ESATIC
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}

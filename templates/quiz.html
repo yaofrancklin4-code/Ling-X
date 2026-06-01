@@ -1,0 +1,162 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Quiz - {{
+lesson.title }} - LingX{% endblock %} {% block content %}
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="mb-0">Quiz: {{ lesson.title }}</h3>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-info">
+            Répondez à toutes les questions pour valider le quiz
+          </div>
+
+          <form method="post" id="quizForm">
+            {% csrf_token %} {% for quiz in quizzes %}
+            <div class="card mb-4">
+              <div class="card-body">
+                <h5 class="card-title">Question</h5>
+                <p class="lead">{{ quiz.question }}</p>
+
+                {% if quiz.audio_file %}
+                <div class="mb-3">
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-primary"
+                    onclick="playAudio('{{ quiz.audio_file.url }}')"
+                  >
+                    Écouter
+                  </button>
+                </div>
+                {% endif %}
+
+                <div class="mt-3">
+                  {% for choice in quiz.choices.all %}
+                  <div class="form-check mb-2" data-quiz-id="{{ quiz.id }}">
+                    <input
+                      class="form-check-input ajax-quiz-radio"
+                      type="radio"
+                      name="quiz_{{ quiz.id }}"
+                      id="choice_{{ choice.id }}"
+                      value="{{ choice.id }}"
+                      required
+                    />
+                    <label
+                      class="form-check-label"
+                      for="choice_{{ choice.id }}"
+                    >
+                      {{ choice.choice_text }}
+                    </label>
+                  </div>
+                  {% endfor %}
+                  <div
+                    class="mt-2 small text-success quiz-feedback"
+                    id="quiz-feedback-{{ quiz.id }}"
+                    style="display: none"
+                  ></div>
+                </div>
+
+                <div class="mt-2">
+                  <small class="text-muted"> {{ quiz.points }} points </small>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary btn-lg">
+                Valider le quiz
+              </button>
+              <a
+                href="{% url 'lesson_detail' lesson.id %}"
+                class="btn btn-outline-secondary"
+              >
+                Retour à la leçon
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block extra_js %}
+<script>
+  function playAudio(url) {
+    const audio = new Audio(url);
+    audio.play();
+  }
+
+  document.getElementById("quizForm").addEventListener("submit", function (e) {
+    const radios = document.querySelectorAll('input[type="radio"]');
+    const questions = new Set();
+    radios.forEach((radio) => {
+      const name = radio.getAttribute("name");
+      questions.add(name);
+    });
+
+    let allAnswered = true;
+    questions.forEach((question) => {
+      const checked = document.querySelector(
+        `input[name="${question}"]:checked`,
+      );
+      if (!checked) {
+        allAnswered = false;
+      }
+    });
+
+    if (!allAnswered) {
+      e.preventDefault();
+      alert("Veuillez répondre à toutes les questions");
+    }
+  });
+
+  // AJAX per-question submission
+  document.querySelectorAll(".ajax-quiz-radio").forEach((radio) => {
+    radio.addEventListener("change", function (e) {
+      const choiceId = this.value;
+      const name = this.getAttribute("name"); // e.g. quiz_12
+      const quizId = name.split("_")[1];
+
+      const csrftoken =
+        document.querySelector("[name=csrfmiddlewaretoken]")?.value || "";
+
+      fetch('{% url "submit_quiz_answer" %}', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrftoken,
+        },
+        body: JSON.stringify({ quiz_id: quizId, choice_id: choiceId }),
+      })
+        .then((resp) => resp.json())
+        .then((data) => {
+          const fb = document.getElementById("quiz-feedback-" + quizId);
+          if (data.success) {
+            if (data.is_correct) {
+              fb.textContent = `Correct ! +${data.points_awarded} points`;
+              fb.classList.remove("text-danger");
+              fb.classList.add("text-success");
+            } else {
+              fb.textContent = `Incorrect. 0 point`;
+              fb.classList.remove("text-success");
+              fb.classList.add("text-danger");
+            }
+            fb.style.display = "block";
+
+            // Disable all radios for this question to prevent resubmit
+            document
+              .querySelectorAll(`input[name="quiz_${quizId}"]`)
+              .forEach((r) => (r.disabled = true));
+          } else {
+            fb.textContent = data.error || "Erreur";
+            fb.classList.add("text-danger");
+            fb.style.display = "block";
+          }
+        })
+        .catch((err) => console.error("Quiz submit error", err));
+    });
+  });
+</script>
+{% endblock %}

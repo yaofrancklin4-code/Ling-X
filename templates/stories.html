@@ -1,0 +1,67 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<div class="container mt-4">
+  <h1>Histoires et Contes Baoulés</h1>
+
+  <!-- Histoires Vedettes -->
+  {% if featured_stories %}
+  <div class="alert alert-info mt-4">
+    <h3>Histoires Recommandées</h3>
+  </div>
+
+  <div class="row">
+    {% for story in featured_stories %}
+    <div class="col-md-6 mb-3">
+      <div
+        class="card border-primary h-100 position-relative"
+        style="min-height: 220px"
+      >
+        <div
+          class="baoule-image-bg {% cycle 'baoule-img-1' 'baoule-img-2' 'baoule-img-3' %}"
+        ></div>
+        <div class="card-body baoule-content">
+          <h5 class="card-title">{{ story.title }}</h5>
+          <p class="card-text">{{ story.description|truncatewords:20 }}</p>
+          <a
+            href="{% url 'story_detail' story.id %}"
+            class="btn btn-primary btn-sm"
+          >
+            Lire l'histoire
+          </a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Toutes les histoires -->
+  <h3 class="mt-5 mb-4">Toutes les Histoires</h3>
+  <div class="row">
+    {% for story in stories %}
+    <div class="col-md-4 mb-3">
+      <div class="card h-100 position-relative" style="min-height: 200px">
+        <div
+          class="baoule-image-bg {% cycle 'baoule-img-4' 'baoule-img-5' 'baoule-img-6' 'baoule-img-7' 'baoule-img-8' 'baoule-img-9' 'baoule-img-10' 'baoule-img-11' %}"
+        ></div>
+        <div class="card-body baoule-content">
+          <h6>{{ story.title }}</h6>
+          <p class="mt-2">{{ story.description|truncatewords:15 }}</p>
+          <a
+            href="{% url 'story_detail' story.id %}"
+            class="btn btn-outline-primary btn-sm"
+          >
+            Lire
+          </a>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+      <div class="alert alert-warning">
+        Aucune histoire disponible pour le moment.
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

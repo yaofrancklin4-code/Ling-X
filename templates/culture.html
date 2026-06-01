@@ -1,0 +1,337 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<div class="container mt-4">
+  <!-- Hero Section avec image Baoulé -->
+  <div class="row mb-5">
+    <div class="col-12">
+      <div class="card" style="border: none; overflow: hidden">
+        <div
+          class="card-img-overlay d-flex align-items-center justify-content-center"
+          style="
+            background: linear-gradient(
+              135deg,
+              rgba(255, 215, 0, 0.8) 0%,
+              rgba(192, 192, 192, 0.7) 100%
+            );
+          "
+        >
+          <h1 class="text-dark text-center fw-bold">
+            Patrimoine Culturel Baoulé
+          </h1>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sections Culturelles -->
+  <div class="row mb-4">
+    <div class="col-md-3 mb-3">
+      <a href="#langue" class="text-decoration-none">
+        <div class="card text-center h-100 shadow-sm">
+          <div class="card-body">
+            <h2 class="mb-3"></h2>
+            <h5>Langue Baoulé</h5>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col-md-3 mb-3">
+      <a href="#art" class="text-decoration-none">
+        <div class="card text-center h-100 shadow-sm">
+          <div class="card-body">
+            <h2 class="mb-3"></h2>
+            <h5>Art & Masques</h5>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col-md-3 mb-3">
+      <a href="#musique" class="text-decoration-none">
+        <div class="card text-center h-100 shadow-sm">
+          <div class="card-body">
+            <h2 class="mb-3"></h2>
+            <h5>Musique & Danse</h5>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col-md-3 mb-3">
+      <a href="#fetes" class="text-decoration-none">
+        <div class="card text-center h-100 shadow-sm">
+          <div class="card-body">
+            <h2 class="mb-3"></h2>
+            <h5>Fêtes & Rituels</h5>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Contenu Détaillé -->
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <section id="langue" class="mb-5">
+        <h2
+          class="border-start border-warning border-4 ps-3 mb-4"
+          style="color: #613942"
+        >
+          Langue Baoulé
+        </h2>
+        <p class="lead">
+          Le baoulé est une langue tonale de la famille Akan. Elle utilise des
+          tons hauts et bas qui changent le sens des mots. Parlée par plus de 4
+          millions de personnes, c'est l'une des principales langues de Côte
+          d'Ivoire.
+        </p>
+        <p>
+          La langue possède une riche tradition orale avec proverbes, contes et
+          chants transmis de génération en génération.
+        </p>
+        <a href="{% url 'stories' %}" class="btn btn-primary"
+          >Découvrir les histoires</a
+        >
+      </section>
+
+      <section id="art" class="mb-5">
+        <h2
+          class="border-start border-warning border-4 ps-3 mb-4"
+          style="color: #613942"
+        >
+          Art & Masques
+        </h2>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <div class="card shadow-sm mb-3 h-100">
+              <div class="card-body">
+                <p>
+                  Les masques baoulé sont mondialement reconnus pour leur
+                  finesse et leur beauté. Sculptés dans le bois, ils
+                  représentent des visages humains idéalisés avec des traits
+                  délicats.
+                </p>
+                <h6 class="mt-3">Types de masques :</h6>
+                <ul>
+                  <li>
+                    <strong>Goli</strong> : Masque circulaire utilisé lors des
+                    funérailles
+                  </li>
+                  <li>
+                    <strong>Mblo</strong> : Portrait masque représentant une
+                    personne réelle
+                  </li>
+                  <li>
+                    <strong>Bonu Amuen</strong> : Masque de buffle pour les
+                    cérémonies
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="musique" class="mb-5">
+        <h2
+          class="border-start border-warning border-4 ps-3 mb-4"
+          style="color: #613942"
+        >
+          Musique & Danse
+        </h2>
+        <p>
+          La musique baoulé utilise des instruments traditionnels comme le
+          balafon, les tambours parlants et les hochets. Chaque rythme a une
+          signification précise et peut transmettre des messages.
+        </p>
+        <p>
+          Les danses accompagnent toutes les cérémonies importantes :
+          naissances, mariages, funérailles et fêtes des récoltes.
+        </p>
+      </section>
+
+      <section id="fetes" class="mb-5">
+        <h2
+          class="border-start border-warning border-4 ps-3 mb-4"
+          style="color: #613942"
+        >
+          Fêtes & Rituels
+        </h2>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">Dipri</h5>
+                <p class="card-text">Fête de purification et de renouveau</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">Fête des ignames</h5>
+                <p class="card-text">Célébration des récoltes</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">Cérémonies funéraires</h5>
+                <p class="card-text">Hommage aux ancêtres</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">Initiations</h5>
+                <p class="card-text">Passage à l'âge adulte</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Contenus Vedettes -->
+  {% if featured_cultures %}
+  <div class="alert alert-info mt-5">
+    <h3>Contenus Recommandés</h3>
+  </div>
+
+  <div class="row mt-4">
+    {% for culture in featured_cultures %}
+    <div class="col-md-4 mb-3">
+      <div class="card h-100 position-relative" style="min-height: 250px">
+        {% if culture.image %}
+        <img
+          src="{{ culture.image.url }}"
+          class="card-img-top baoule-content"
+          alt="{{ culture.title }}"
+          style="height: 200px; object-fit: cover"
+        />
+        {% else %} {% endif %}
+        <div class="card-body baoule-content">
+          <h5 class="card-title">{{ culture.title }}</h5>
+          <p class="card-text">{{ culture.description|truncatewords:20 }}</p>
+          <span class="badge bg-primary"
+            >{{ culture.get_content_type_display }}</span
+          >
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Galerie d'images Baoulé -->
+  <div class="row mt-5">
+    <div class="col-12 mb-4">
+      <h2>Galerie Culturelle</h2>
+      <p class="text-muted">
+        Découvrez la richesse visuelle de la culture Baoulé
+      </p>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        <img
+          src="{% static 'images/baoule/musique_baoule-780x500.png' %}"
+          class="card-img-top"
+          alt="Musique"
+          style="height: 200px; object-fit: cover"
+        />
+        <div class="card-body">
+          <h5>Musique Baoulé</h5>
+          <p class="text-muted">Rythmes et instruments traditionnels</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        <img
+          src="{% static 'images/baoule/rituels_baoule-780x500.png' %}"
+          class="card-img-top"
+          alt="Rituels"
+          style="height: 200px; object-fit: cover"
+        />
+        <div class="card-body">
+          <h5>Rituels Sacrés</h5>
+          <p class="text-muted">Cérémonies et traditions</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        <img
+          src="{% static 'images/baoule/courtoisise_us_coutumes_baoule-780x500.png' %}"
+          class="card-img-top"
+          alt="Courtoisie"
+          style="height: 200px; object-fit: cover"
+        />
+        <div class="card-body">
+          <h5>Courtoisie &amp; Coutumes</h5>
+          <p class="text-muted">Valeurs et traditions sociales</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        <img
+          src="{% static 'images/baoule/sipiritualite_baoule.ci_-780x500.png' %}"
+          class="card-img-top"
+          alt="Spiritualité"
+          style="height: 200px; object-fit: cover"
+        />
+        <div class="card-body">
+          <h5>Spiritualité</h5>
+          <p class="text-muted">Croyances et sagesse millénaire</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        <img
+          src="{% static 'images/baoule/artisanat_baoule-780x500.png' %}"
+          class="card-img-top"
+          alt="Artisanat"
+          style="height: 200px; object-fit: cover"
+        />
+        <div class="card-body">
+          <h5>Artisanat</h5>
+          <p class="text-muted">Savoir-faire ancestral</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Galerie de la Diversité Baoulé (automatique depuis le dossier static) -->
+  <div class="row mt-5">
+    <div class="col-12 mb-4">
+      <h2 class="text-center mb-4" style="color: #613942">
+        Les Sous-groupes Baoulé
+      </h2>
+      <p class="text-center text-muted">
+        Le peuple baoulé est composé de plusieurs sous-groupes, chacun avec ses
+        caractéristiques propres et son histoire particulière.
+      </p>
+    </div>
+
+    {% if sous_groupes_images %} {% for img in sous_groupes_images %}
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 overflow-hidden">
+        <img
+          src="{{ img.url }}"
+          class="card-img-top"
+          alt="{{ img.label }}"
+          style="height: 220px; object-fit: cover"
+        />
+        <div class="card-body">
+          <h5 class="card-title text-primary">{{ img.label }}</h5>
+        </div>
+      </div>
+    </div>
+    {% endfor %} {% else %}
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

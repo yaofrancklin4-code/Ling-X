@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Galerie Images — Baoulé × LingX</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Mulish:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+body { font-family: 'Mulish', system-ui, sans-serif; background: #FDF6EE; margin: 0; }
+.g-header { background: #1A0E10; color: white; padding: 2.5rem 1.5rem; text-align: center; border-bottom: 3px solid #C9993A; }
+.g-header h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 2rem; color: #E8C77A; margin-bottom: .4rem; }
+.g-header p  { opacity: .7; font-size: .9rem; }
+.g-nav  { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; padding: 1.2rem; background: #2D1A1E; }
+.g-nav a { color: #d4b896; text-decoration: none; font-size: .85rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; }
+.g-nav a:hover { color: #E8C77A; }
+.filters { display: flex; gap: .6rem; flex-wrap: wrap; padding: 1.5rem 1.5rem .5rem; max-width: 1200px; margin: auto; }
+.fbtn { padding: .45rem 1rem; border: 2px solid #e0d0c8; border-radius: 20px; background: white;
+        cursor: pointer; font-size: .8rem; font-weight: 700; transition: all .2s; }
+.fbtn.active, .fbtn:hover { background: #613942; color: white; border-color: #613942; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 1.4rem; padding: 1rem 1.5rem 4rem; max-width: 1200px; margin: auto; }
+.card { background: white; border-radius: 6px; box-shadow: 0 4px 18px rgba(97,57,66,.1);
+        overflow: hidden; transition: transform .25s, box-shadow .25s; }
+.card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(97,57,66,.2); }
+.thumb { aspect-ratio: 4/3; overflow: hidden; background: #f0e8e0; position: relative; }
+.thumb img { width:100%; height:100%; object-fit:cover; transition: transform .4s; }
+.card:hover .thumb img { transform: scale(1.05); }
+.thumb .src-badge { position:absolute; top:.5rem; right:.5rem; background:#613942; color:white;
+                    font-size:.65rem; font-weight:700; padding:.2rem .5rem; border-radius:4px; }
+.thumb .src-badge.zip { background:#C9993A; color:#1A0E10; }
+.info { padding: 1rem; }
+.info .cat { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em;
+             color:#C9993A; margin-bottom:.3rem; }
+.info h3 { font-size:.9rem; color:#613942; font-family:'Playfair Display',Georgia,serif; margin-bottom:.3rem; }
+.info .meta { font-size:.72rem; color:#aaa; }
+.info .path { display:block; font-size:.68rem; color:#bbb; margin-top:.4rem; word-break:break-all; cursor:pointer; }
+.info .path:hover { color:#613942; }
+.stats { display:flex; gap:1rem; max-width:1200px; margin:1.5rem auto 0; padding:0 1.5rem; flex-wrap:wrap; }
+.stat { background:white; border-radius:6px; padding:1rem 1.5rem; box-shadow:0 2px 10px rgba(97,57,66,.08);
+        border-top:3px solid #C9993A; flex:1; min-width:140px; }
+.stat .val { font-size:1.8rem; font-weight:700; color:#613942; font-family:'Playfair Display',Georgia,serif; }
+.stat .lbl { font-size:.75rem; color:#999; text-transform:uppercase; letter-spacing:.06em; }
+</style>
+</head>
+<body>
+
+<header class="g-header">
+  <h1>◈ Galerie Images Baoulé × LingX</h1>
+  <p>3 images · Sources : baoule.ci + ton ZIP local</p>
+</header>
+
+<nav class="g-nav">
+  <a href="index.html">Accueil</a>
+  <a href="dictionnaire.html">Dictionnaire</a>
+  <a href="lingx.html">LingX</a>
+  <a href="gallery.html">Galerie</a>
+</nav>
+
+
+    <div class="stats">
+      <div class="stat"><div class="val">10</div><div class="lbl">Total images</div></div>
+      <div class="stat"><div class="val">3</div><div class="lbl">Depuis baoule.ci</div></div>
+      <div class="stat"><div class="val">0</div><div class="lbl">Depuis ton ZIP</div></div>
+      <div class="stat"><div class="val">2</div><div class="lbl">Sections</div></div>
+    </div>
+
+<div class="filters"><button class="fbtn active" data-sec="all">Toutes</button><button class="fbtn" data-sec="Histoire">Histoire</button><button class="fbtn" data-sec="Identité">Identité</button></div>
+<div class="grid" id="grid">
+        <div class="card" data-sec="Histoire">
+          <div class="thumb">
+            <img src="assets/images/site_peuple_baoule_hero.jpg" alt="Représentation du peuple Baoulé — Image officielle baoule.ci" loading="lazy"/>
+            <span class="src-badge">baoule.ci</span>
+          </div>
+          <div class="info">
+            <div class="cat">Histoire</div>
+            <h3>Représentation du peuple Baoulé — Image officielle baoule.ci</h3>
+            <div class="meta">900 × 600 px</div>
+            <code class="path" title="Cliquer pour copier">assets/images/site_peuple_baoule_hero.jpg</code>
+          </div>
+        </div>
+        <div class="card" data-sec="Identité">
+          <div class="thumb">
+            <img src="assets/images/site_logo_baoule.jpg" alt="Logo officiel Baoulé" loading="lazy"/>
+            <span class="src-badge">baoule.ci</span>
+          </div>
+          <div class="info">
+            <div class="cat">Identité</div>
+            <h3>Logo officiel Baoulé</h3>
+            <div class="meta">233 × 50 px</div>
+            <code class="path" title="Cliquer pour copier">assets/images/site_logo_baoule.jpg</code>
+          </div>
+        </div>
+        <div class="card" data-sec="Identité">
+          <div class="thumb">
+            <img src="assets/images/site_logo_baoule_carre.jpg" alt="Logo carré Baoulé" loading="lazy"/>
+            <span class="src-badge">baoule.ci</span>
+          </div>
+          <div class="info">
+            <div class="cat">Identité</div>
+            <h3>Logo carré Baoulé</h3>
+            <div class="meta">270 × 270 px</div>
+            <code class="path" title="Cliquer pour copier">assets/images/site_logo_baoule_carre.jpg</code>
+          </div>
+        </div></div>
+
+<script>
+// Filtrage par section
+document.querySelectorAll('.fbtn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const sec = btn.dataset.sec;
+    document.querySelectorAll('.card').forEach(c => {
+      c.style.display = (sec === 'all' || c.dataset.sec === sec) ? '' : 'none';
+    });
+  });
+});
+
+// Copier le chemin
+document.querySelectorAll('.path').forEach(el => {
+  el.addEventListener('click', () => {
+    navigator.clipboard.writeText(el.textContent.trim()).then(() => {
+      const orig = el.textContent;
+      el.textContent = '✅ Chemin copié !';
+      setTimeout(() => el.textContent = orig, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

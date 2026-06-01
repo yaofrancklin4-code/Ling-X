@@ -1,0 +1,42 @@
+{
+  "total": 7,
+  "downloaded": 0,
+  "failed": 7,
+  "files": [
+    {
+      "name": "Baoule-Souhamlin-Kode-de-Cote-dIvoire-780x500.png",
+      "status": "http_error",
+      "code": 404
+    },
+    {
+      "name": "Les-Ngban-un-sous-groupe-Baoule-de-Cote-dIvoire-780x500.png",
+      "status": "http_error",
+      "code": 404
+    },
+    {
+      "name": "Les-Sondo-un-Sous-groupe-du-Peuple-Baoule-de-Cote-dIvoire-780x405.png",
+      "status": "http_error",
+      "code": 404
+    },
+    {
+      "name": "Les-Sondo-un-Sous-groupe-du-Peuple-Baoule-de-Cote-dIvoire-780x500.png",
+      "status": "http_error",
+      "code": 404
+    },
+    {
+      "name": "Elomoue-sous-groupe-Baoule-de-Cote-dIvoire-780x500.png",
+      "status": "http_error",
+      "code": 404
+    },
+    {
+      "name": "Fahafoue-Sous-groupe-Baoule-de-Cote-dIvoire-780x500.png",
+      "status": "http_error",
+      "code": 404
+    },
+    {
+      "name": "Les-Goly-Kode-Sous-groupe-du-Peuple-Baoule-de-Cote-dIvoire-780x500.png",
+      "status": "http_error",
+      "code": 404
+    }
+  ]
+}

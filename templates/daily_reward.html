@@ -1,0 +1,222 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Récompense
+Quotidienne - LingX{% endblock %} {% block content %}
+<div class="container py-4">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <h1 class="text-center mb-5"> Votre Récompense Quotidienne</h1>
+
+      {% if reward_today and reward_today.is_claimed %}
+      <!-- Déjà revendiqué aujourd'hui -->
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">✓ Récompense revendiquée!</h4>
+        <p>Vous avez déjà revendiqué votre récompense aujourd'hui.</p>
+        <hr />
+        <p class="mb-0">
+        </p>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="card">
+        <div class="card-body text-center">
+          <div class="display-1 mb-3"></div>
+          <h3>Revenez demain!</h3>
+          <p class="text-muted">
+            Vous pourrez revendiquer une nouvelle récompense demain.
+          </p>
+        </div>
+      </div>
+
+      {% else %}
+      <!-- Récompense disponible -->
+      <div class="card reward-card mb-4">
+        <div class="card-body text-center">
+          <!-- Série actuelle -->
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <div class="reward-stat">
+            <p class="text-muted">Jours de Suite</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="reward-stat">
+                  <p class="text-muted">Meilleure Série</p>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+
+          <!-- Bonus de série -->
+          <div class="mb-4">
+            <h4>Votre Bonus</h4>
+            <div class="bonus-display">
+              <p class="text-muted small">
+                Multiplicateur basé sur votre série actuelle
+              </p>
+            </div>
+          </div>
+
+          <!-- Calculation -->
+          <div class="mb-4">
+            <div class="calculation">
+              <h5>Calcul</h5>
+            </div>
+          </div>
+
+          <!-- Avantages -->
+          <div class="mb-4">
+            <h5> Conseils</h5>
+            <ul class="text-left small">
+              <li>Revenez demain pour garder votre série</li>
+              <li>
+                Plus votre série est longue, plus vos récompenses sont
+                généreuses
+              </li>
+              <li>Le multiplicateur maximal est 3x (30 jours de suite)</li>
+              <li>
+                Complétez une leçon aujourd'hui pour garder votre série active
+              </li>
+            </ul>
+          </div>
+
+          <!-- Bouton de revendication -->
+          <form method="post" class="mt-4">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success btn-lg btn-block">
+               REVENDIQUER LA RÉCOMPENSE
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Info supplémentaire -->
+      <div class="alert alert-info mt-4">
+        <h5>⏰ À propos de la récompense quotidienne</h5>
+        <p class="mb-0">
+          Vous pouvez revendiquer une récompense unique par jour. La récompense
+          comprend un bonus basé sur votre série actuelle. Plus vous revenez
+          régulièrement, plus le bonus augmente! N'oubliez pas de revenir demain
+          pour garder votre série.
+        </p>
+      </div>
+
+      {% endif %}
+
+      <div class="text-center mt-5">
+        <a href="{% url 'dashboard' %}" class="btn btn-primary">
+          ← Retour au Tableau de Bord
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .reward-card {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    border: none;
+    box-shadow: 0 8px 16px rgba(245, 87, 108, 0.3);
+  }
+
+  .reward-stat {
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+  }
+
+  .bonus-display {
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    margin: 20px 0;
+  }
+
+  .multiplier-badge {
+    display: inline-block;
+    font-size: 2.5rem;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 10px 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+  }
+
+  .calculation {
+    background: white;
+    color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+  }
+
+  .calc-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .calc-line.total {
+    background: #f8f9fa;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+  }
+
+  .calc-separator {
+    height: 2px;
+    background: #ddd;
+    margin: 10px 0;
+  }
+
+  .btn-success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    border: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 15px 30px;
+    transition: all 0.3s;
+  }
+
+  .btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(40, 167, 69, 0.3);
+  }
+
+  .btn-success:active {
+    transform: translateY(0);
+  }
+</style>
+
+<script>
+  // Animation lors du chargement
+  document.addEventListener("DOMContentLoaded", function () {
+    const multiplierBadge = document.querySelector(".multiplier-badge");
+    if (multiplierBadge) {
+      multiplierBadge.style.animation = "pulse 2s infinite";
+    }
+  });
+</script>
+
+<style>
+  @keyframes pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+</style>
+{% endblock %}

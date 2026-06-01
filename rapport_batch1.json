@@ -1,0 +1,39 @@
+{
+  "date": "2026-05-29T15:18:07.835347",
+  "batch": 1,
+  "total_selected": 5,
+  "success": 5,
+  "failed": 0,
+  "images": [
+    {
+      "filename": "Pagne_Baoule2-780x405.png",
+      "status": "OK",
+      "size_kb": 810.9,
+      "dimensions": "780x405"
+    },
+    {
+      "filename": "ashanti-empire-people-780x478.jpg",
+      "status": "OK",
+      "size_kb": 130.2,
+      "dimensions": "780x478"
+    },
+    {
+      "filename": "femmes_baoules-780x500.png",
+      "status": "OK",
+      "size_kb": 951.6,
+      "dimensions": "780x500"
+    },
+    {
+      "filename": "funerailles_baoule-780x405.jpg",
+      "status": "OK",
+      "size_kb": 90.9,
+      "dimensions": "780x405"
+    },
+    {
+      "filename": "Conversation-en-Baoule-780x500.png",
+      "status": "OK",
+      "size_kb": 816.0,
+      "dimensions": "780x500"
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+[
+  {
+    "url": "https://baoule.ci/wp-content/uploads/2025/07/peuple_baoule-1.png",
+    "nom": "site_peuple_baoule_hero",
+    "titre": "Représentation du peuple Baoulé — Image officielle baoule.ci",
+    "section": "Histoire",
+    "usage": "hero",
+    "source": "baoule.ci",
+    "fichier_jpg": "site_peuple_baoule_hero.jpg",
+    "chemin_site": "assets/images/site_peuple_baoule_hero.jpg",
+    "dimensions": {
+      "width": 900,
+      "height": 600
+    },
+    "taille_ko": 142
+  },
+  {
+    "url": "http://baoule.ci/wp-content/uploads/2018/05/baoule_logo3.png",
+    "nom": "site_logo_baoule",
+    "titre": "Logo officiel Baoulé",
+    "section": "Identité",
+    "usage": "logo",
+    "source": "baoule.ci",
+    "fichier_jpg": "site_logo_baoule.jpg",
+    "chemin_site": "assets/images/site_logo_baoule.jpg",
+    "dimensions": {
+      "width": 233,
+      "height": 50
+    },
+    "taille_ko": 4
+  },
+  {
+    "url": "https://baoule.ci/wp-content/uploads/2025/07/cropped-Logo_BAOULE-270x270.png",
+    "nom": "site_logo_baoule_carre",
+    "titre": "Logo carré Baoulé",
+    "section": "Identité",
+    "usage": "logo",
+    "source": "baoule.ci",
+    "fichier_jpg": "site_logo_baoule_carre.jpg",
+    "chemin_site": "assets/images/site_logo_baoule_carre.jpg",
+    "dimensions": {
+      "width": 270,
+      "height": 270
+    },
+    "taille_ko": 5
+  },
+  {
+    "url": "https://baoule.ci/wp-content/uploads/2018/05/masque-baoule.jpg",
+    "nom": "site_masque_baoule",
+    "titre": "Masque Baoulé traditionnel",
+    "section": "Art",
+    "usage": "card",
+    "source": "baoule.ci",
+    "fichier_jpg": null,
+    "chemin_site": "https://baoule.ci/wp-content/uploads/2018/05/masque-baoule.jpg",
+    "dimensions": null,
+    "taille_ko": 0,
+    "statut": "non_telecharge"
+  },
+  {
+    "url": "https://baoule.ci/wp-content/uploads/2018/05/reine-abla-pokou.jpg",
+    "nom": "site_reine_abla_pokou",
+    "titre": "La Reine Abla Pokou",
+    "section": "Histoire",
+    "usage": "card",
+    "source": "baoule.ci",
+    "fichier_jpg": null,
+    "chemin_site": "https://baoule.ci/wp-content/uploads/2018/05/reine-abla-pokou.jpg",
+    "dimensions": null,
+    "taille_ko": 0,
+    "statut": "non_telecharge"
+  },
+  {
+    "url": "https://baoule.ci/wp-content/uploads/2018/05/artisanat-baoule.jpg",
+    "nom": "site_artisanat_baoule",
+    "titre": "Artisanat Baoulé — tissage et sculpture",
+    "section": "Art",
+    "usage": "card",
+    "source": "baoule.ci",
+    "fichier_jpg": null,
+    "chemin_site": "https://baoule.ci/wp-content/uploads/2018/05/artisanat-baoule.jpg",
+    "dimensions": null,
+    "taille_ko": 0,
+    "statut": "non_telecharge"
+  },
+  {
+    "url": "https://baoule.ci/wp-content/uploads/2018/05/danse-baoule.jpg",
+    "nom": "site_danse_baoule",
+    "titre": "Danse traditionnelle Baoulé",
+    "section": "Culture",
+    "usage": "card",
+    "source": "baoule.ci",
+    "fichier_jpg": null,
+    "chemin_site": "https://baoule.ci/wp-content/uploads/2018/05/danse-baoule.jpg",
+    "dimensions": null,
+    "taille_ko": 0,
+    "statut": "non_telecharge"
+  },
+  {
+    "url": "https://baoule.ci/wp-content/uploads/2018/05/village-baoule.jpg",
+    "nom": "site_village_baoule",
+    "titre": "Village traditionnel Baoulé",
+    "section": "Territoire",
+    "usage": "card",
+    "source": "baoule.ci",
+    "fichier_jpg": null,
+    "chemin_site": "https://baoule.ci/wp-content/uploads/2018/05/village-baoule.jpg",
+    "dimensions": null,
+    "taille_ko": 0,
+    "statut": "non_telecharge"
+  },
+  {
+    "url": "https://baoule.ci/wp-content/uploads/2018/05/carte-baoule.jpg",
+    "nom": "site_carte_baoule",
+    "titre": "Carte du territoire Baoulé en Côte d'Ivoire",
+    "section": "Territoire",
+    "usage": "sidebar",
+    "source": "baoule.ci",
+    "fichier_jpg": null,
+    "chemin_site": "https://baoule.ci/wp-content/uploads/2018/05/carte-baoule.jpg",
+    "dimensions": null,
+    "taille_ko": 0,
+    "statut": "non_telecharge"
+  },
+  {
+    "url": "https://baoule.ci/wp-content/uploads/2018/05/femme-baoule.jpg",
+    "nom": "site_femme_baoule",
+    "titre": "Femme Baoulé en tenue traditionnelle",
+    "section": "Culture",
+    "usage": "card",
+    "source": "baoule.ci",
+    "fichier_jpg": null,
+    "chemin_site": "https://baoule.ci/wp-content/uploads/2018/05/femme-baoule.jpg",
+    "dimensions": null,
+    "taille_ko": 0,
+    "statut": "non_telecharge"
+  }
+]

@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ lesson.title }} - LingX{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 32px; background-color: #FFF8E7; min-height: 100vh;">
+    <!-- Breadcrumb -->
+    <div style="margin-bottom: 24px;">
+        <a href="{% url 'categories' %}" style="color: #FFD700; text-decoration: none;">Catégories</a>
+        <span style="color: #999;"> / </span>
+        <a href="{% url 'category_detail' lesson.category.id %}" style="color: #FFD700; text-decoration: none;">{{ lesson.category.name }}</a>
+        <span style="color: #999;"> / </span>
+        <span style="color: #333;">{{ lesson.title }}</span>
+    </div>
+
+    <div class="row" style="gap: 24px;">
+        <!-- Colonne principale -->
+        <div class="col-lg-8">
+            {% if locked %}
+            <div class="alert alert-warning" style="background-color: #FFF3CD; border: 2px solid #FFC107; border-radius: 8px; padding: 20px;">
+                <h4 style="color: #FF6B6B; margin-top: 0;">🔒 Leçon Verrouillée</h4>
+                <p>Cette leçon requiert le <strong>Niveau {{ required_level }}</strong> pour être accessible.</p>
+                <p>Vous êtes actuellement au <strong>Niveau {{ user_level }}</strong>.</p>
+                {% if previous_lesson_number > 0 %}
+                <p class="mb-0">
+                    <strong>Prochaine étape :</strong> Complétez la leçon de niveau {{ previous_lesson_number }} pour progresser au niveau {{ required_level }}.
+                </p>
+                {% else %}
+                <p class="mb-0">
+                    <strong>Prochaine étape :</strong> Terminez les leçons précédentes pour débloquer celle-ci.
+                </p>
+                {% endif %}
+                <div style="margin-top: 15px; display: flex; gap: 10px;">
+                    <a href="{% url 'category_detail' lesson.category.id %}" class="btn btn-outline-warning">← Voir toutes les leçons</a>
+                    <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">Tableau de bord</a>
+                </div>
+            </div>
+            {% endif %}
+            <!-- Header Leçon -->
+            <div class="card-duo" style="padding: 0; overflow: hidden; margin-bottom: 24px;">
+                <div style="background: linear-gradient(135deg, #1CB0F6, #2C1A0E); padding: 40px; color: white; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: -50%; right: -10%; width: 400px; height: 400px; background: rgba(255, 215, 0, 0.08); border-radius: 50%;"></div>
+                    
+                    <div style="position: relative; z-index: 1;">
+                        <span class="badge" style="background-color: rgba(255, 215, 0, 0.3); color: #FFD700; border: 1px solid #FFD700; padding: 6px 12px; border-radius: 12px;">{{ lesson.category.name }}</span>
+                        
+                        {% if progress.is_completed %}
+                        <span class="badge" style="background-color: rgba(76, 175, 80, 0.3); color: var(--vert); border: 1px solid var(--vert); padding: 6px 12px; border-radius: 12px; margin-left: 8px;">✓ Complétée</span>
+                        {% endif %}
+                        
+                        <h1 style="font-family: 'Baloo 2', cursive; font-size: 36px; margin: 16px 0 12px 0; font-weight: 900;">{{ lesson.title }}</h1>
+                        <p style="color: #FFE082; font-size: 16px; margin: 0;">{{ lesson.description }}</p>
+                    </div>
+                </div>
+                
+                <!-- Barre de progression -->
+                <div style="padding: 16px; border-bottom: 1px solid #F0F0F0;">
+                    <div class="progress-duo">
+                        <div class="progress-duo-bar" style="width: {% if progress.is_completed %}100{% else %}{{ progress.score|default:"0" }}{% endif %}%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenu Leçon -->
+            {% if not locked %}
+            <div class="card-duo" style="padding: 28px; margin-bottom: 24px;">
+                <h2 class="section-title">Contenu de la leçon</h2>
+                <div style="border-left: 4px solid #FFD700; padding-left: 20px;">
+                    {{ lesson.content|linebreaks }}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Culture Tip -->
+            <div class="culture-tip">
+                <h4 class="tip-title"> Conseil culturel</h4>
+                <p class="tip-text">La langue Baoulé est au cœur de la culture baoulé. En apprenant cette langue, vous découvrez aussi les traditions, les valeurs et l'histoire d'un peuple riche et fascinant de Côte d'Ivoire.</p>
+            </div>
+
+            <!-- Vocabulaire -->
+            {% if vocabularies and not locked %}
+            <div class="card-duo" style="padding: 28px; margin-top: 24px;">
+                <h2 class="section-title">Vocabulaire</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    {% for vocab in vocabularies %}
+                    <div class="vocab-card" onclick="pronounce(this)" data-word="{{ vocab.word_baule }}">
+                        <h4 class="word-baoule">{{ vocab.word_baule }}</h4>
+                        <p class="word-french">{{ vocab.word_french }}</p>
+                        {% if vocab.pronunciation %}
+                        <div class="pronunciation">[{{ vocab.pronunciation }}]</div>
+                        {% endif %}
+                        {% if vocab.example_sentence %}
+                        <div class="example-sentence">{{ vocab.example_sentence }}</div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Quiz CTA -->
+            {% if quizzes and not locked %}
+            <div class="card-duo card-duo-gold" style="padding: 32px; margin-top: 24px; background-color: #FFF9E6; text-align: center;">
+                <h2 style="font-family: 'Baloo 2', cursive; margin: 0 0 12px 0;">Prêt pour le quiz ?</h2>
+                <p style="color: #666; margin: 0 0 20px 0;">{{ quizzes|length }} question(s) vous attendent - Gagnez des XP</p>
+                <div style="display: flex; gap: 12px; justify-content: center;">
+                    <a href="{% url 'quiz' lesson.id %}" class="btn-duo btn-gold">Commencer le quiz</a>
+                    <a href="{% url 'games' %}" class="btn-duo btn-outline-duo">Jouer à un jeu</a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar Droite -->
+        <div class="col-lg-4">
+            <!-- Infos -->
+            <div class="card-duo" style="padding: 20px; margin-bottom: 20px;">
+                <h5 style="font-family: 'Baloo 2', cursive; margin-bottom: 16px;"> Informations</h5>
+                <div style="display: grid; gap: 12px;">
+                    <div>
+                        <span style="color: #999; font-size: 12px;">CATÉGORIE</span>
+                        <p style="margin: 4px 0 0 0; font-weight: 700;">{{ lesson.category.name }}</p>
+                    </div>
+                    <div>
+                        <span style="color: #999; font-size: 12px;">NIVEAU REQUIS</span>
+                        <p style="margin: 4px 0 0 0; font-weight: 700;">
+                            {% if locked %}
+                            <span style="color: #FF6B6B;">Niveau {{ required_level }} 🔒</span>
+                            {% else %}
+                            <span style="color: #4CAF50;">Niveau {{ required_level }} ✓</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div>
+                        <span style="color: #999; font-size: 12px;">VOTRE NIVEAU</span>
+                        <p style="margin: 4px 0 0 0; font-weight: 700; color: #1CB0F6;">{{ user_level }}</p>
+                    </div>
+                    <div>
+                        <span style="color: #999; font-size: 12px;">RÉCOMPENSE</span>
+                        <p style="color: #FFD700; margin: 4px 0 0 0; font-weight: 700; font-size: 18px;">+10 XP</p>
+                    </div>
+                    {% if vocabularies %}
+                    <div>
+                        <span style="color: #999; font-size: 12px;">VOCABULAIRE</span>
+                        <p style="margin: 4px 0 0 0; font-weight: 700;">{{ vocabularies|length }} mot(s)</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="card-duo" style="padding: 16px; display: grid; gap: 12px;">
+                <a href="{% url 'category_detail' lesson.category.id %}" class="btn-duo btn-outline-duo" style="text-align: center; text-decoration: none;">← Retour catégorie</a>
+                <a href="{% url 'categories' %}" class="btn-duo btn-brun" style="text-align: center; text-decoration: none;"> Toutes les leçons</a>
+            </div>
+        </div>
+    </div>
+
+    <br><br>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function pronounce(el) {
+    const word = el.dataset.word;
+    if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(word);
+        utterance.lang = 'fr-FR';
+        utterance.rate = 0.8;
+        speechSynthesis.speak(utterance);
+    }
+}
+</script>
+{% endblock %}

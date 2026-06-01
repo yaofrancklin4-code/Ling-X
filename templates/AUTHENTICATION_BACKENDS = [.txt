@@ -1,0 +1,4 @@
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',      # Django standard
+    'allauth.account.auth_backends.AuthenticationBackend',  # Social auth
+]
